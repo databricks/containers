@@ -15,7 +15,7 @@ This repository provides Dockerfiles for use with Databricks Container Services.
 ## DockerHub
 The Databricks provided sample images have been published to [DockerHub](https://cloud.docker.com/u/databricksruntime/repository/list)
 
-## How To Contribute to this REPO
+## How To Contribute to this Repo
 1. Fork and Clone this Repo, locally.
 1. Follow the example dockerfiles and ensure your docker file has liberal comments, explaining each step of your image.  
 1. Be specific when you name your image.  *Example:* **CentOS7.6RBundle**

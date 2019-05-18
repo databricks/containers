@@ -7,6 +7,7 @@ RUN apt-get update \
     python2.7 \
     python-dev \
     virtualenv \
+# note that the subprocess32 package is used here as the REPL-required libraries require this to be installed; if using earlier major/minor versions of the libraries below, this can possibly be removed
     python-subprocess32 \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*

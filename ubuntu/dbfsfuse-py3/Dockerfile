@@ -1,4 +1,4 @@
-FROM databricksruntime/python3.6-virtualenv:latest
+FROM databricksruntime/python-virtualenv:latest
 
 RUN apt-get update \
   && apt-get install -y libfuse2 \

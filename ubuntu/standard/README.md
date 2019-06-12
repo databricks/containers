@@ -1,5 +1,5 @@
 Standard Container
------------------
+==================
 
 This image is intended to have feature parity with the current Databricks Runtime.
 Support for features will be added over time.

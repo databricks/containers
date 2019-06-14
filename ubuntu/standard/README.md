@@ -10,7 +10,7 @@ Support for features will be added over time.
   - Spark Submit Jobs
   - %sh
   - DBFS FUSE mount (/dbfs)
+  - SSH
 
 ## Unsupported Features
-  - SSH
   - Ganglia

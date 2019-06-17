@@ -8,9 +8,13 @@ This repository provides Dockerfiles for use with Databricks Container Services.
 
 ## Images
 
+- [Standard](ubuntu/standard)
 - [Minimal](ubuntu/minimal)
 - [Python](ubuntu/python)
+- [Python2.7](ubuntu/python2.7)
 - [R](ubuntu/R)
+- [DBFS FUSE](ubuntu/dbfsfuse-py3)
+- [SSH](ubuntu/ssh)
 
 ## DockerHub
 The Databricks provided sample images have been published to [DockerHub](https://cloud.docker.com/u/databricksruntime/repository/list)

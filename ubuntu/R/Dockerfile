@@ -1,17 +1,20 @@
 FROM databricksruntime/minimal:latest
 
 # Ubuntu 16.04.3 LTS installs R version 3.2.3 by default. This is fairly out dated.
-# We add RStudio's debian source to install the latest r-base version (3.4.1)
+# We add RStudio's debian source to install the latest r-base version (3.6.0)
 # We are using the more secure long form of pgp key ID of marutter@gmail.com
-# based on these instructions: https://cran.rstudio.com/bin/linux/ubuntu/#secure-apt
+# based on these instructions (avoiding firewall issue for some users):
+# https://cran.rstudio.com/bin/linux/ubuntu/#secure-apt
 RUN apt-get update \
   && apt-get install --yes software-properties-common \
-  && apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9 \
-  && add-apt-repository 'deb [arch=amd64,i386] https://cran.rstudio.com/bin/linux/ubuntu xenial-cran35//' \
+  && gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9 \
+  && gpg -a --export E298A3A825C0D65DFD57CBB651716619E084DAB9 | sudo apt-key add - \
+  && add-apt-repository 'deb [arch=amd64,i386] https://cran.rstudio.com/bin/linux/ubuntu xenial-cran35/' \
   && apt-get install -q --yes --fix-missing --ignore-missing \
-    r-base \
     libssl-dev \
-  && add-apt-repository -r 'deb [arch=amd64,i386] https://cran.rstudio.com/bin/linux/ubuntu xenial-cran35//' \
+    r-base \
+    r-base-dev \
+  && add-apt-repository -r 'deb [arch=amd64,i386] https://cran.rstudio.com/bin/linux/ubuntu xenial-cran35/' \
   && apt-key del E298A3A825C0D65DFD57CBB651716619E084DAB9 \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*

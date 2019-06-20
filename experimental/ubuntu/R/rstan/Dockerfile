@@ -10,6 +10,3 @@ RUN add-apt-repository --yes "ppa:marutter/rrutter" \
 
 ## Fix error 'Error in loadNamespace(name) : there is no package called 'htmltools''
 RUN R -e "install.packages('htmltools', repo = 'https://cran.microsoft.com/snapshot/2019-06-19/')"
-
-## Make R the default
-CMD ["R"]

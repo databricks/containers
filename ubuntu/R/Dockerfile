@@ -6,11 +6,12 @@ FROM databricksruntime/minimal:latest
 # based on these instructions (avoiding firewall issue for some users):
 # https://cran.rstudio.com/bin/linux/ubuntu/#secure-apt
 RUN apt-get update \
-  && apt-get install --yes software-properties-common \
+  && apt-get install --yes software-properties-common apt-transport-https \
   && gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9 \
   && gpg -a --export E298A3A825C0D65DFD57CBB651716619E084DAB9 | sudo apt-key add - \
   && add-apt-repository 'deb [arch=amd64,i386] https://cran.rstudio.com/bin/linux/ubuntu xenial-cran35/' \
-  && apt-get install -q --yes --fix-missing --ignore-missing \
+  && apt-get update \
+  && apt-get install --yes \
     libssl-dev \
     r-base \
     r-base-dev \

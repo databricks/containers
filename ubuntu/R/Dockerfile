@@ -9,12 +9,13 @@ RUN apt-get update \
   && apt-get install --yes software-properties-common \
   && gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9 \
   && gpg -a --export E298A3A825C0D65DFD57CBB651716619E084DAB9 | sudo apt-key add - \
-  && add-apt-repository 'deb [arch=amd64,i386] https://cran.rstudio.com/bin/linux/ubuntu xenial-cran35/' \
+  && add-apt-repository 'deb [arch=amd64,i386] http://cran.rstudio.com/bin/linux/ubuntu xenial-cran35/' \
+  && apt-get update \
   && apt-get install -q --yes --fix-missing --ignore-missing \
     libssl-dev \
     r-base \
     r-base-dev \
-  && add-apt-repository -r 'deb [arch=amd64,i386] https://cran.rstudio.com/bin/linux/ubuntu xenial-cran35/' \
+  && add-apt-repository -r 'deb [arch=amd64,i386] http://cran.rstudio.com/bin/linux/ubuntu xenial-cran35/' \
   && apt-key del E298A3A825C0D65DFD57CBB651716619E084DAB9 \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*

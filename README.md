@@ -11,7 +11,6 @@ This repository provides Dockerfiles for use with Databricks Container Services.
 - [Standard](ubuntu/standard)
 - [Minimal](ubuntu/minimal)
 - [Python](ubuntu/python)
-- [Python2.7](ubuntu/python2.7)
 - [R](ubuntu/R)
 - [DBFS FUSE](ubuntu/dbfsfuse-py3)
 - [SSH](ubuntu/ssh)

@@ -1,4 +1,4 @@
-FROM databricksruntime/dbfsfuse-py3:latest
+FROM databricksruntime/dbfsfuse:latest
 
 RUN apt-get update \
   && apt-get install -y openssh-server \

@@ -1,6 +1,6 @@
 FROM databricksruntime/minimal:latest
 
-# Installs python 3.6 and virtualenv for Spark and Notebooks
+# Installs python 3.5 and virtualenv for Spark and Notebooks
 RUN apt-get update \
   && apt-get install -y \
     python3 \

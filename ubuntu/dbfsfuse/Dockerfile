@@ -5,4 +5,7 @@ RUN apt-get update \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
+# Make sure the USER env variable is set. The files exposed
+# by dbfs-fuse will be owned by this user.
+# Withing the container, the USER is always root.
 ENV USER root

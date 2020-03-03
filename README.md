@@ -16,7 +16,7 @@ This repository provides Dockerfiles for use with Databricks Container Services.
 - [SSH](ubuntu/ssh)
 
 ## DockerHub
-The Databricks provided sample images have been published to [DockerHub](https://cloud.docker.com/u/databricksruntime/repository/list)
+The Databricks provided sample images have been published to [DockerHub](https://hub.docker.com/u/databricksruntime)
 
 ## How To Contribute to this Repo
 1. Fork and Clone this Repo, locally.

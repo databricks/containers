@@ -1,4 +1,4 @@
-FROM sarthfrey/ml-gpu-base:latest
+FROM databricksruntime/minimal:latest
 
 # Taken from https://gitlab.com/nvidia/container-images/cuda/-/blob/master/dist/ubuntu16.04/10.1/base/Dockerfile
 
@@ -38,7 +38,9 @@ ENV NVIDIA_DRIVER_CAPABILITIES compute,utility
 ENV NVIDIA_REQUIRE_CUDA "cuda>=10.1 brand=tesla,driver>=384,driver<385 brand=tesla,driver>=396,driver<397 brand=tesla,driver>=410,driver<411"
 
 # Install CUDA, NCCL, and CUDNN
-RUN wget https://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu1804/x86_64/nvidia-machine-learning-repo-ubuntu1804_1.0.0-1_amd64.deb \
+RUN apt-get update \
+    && apt-get install -y wget \
+    && wget https://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu1804/x86_64/nvidia-machine-learning-repo-ubuntu1804_1.0.0-1_amd64.deb \
     && dpkg -i nvidia-machine-learning-repo-ubuntu1804_1.0.0-1_amd64.deb \
     && apt-get update \
     && apt-get install -y --no-install-recommends --allow-downgrades \
@@ -52,6 +54,3 @@ RUN wget https://developer.download.nvidia.com/compute/machine-learning/repos/ub
       cuda-libraries-dev-10-1 \
       cuda-compiler-10-1 \
     && apt-get clean
-
-RUN /databricks/conda/bin/conda install --override-channels -n ${DATABRICKS_ROOT_CONDA_ENV} -c anaconda \
-    cudatoolkit=10.1.243=h6bb024c_0 cudnn=7.6.4=cuda10.1_0 cupti=10.1.168=0

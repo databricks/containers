@@ -1,4 +1,4 @@
-FROM sarthfrey/gpu-python:cuda10.1
+FROM databricksruntime/gpu-dbfsfuse:cuda10.1
 
 COPY spec-file.txt /databricks/.conda-env-def/rapids-spec-file.txt
 

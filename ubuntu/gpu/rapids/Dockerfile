@@ -1,5 +1,8 @@
-FROM sarthfrey/gpu-rapids:latest
+FROM sarthfrey/gpu-python:cuda10.1
 
-COPY env.yml /databricks/.conda-env-def/rapids-env.yml
+COPY spec-file.txt /databricks/.conda-env-def/rapids-spec-file.txt
 
-RUN /databricks/conda/bin/conda env update --name ${DATABRICKS_ROOT_CONDA_ENV} --file /databricks/.conda-env-def/rapids-env.yml
+RUN /databricks/conda/bin/conda env create --name rapids --file /databricks/.conda-env-def/rapids-spec-file.txt
+
+ENV DEFAULT_DATABRICKS_ROOT_CONDA_ENV=rapids
+ENV DATABRICKS_ROOT_CONDA_ENV=rapids

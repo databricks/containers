@@ -14,9 +14,9 @@ This repository provides Dockerfiles for use with Databricks Container Services.
 - [R](ubuntu/R)
 - [DBFS FUSE](ubuntu/dbfsfuse)
 - [SSH](ubuntu/ssh)
-- [ML GPU Base](ubuntu/ml/gpu/base)
-- [ML GPU CUDA](ubuntu/ml/gpu/cuda)
-- [ML GPU RAPIDS](ubuntu/ml/gpu/rapids)
+- [GPU Minimal](ubuntu/gpu/minimal)
+- [GPU CUDA](ubuntu/gpu/python)
+- [GPU RAPIDS](ubuntu/gpu/rapids)
 
 ## DockerHub
 The Databricks provided sample images have been published to [DockerHub](https://hub.docker.com/u/databricksruntime)

@@ -1,4 +1,4 @@
-FROM sarthfrey/gpu-cuda:10.1
+FROM databricksruntime/gpu-minimal:cuda10.1
 
 RUN apt-get update && apt-get install --yes \
     wget \

@@ -1,6 +1,7 @@
 FROM databricksruntime/minimal:latest
 
 # Taken from https://gitlab.com/nvidia/container-images/cuda/-/blob/master/dist/ubuntu16.04/10.1/base/Dockerfile
+# Note: BSD license.
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
 ca-certificates apt-transport-https gnupg-curl && \
@@ -50,5 +51,4 @@ RUN apt-get update \
       libcudnn7=7.6.4.38-1+cuda10.1 \
       libcudnn7-dev=7.6.4.38-1+cuda10.1 \
       libcublas10=10.2.1.243-1 \
-      libcublas-dev=10.2.1.243-1 \
-    && apt-get clean
+      libcublas-dev=10.2.1.243-1

@@ -16,12 +16,13 @@ RUN wget --quiet --output-document miniconda.sh https://repo.continuum.io/minico
 
 COPY env.yml /databricks/.conda-env-def/env.yml
 
+# Create conda environment
 RUN /databricks/conda/bin/conda env create --file /databricks/.conda-env-def/env.yml \
-    # Source conda.sh for all login shells.
-    && ln -s /databricks/conda/etc/profile.d/conda.sh /etc/profile.d/conda.sh
 
-# Set always_yes to avoid needing -y flags, and improve conda experience in Databricks notebooks.
-RUN /databricks/conda/bin/conda config --system --set always_yes True
+# Source conda.sh for all login shells
+# Set always_yes to avoid needing -y flags, and improve conda experience in Databricks notebooks
+RUN ln -s /databricks/conda/etc/profile.d/conda.sh /etc/profile.d/conda.sh \
+    && /databricks/conda/bin/conda config --system --set always_yes True
 
 # This environment variable must be set to indicate the conda environment to activate.
 # Note that currently, we have to set both of these environment variables. The first one is necessary to indicate that this runtime supports conda.

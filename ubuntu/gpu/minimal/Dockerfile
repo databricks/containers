@@ -1,7 +1,9 @@
 FROM databricksruntime/minimal:latest
 
-# Taken from https://gitlab.com/nvidia/container-images/cuda/-/blob/master/dist/ubuntu16.04/10.1/base/Dockerfile
-# Note: BSD license.
+## Copied from https://gitlab.com/nvidia/container-images/cuda/-/blob/master/dist/ubuntu16.04/10.1/base/Dockerfile
+## with the 3-Clause BSD license: https://gitlab.com/nvidia/container-images/cuda/-/blob/master/LICENSE
+
+# Copyright (c) 2019, NVIDIA CORPORATION. All rights reserved.
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
 ca-certificates apt-transport-https gnupg-curl && \
@@ -38,17 +40,18 @@ ENV NVIDIA_VISIBLE_DEVICES all
 ENV NVIDIA_DRIVER_CAPABILITIES compute,utility
 ENV NVIDIA_REQUIRE_CUDA "cuda>=10.1 brand=tesla,driver>=384,driver<385 brand=tesla,driver>=396,driver<397 brand=tesla,driver>=410,driver<411"
 
-# Install CUDA, NCCL, and CUDNN
-RUN apt-get update \
-    && apt-get install -y wget \
-    && wget https://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu1804/x86_64/nvidia-machine-learning-repo-ubuntu1804_1.0.0-1_amd64.deb \
-    && dpkg -i nvidia-machine-learning-repo-ubuntu1804_1.0.0-1_amd64.deb \
-    && apt-get update \
-    && apt-get install -y --no-install-recommends --allow-downgrades \
+## End of https://gitlab.com/nvidia/container-images/cuda/-/blob/master/dist/ubuntu16.04/10.1/base/Dockerfile
+
+# Install the full CUDA Toolkit, NCCL, cuDNN, cuBLAS, and TensorRT.
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
       cuda-toolkit-10-1 \
-      libnccl2=2.4.8-1+cuda10.1 \
-      libnccl-dev=2.4.8-1+cuda10.1 \
-      libcudnn7=7.6.4.38-1+cuda10.1 \
-      libcudnn7-dev=7.6.4.38-1+cuda10.1 \
+      libnccl2=2.6.4-1+cuda10.1 \
+      libnccl-dev=2.6.4-1+cuda10.1 \
+      libcudnn7=7.6.5.32-1+cuda10.1 \
+      libcudnn7-dev=7.6.5.32-1+cuda10.1 \
+      # Important: libcublas 10.2.1.243 matches CUDA 10.1 update 2 instead of CUDA 10.2
       libcublas10=10.2.1.243-1 \
-      libcublas-dev=10.2.1.243-1
+      libcublas-dev=10.2.1.243-1 \
+      libnvinfer6=6.0.1-1+cuda10.1 \
+      libnvinfer-dev=6.0.1-1+cuda10.1

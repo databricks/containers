@@ -1,3 +1,4 @@
 FROM databricksruntime/gpu-python:cuda10.1
 
-RUN /databricks/conda/bin/conda install --name ${DATABRICKS_ROOT_CONDA_ENV} pytorch=1.1.0 -c pytorch
+RUN conda install -n ${DATABRICKS_ROOT_CONDA_ENV} -c pytorch \
+      pytorch=1.5.0 torchvision=0.6.0 cudatoolkit=10.1

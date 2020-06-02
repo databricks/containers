@@ -24,7 +24,6 @@ dependencies:
   - libsodium=1.0.16=h1bed415_0
   - libstdcxx-ng=9.1.0=hdf63c60_0
   - ncurses=6.2=he6710b0_0
-  - nomkl=3.0=0
   - numpy=1.18.1=py37h94c655d_0
   - numpy-base=1.18.1=py37h2f8d375_1
   - openssl=1.1.1g=h7b6447c_0

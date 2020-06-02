@@ -1,8 +1,9 @@
 FROM databricksruntime/gpu-python:cuda10.1
 
-COPY spec-file.txt /databricks/.conda-env-def/rapids-spec-file.txt
+COPY rapids-spec.txt /tmp/rapids-spec.txt
 
-RUN /databricks/conda/bin/conda env create --name rapids --file /databricks/.conda-env-def/rapids-spec-file.txt
+RUN conda create --name rapids --file /tmp/rapids-spec.txt && \
+    rm -f /tmp/rapids-spec.txt
 
 ENV DEFAULT_DATABRICKS_ROOT_CONDA_ENV=rapids
 ENV DATABRICKS_ROOT_CONDA_ENV=rapids

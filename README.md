@@ -16,9 +16,9 @@ This repository provides Dockerfiles for use with Databricks Container Services.
 - [SSH](ubuntu/ssh)
 - [GPU Base](ubuntu/gpu/base)
 - [GPU Python](ubuntu/gpu/python)
-- [GPU RAPIDS](ubuntu/gpu/rapids)
 - [GPU TensorFlow](ubuntu/gpu/tensorflow)
 - [GPU PyTorch](ubuntu/gpu/pytorch)
+- [GPU RAPIDS](ubuntu/gpu/rapids)
 
 ## DockerHub
 The Databricks provided sample images have been published to [DockerHub](https://hub.docker.com/u/databricksruntime)

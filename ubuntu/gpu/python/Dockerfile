@@ -22,6 +22,5 @@ COPY gpu.yml /tmp/gpu.yml
 RUN conda env create --file /tmp/gpu.yml && \
     rm -f /tmp/gpu.yml
 
-# Set environment variables used by Databricks to decide which conda environment to activate.
+# Set an environment variable used by Databricks to decide which conda environment to activate by default.
 ENV DEFAULT_DATABRICKS_ROOT_CONDA_ENV=gpu
-ENV DATABRICKS_ROOT_CONDA_ENV=gpu

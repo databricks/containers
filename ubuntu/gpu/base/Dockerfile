@@ -1,5 +1,5 @@
-# See https://gitlab.com/nvidia/container-images/cuda/-/blob/master/dist/ubuntu18.04/10.1/runtime/Dockerfile
-FROM nvidia/cuda:10.1-runtime-ubuntu18.04
+# See https://gitlab.com/nvidia/container-images/cuda/-/blob/master/dist/ubuntu18.04/10.1/runtime/cudnn7/Dockerfile
+FROM nvidia/cuda:10.1-cudnn7-runtime-ubuntu18.04
 
 # Disable NVIDIA repos to prevent accidental upgrades.
 RUN cd /etc/apt/sources.list.d && \
@@ -18,4 +18,3 @@ RUN apt-get update && \
       wget && \
     /var/lib/dpkg/info/ca-certificates-java.postinst configure && \
     rm -rf /var/lib/apt/lists/*
-

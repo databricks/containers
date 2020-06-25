@@ -1,11 +1,13 @@
 # GPU Containers
 
-These images are for common use cases that relate to GPUs.
-* `gpu-base` extends [`minimal`](https://github.com/databricks/containers/tree/master/ubuntu/minimal) with CUDA Toolkit and common GPU libraries.
-* `gpu-python` installs common python packages to start with for many Databricks users.
-* `gpu-tensorflow` installs TensorFlow onto the `gpu-python` image.
-* `gpu-pytorch` installs PyTorch onto the `gpu-python` image.
-* `gpu-rapids` installs [RAPIDS](https://rapids.ai/) onto the `gpu-python` image.
+Example base layers to build your own container:
+* [gpu-base](base) extends the official [NVIDIA CUDA container](https://hub.docker.com/r/nvidia/cuda) with Databricks Container Service minimal requirements.
+* [gpu-conda](conda) extends `gpu-base` by installing [Miniconda](https://docs.conda.io/en/latest/miniconda.html).
+
+Example containers for common GPU use cases:
+* [gpu-tensorflow](tensorflow) extends `gpu-conda` by creating a conda environment that contains [TensorFlow](https://www.tensorflow.org/).
+* [gpu-pytorch](pytorch) extends `gpu-conda` by creating a conda environment that contains [PyTorch](https://pytorch.org/).
+* [gpu-rapids](rapids) extends `gpu-conda` by creating a conda environment that contains [RAPIDS](https://rapids.ai/).
   * RAPIDS requires NVIDIA Pascal GPU or better.
     If you receive a `cudaErrorNoKernelImageForDevice: no kernel image is available for execution on the device` error,
     you likely are using GPUs that are incompatible, e.g., K80 on EC2 P2 instances.

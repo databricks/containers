@@ -1,0 +1,14 @@
+name: tensorflow
+channels:
+  - defaults
+dependencies:
+- ipykernel=5.1.4  # required by Python notebooks
+- ipython=7.12.0  # required by Python notebooks
+- numpy=1.18.1  # required by PySpark MLlib
+- pandas=1.0.1  # required by PySpark
+- pip=20.0.2
+- python=3.7.6
+- six=1.14.0  # required by PySpark
+- pip:
+  - pyarrow==0.15.1  # required by PySpark
+  - tensorflow-gpu==2.2.0

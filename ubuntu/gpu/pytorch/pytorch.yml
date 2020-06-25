@@ -1,0 +1,16 @@
+name: pytorch
+channels:
+  - defaults
+dependencies:
+- cudatoolkit=10.1
+- ipykernel=5.1.4  # required by Python notebooks
+- ipython=7.12.0  # required by Python notebooks
+- numpy=1.18.1  # required by PySpark MLlib
+- pandas=1.0.1  # required by PySpark
+- pip=20.0.2
+- python=3.7.6
+- pytorch::pytorch=1.5.1
+- pytorch::torchvision=0.6.1
+- six=1.14.0  # required by PySpark
+- pip:
+  - pyarrow==0.15.1  # rqeuired by PySpark

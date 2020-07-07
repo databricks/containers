@@ -25,3 +25,22 @@ RUN apt-get update \
 RUN R -e "install.packages(c('hwriterPlus', 'htmltools'), repos='https://mran.revolutionanalytics.com/snapshot/2017-02-26')" \
  && R -e "install.packages('Rserve', repos='http://rforge.net/')"
 
+
+# Additional instructions to setup rstudio. If you dont need rstudio, you can 
+# omit the below commands in your docker file.
+
+
+# Databricks default configuration for RStudio sessions.
+COPY Rprofile.site /usr/lib/R/etc/Rprofile.site
+
+# Rstudio installtion.
+RUN apt-get update \
+ # Installation of rstudio in databricks needs /usr/bin/python.
+ && apt-get install -y python \
+ # Install wget, gdebi-core.
+ && apt-get install -y wget \
+ && apt-get install -y gdebi-core \
+ # Download rstudio 1.2 package for ubuntu 16.04 and install it.
+ && wget https://download2.rstudio.org/server/trusty/amd64/rstudio-server-1.2.5042-amd64.deb -O rstudio-server.deb \
+ && gdebi -n rstudio-server.deb \
+ && rm rstudio-server.deb

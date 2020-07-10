@@ -25,15 +25,14 @@ RUN apt-get update \
 RUN R -e "install.packages(c('hwriterPlus', 'htmltools'), repos='https://mran.revolutionanalytics.com/snapshot/2017-02-26')" \
  && R -e "install.packages('Rserve', repos='http://rforge.net/')"
 
-
 # Additional instructions to setup rstudio. If you dont need rstudio, you can 
-# omit the below commands in your docker file.
-
+# omit the below commands in your docker file. Even after this you need to use
+# an init script to start the RStudio daemon (See README.md for details.)
 
 # Databricks default configuration for RStudio sessions.
 COPY Rprofile.site /usr/lib/R/etc/Rprofile.site
 
-# Rstudio installtion.
+# Rstudio installation.
 RUN apt-get update \
  # Installation of rstudio in databricks needs /usr/bin/python.
  && apt-get install -y python \

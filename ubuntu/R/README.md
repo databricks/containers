@@ -1,8 +1,8 @@
 # R container
 
-This image shows how to setup R and rstudio. 
+This image shows how to setup R and RStudio Server. 
 
-Note that you will still need to use an init script to start the RStudio 
+Note that you will still need to use an init script to start the RStudio Server
 daemon. Here is an example notebook python cell that installs an init script
 on a DBFS location.
 

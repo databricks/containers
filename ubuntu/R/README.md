@@ -2,20 +2,15 @@
 
 This image shows how to setup R and RStudio Server. 
 
-Note that you will still need to use an init script to start the RStudio Server
-daemon. Here is an example notebook python cell that installs an init script
-on a DBFS location.
+Note that you will still need to use a databricks init script to start the RStudio
+Server daemon. Here is an example init script you can use to start the server daemon.
 
-```py
-script = """#!/bin/bash
+```sh
+#!/bin/bash
 set -euxo pipefail
 RSTUDIO_BIN="/usr/sbin/rstudio-server"
 
 if [[ ! -f "$RSTUDIO_BIN" && $DB_IS_DRIVER = "TRUE" ]]; then
   rstudio-server restart || true
 fi
-"""
-
-dbutils.fs.mkdirs("/databricks/rstudio")
-dbutils.fs.put("/databricks/rstudio/rstudio-install.sh", script, True)
 ```

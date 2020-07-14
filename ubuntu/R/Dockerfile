@@ -40,6 +40,7 @@ RUN apt-get update \
  # Install gdebi-core.
  && apt-get install -y gdebi-core \
  # Download rstudio 1.2 package for ubuntu 16.04 and install it.
- && curl https://download2.rstudio.org/server/trusty/amd64/rstudio-server-1.2.5042-amd64.deb --output rstudio-server.debwget https://download2.rstudio.org/server/trusty/amd64/rstudio-server-1.2.5042-amd64.deb -O rstudio-server.deb \
+ && apt-get install -y wget \
+ && wget https://download2.rstudio.org/server/trusty/amd64/rstudio-server-1.2.5042-amd64.deb -O rstudio-server.deb \
  && gdebi -n rstudio-server.deb \
  && rm rstudio-server.deb

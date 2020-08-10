@@ -22,6 +22,6 @@ Example containers for common GPU use cases:
 
 * You must install conda at `/databricks/conda/` if you are replacing the `gpu-conda` layer.
 
-* You must set `ENV DEFAULT_DATABRICKS_ROOT_CONDA_ENV` in your Dockerfile. This environment variable is used by <Databricks> to determine which conda environment to activate by default.
+* You must set `ENV DEFAULT_DATABRICKS_ROOT_CONDA_ENV` in your Dockerfile. This environment variable is used by Databricks to determine which conda environment to activate by default.
 
 * The `gpu-tensorflow` and `gpu-pytorch` Dockerfiles provide examples to create the root conda environment from an environment.yml file. These packages are required for Python notebooks and PySpark to work: python, ipython, numpy, pandas, pyarrow, six, and ipykernel.

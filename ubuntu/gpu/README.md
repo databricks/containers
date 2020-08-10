@@ -14,7 +14,13 @@ Example containers for common GPU use cases:
     You should try switching to newer instance types.
   * The Dockerfile provides an example to create the root conda environment from an environment spec file, which does not require dependency resolution.
 
-## When creating custom Dockerfiles:
+## Launching GPU Clusters
+
+* When launching a GPU cluster with a custom container with conda, we recommend setting the Spark conf `spark.databricks.libraryIsolation.enabled false`. This disables notebook-scoped libraries, which do not support conda. The example images use conda for environment creation.
+
+* After the cluster is ready, you can run `%sh nvidia-smi` to view GPU devices and confirm that they are available.
+
+## Creating Custom Dockerfiles:
 
 * You can modify the `gpu-base` Dockerfile and add additional system packages and NVIDIA libraries, for example, TensorRT (libnvinfer). You can also change the base image (FROM) to use CUDA 10.0 or 10.2.
 

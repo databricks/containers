@@ -1,10 +1,10 @@
 # GPU Containers
 
-Example base layers to build your own container:
+Here are example base layers you can use to build a container. These cannot be directly used to launch a cluster -- you must first add a layer that creates a conda environment.
 * [`gpu-base`](base) extends the official [NVIDIA CUDA container](https://hub.docker.com/r/nvidia/cuda) with Databricks Container Service minimal requirements.
 * [`gpu-conda`](conda) extends `gpu-base` by installing [Miniconda](https://docs.conda.io/en/latest/miniconda.html).
 
-Example containers for common GPU use cases:
+Here are example containers for common GPU use cases. These be used without modification to launch a cluster.
 * [`gpu-tensorflow`](tensorflow) extends `gpu-conda` by creating a conda environment that contains [TensorFlow](https://www.tensorflow.org/).
 * [`gpu-pytorch`](pytorch) extends `gpu-conda` by creating a conda environment that contains [PyTorch](https://pytorch.org/).
 * [`gpu-rapids`](rapids) extends `gpu-conda` by creating a conda environment that contains [RAPIDS](https://rapids.ai/).

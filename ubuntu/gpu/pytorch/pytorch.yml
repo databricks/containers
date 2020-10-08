@@ -12,5 +12,6 @@ dependencies:
 - pytorch::pytorch=1.5.1
 - pytorch::torchvision=0.6.1
 - six=1.14.0  # required by PySpark
+- traitlets=4.3 # DBR <= 7.3 are not compatible with traitlets 5.0+
 - pip:
   - pyarrow==0.15.1  # rqeuired by PySpark

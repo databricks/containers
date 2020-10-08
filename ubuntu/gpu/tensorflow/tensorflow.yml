@@ -9,6 +9,7 @@ dependencies:
 - pip=20.0.2
 - python=3.7.6
 - six=1.14.0  # required by PySpark
+- traitlets=4.3 # DBR <= 7.3 are not compatible with traitlets 5.0+
 - pip:
   - pyarrow==0.15.1  # required by PySpark
   - tensorflow-gpu==2.2.0

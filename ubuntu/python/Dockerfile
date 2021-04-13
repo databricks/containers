@@ -1,4 +1,4 @@
-FROM ubuntu:16.04 as builder
+FROM ubuntu:18.04 as builder
 
 RUN apt-get update && apt-get install --yes \
     wget \

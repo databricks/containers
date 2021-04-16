@@ -31,3 +31,6 @@ Example containers for common GPU use cases:
 * You must set `ENV DEFAULT_DATABRICKS_ROOT_CONDA_ENV` in your Dockerfile. This environment variable is used by Databricks to determine which conda environment to activate by default.
 
 * The `gpu-tensorflow` and `gpu-pytorch` Dockerfiles provide examples to create the root conda environment from an environment.yml file. These packages are required for Python notebooks and PySpark to work: python, ipython, numpy, pandas, pyarrow, six, and ipykernel.
+
+## Note
+The above GPU container Dockerfiles are built with CUDA 10.1 and will not work with Databricks Runtime ML 8.0 or higher. To use these Dockerfiles in Databricks Runtime ML 8.0 or higher, please update them to install CUDA 11 instead of CUDA 10.1.

@@ -1,8 +1,8 @@
 # GPU Containers
 
 There are two variations of GPU containers that can be used depending upon the CUDA version you wish to use:
-[`cuda-10.1`](cuda-10.1) contains the layers which install CUDA 10.1 and can be used with Databricks Runtime 7.3 and higher
-[`cuda-11`](cuda-11) contains the layers which install CUDA 11 and can be used with Databricks Runtime 8.0 and higher
+[`cuda-10.1`](cuda-10.1) contains the layers which install CUDA 10.1
+[`cuda-11`](cuda-11) contains the layers which install CUDA 11
 
 Example base layers to build your own container:
 * [`gpu-base`](cuda-11/base) extends the official [NVIDIA CUDA container](https://hub.docker.com/r/nvidia/cuda) with Databricks Container Service minimal requirements.

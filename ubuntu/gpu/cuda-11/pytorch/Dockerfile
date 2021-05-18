@@ -1,4 +1,4 @@
-FROM panchalhp/gpu-conda:cuda11
+FROM databricksruntime/gpu-conda:cuda11
 
 COPY pytorch.yml /tmp/env.yml
 

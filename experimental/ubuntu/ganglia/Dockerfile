@@ -1,7 +1,10 @@
-from spark.images.base.gen_ganglia_setup import print_ganglia_setup_commands
-# We install system pip just for ganglia-api (see print_ganglia_setup_commands),
-# use system python2. We also install rsync for ganglia installation.
-print r"""
+FROM databricksruntime/standard:latest
+
+RUN apt-get update \
+  && apt-get install -y openssh-server \
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
 WORKDIR /databricks
 ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update && apt-get install -q -y --force-yes --fix-missing --ignore-missing \
@@ -12,11 +15,7 @@ RUN apt-get update && apt-get install -q -y --force-yes --fix-missing --ignore-m
         rsync \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-"""
-print_ganglia_setup_commands()
-...
-def print_ganglia_setup_commands():
-    print r"""
+
 # Upgrade Ganglia to 3.7.2 to patch XSS bug, see CJ-15250
 # Upgrade Ganglia to 3.7.4 and use private forked repo to patch several security bugs, see CJ-20114
 # SC-17279: We run gmetad as user ganglia, so change the owner from nobody to ganglia for the rrd directory
@@ -58,4 +57,4 @@ RUN export GANGLIA_API=ganglia-api-cbe773d051168e05118774708ff7a0ce881617f4 \
 RUN update-rc.d ganglia-monitor disable \
   && update-rc.d gmetad disable \
   && update-rc.d apache2 disable
-"""
+

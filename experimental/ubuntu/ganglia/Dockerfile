@@ -6,13 +6,19 @@ RUN apt-get update \
   && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 WORKDIR /databricks
+
 ENV DEBIAN_FRONTEND noninteractive
+ENV DATABRICKS_GANGLIA_ENABLED=true
+ENV DATABRICKS_GANGLIA_PORT=80
+ENV DATABRICKS_GANGLIA_SNAPSHOT_PERIOD_MINUTES=15
+
 RUN apt-get update && apt-get install -q -y --force-yes --fix-missing --ignore-missing \
         ganglia-monitor \
         ganglia-webfrontend \
         ganglia-monitor-python \
         python-pip \
         rsync \
+        cron \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
@@ -58,3 +64,29 @@ RUN update-rc.d ganglia-monitor disable \
   && update-rc.d gmetad disable \
   && update-rc.d apache2 disable
 
+
+RUN mkdir -p /etc/monit/conf.d
+
+SHELL ["/bin/bash", "-c"]
+
+RUN echo $'check process ganglia-monitor with pidfile /var/run/ganglia-monitor.pid\n\
+      start program = "/usr/sbin/service ganglia-monitor start"\n\
+      stop program = "/usr/sbin/service ganglia-monitor stop"\n\
+      if memory usage > 500 MB for 3 cycles then restart\n\
+' > /etc/monit/conf.d/ganglia-monitor-not-active
+
+RUN echo $'check process gmetad with pidfile /var/run/gmetad.pid\n\
+      start program = "/usr/sbin/service gmetad start"\n\
+      stop program = "/usr/sbin/service gmetad stop"\n\
+      if memory usage > 500 MB for 3 cycles then restart\n\
+\n\
+check process apache2 with pidfile /var/run/apache2/apache2.pid\n\
+      start program = "/usr/sbin/service apache2 start"\n\
+      stop program = "/usr/sbin/service apache2 stop"\n\
+      if memory usage > 500 MB for 3 cycles then restart\n\
+' > /etc/monit/conf.d/gmetad-not-active
+
+
+RUN mkdir -p /etc/init.d
+ADD monit /etc/init.d
+RUN chmod 775 /etc/init.d/monit

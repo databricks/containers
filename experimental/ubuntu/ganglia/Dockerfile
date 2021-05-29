@@ -90,3 +90,7 @@ check process apache2 with pidfile /var/run/apache2/apache2.pid\n\
 RUN mkdir -p /etc/init.d
 ADD monit /etc/init.d
 RUN chmod 775 /etc/init.d/monit
+
+RUN mkdir -p /etc/apache2/sites-enabled
+ADD ganglia.conf /etc/apache2/sites-enabled
+RUN chmod 775 /etc/apache2/sites-enabled/ganglia.conf

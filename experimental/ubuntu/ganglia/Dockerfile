@@ -7,7 +7,8 @@ RUN apt-get update \
 
 WORKDIR /databricks
 
-ENV DEBIAN_FRONTEND noninteractive
+# set environment variables which Databricks shell script (in tarball) uses upon startup to create crontab for Ganglia to capture metrics
+ENV DEBIAN_FRONTEND=noninteractive
 ENV DATABRICKS_GANGLIA_ENABLED=true
 ENV DATABRICKS_GANGLIA_PORT=80
 ENV DATABRICKS_GANGLIA_SNAPSHOT_PERIOD_MINUTES=15
@@ -64,7 +65,8 @@ RUN update-rc.d ganglia-monitor disable \
   && update-rc.d gmetad disable \
   && update-rc.d apache2 disable
 
-
+# create directories for unix monitoring tool required for ganglia
+# two services needed by Ganglia are gmetad and ganglia-monitor
 RUN mkdir -p /etc/monit/conf.d
 
 SHELL ["/bin/bash", "-c"]
@@ -86,11 +88,12 @@ check process apache2 with pidfile /var/run/apache2/apache2.pid\n\
       if memory usage > 500 MB for 3 cycles then restart\n\
 ' > /etc/monit/conf.d/gmetad-not-active
 
-
+# add local monit shell script in the right location
 RUN mkdir -p /etc/init.d
 ADD monit /etc/init.d
 RUN chmod 775 /etc/init.d/monit
 
+# add Ganglia configuration file indicating the DocumentRoot - Databricks checks this to enable Ganglia upon cluster startup
 RUN mkdir -p /etc/apache2/sites-enabled
 ADD ganglia.conf /etc/apache2/sites-enabled
 RUN chmod 775 /etc/apache2/sites-enabled/ganglia.conf

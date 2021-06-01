@@ -32,5 +32,9 @@ RUN /databricks/conda/bin/conda config --system --set channel_priority strict \
 # This environment variable must be set to indicate the conda environment to activate.
 # Note that currently, we have to set both of these environment variables. The first one is necessary to indicate that this runtime supports conda.
 # The second one is necessary so that the python notebook/repl can be started (won't work without it)
-ENV DEFAULT_DATABRICKS_ROOT_CONDA_ENV=dcs-minimal
-ENV DATABRICKS_ROOT_CONDA_ENV=dcs-minimal
+#ENV DEFAULT_DATABRICKS_ROOT_CONDA_ENV=dcs-minimal
+#ENV DATABRICKS_ROOT_CONDA_ENV=dcs-minimal
+ENV PYSPARK_PYTHON=databricks/conda/envs/dcs-minimal/bin/python
+ENV PATH="/databricks/conda/envs/dcs-minimal/ml/bin:${PATH}"
+
+RUN echo "Hello world!" > /databricks/hello

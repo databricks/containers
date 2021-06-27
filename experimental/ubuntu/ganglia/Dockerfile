@@ -9,9 +9,9 @@ WORKDIR /databricks
 
 # set environment variables which Databricks shell script (in tarball) uses upon startup to create crontab for Ganglia to capture metrics
 ENV DEBIAN_FRONTEND=noninteractive
-ENV DATABRICKS_GANGLIA_ENABLED=true
-ENV DATABRICKS_GANGLIA_PORT=80
-ENV DATABRICKS_GANGLIA_SNAPSHOT_PERIOD_MINUTES=15
+#ENV DATABRICKS_GANGLIA_ENABLED=true
+#ENV DATABRICKS_GANGLIA_PORT=8649
+#ENV DATABRICKS_GANGLIA_SNAPSHOT_PERIOD_MINUTES=15
 
 RUN apt-get update && apt-get install -q -y --force-yes --fix-missing --ignore-missing \
         ganglia-monitor \
@@ -65,8 +65,6 @@ RUN update-rc.d ganglia-monitor disable \
   && update-rc.d gmetad disable \
   && update-rc.d apache2 disable
 
-# create directories for unix monitoring tool required for ganglia
-# two services needed by Ganglia are gmetad and ganglia-monitor
 RUN mkdir -p /etc/monit/conf.d
 
 SHELL ["/bin/bash", "-c"]
@@ -97,3 +95,6 @@ RUN chmod 775 /etc/init.d/monit
 RUN mkdir -p /etc/apache2/sites-enabled
 ADD ganglia.conf /etc/apache2/sites-enabled
 RUN chmod 775 /etc/apache2/sites-enabled/ganglia.conf
+
+ADD gconf/* /etc/ganglia/
+

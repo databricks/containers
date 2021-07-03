@@ -5,7 +5,7 @@ RUN apt-get update && apt-get install --yes \
     libdigest-sha-perl \
     bzip2
 
-# Download miniconda 4.9.2
+# Download miniconda and use it to install the conda binary
 RUN wget -q https://repo.continuum.io/miniconda/Miniconda3-py38_4.9.2-Linux-x86_64.sh -O miniconda.sh && \
     # Conda must be installed at /databricks/conda
     && /bin/bash miniconda.sh -b -p /databricks/conda \

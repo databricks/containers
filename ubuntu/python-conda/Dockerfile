@@ -6,10 +6,10 @@ RUN apt-get update && apt-get install --yes \
     bzip2
 
 # Download miniconda and use it to install the conda binary
-RUN wget -q https://repo.continuum.io/miniconda/Miniconda3-py38_4.9.2-Linux-x86_64.sh -O miniconda.sh && \
+RUN wget -q https://repo.continuum.io/miniconda/Miniconda3-py38_4.9.2-Linux-x86_64.sh -O miniconda.sh \
     # Conda must be installed at /databricks/conda
     && /bin/bash miniconda.sh -b -p /databricks/conda \
-    && rm miniconda.sh \
+    && rm miniconda.sh
 
 FROM databricksruntime/minimal:latest
 

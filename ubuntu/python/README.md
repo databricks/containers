@@ -5,7 +5,7 @@ This image adds a working Python environment to `databricksruntime/minimal` usin
 ## Supported Features
   - Scala Notebooks
   - Java/Jar jobs
-  - Python Notebooks, Python Jobs
+  - Python Notebooks, Python Jobs, %pip
   - %sh
 
 ## Unsupported Features

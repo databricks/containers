@@ -1,6 +1,6 @@
 FROM databricksruntime/minimal:latest
 
-# Installs python 3.6 and virtualenv for Spark and Notebooks
+# Installs python 3.5 and virtualenv for Spark and Notebooks
 RUN apt-get update \
   && apt-get install -y \
     python3 \
@@ -14,13 +14,13 @@ RUN virtualenv -p python3 --system-site-packages /databricks/python3
 # These python libraries are used by Databricks notebooks and the Python REPL
 # You do not need to install pyspark - it is injected when the cluster is launched
 RUN /databricks/python3/bin/pip install \
-  six==1.15.0 \
-  ipython==7.16.0 \
-  numpy==1.19.5 \
-  pandas==1.1.5 \
-  pyarrow==4.0.0 \
-  matplotlib==3.3.4 \
-  jinja2==2.11.3
+  six==1.12.0 \
+  ipython==7.2.0 \
+  numpy==1.15.4 \
+  pandas==0.23.4 \
+  pyarrow==0.12.0 \
+  matplotlib==3.0.2 \
+  jinja2==2.10
 
 # Specifies where Spark will look for the python process
 ENV PYSPARK_PYTHON=/databricks/python3/bin/python3

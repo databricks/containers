@@ -11,7 +11,7 @@ RUN wget -q https://repo.continuum.io/miniconda/Miniconda3-py38_4.9.2-Linux-x86_
     && /bin/bash miniconda.sh -b -p /databricks/conda \
     && rm miniconda.sh
 
-FROM databricksruntime/minimal:latest
+FROM databricksruntime/minimal:9.x
 
 COPY --from=builder /databricks/conda /databricks/conda
 

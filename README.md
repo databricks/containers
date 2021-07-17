@@ -1,5 +1,7 @@
 # Databricks Container Services - Example Containers
 
+**NOTE:** The `latest` tags have been removed on most images in favor of runtime-specific tags, with the exception being the `databricksruntime/standard` image. If your build relied on an image tagged with `latest`, please update it to match the runtime version of the cluster.
+
 This repository provides Dockerfiles for use with Databricks Container Services. These Dockerfiles are meant as a reference and a starting point, enabling users to build their own custom images to suit thier specific needs.
 
 ### Documentation

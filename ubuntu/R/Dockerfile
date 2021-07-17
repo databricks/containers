@@ -1,4 +1,4 @@
-FROM databricksruntime/minimal:latest
+FROM databricksruntime/minimal:9.x
 
 # Ubuntu 16.04.3 LTS installs R version 3.2.3 by default. This is fairly out dated.
 # We add RStudio's debian source to install the latest r-base version (3.6.0)

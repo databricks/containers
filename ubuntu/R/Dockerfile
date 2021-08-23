@@ -1,7 +1,9 @@
 FROM databricksruntime/minimal:9.x
 
-# Ubuntu 16.04.3 LTS installs R version 3.2.3 by default. This is fairly out dated.
-# We add RStudio's debian source to install the latest r-base version (3.6.0)
+# Suppress interactive configuration prompts
+ENV DEBIAN_FRONTEND=noninteractive
+
+# We add RStudio's debian source to install the latest r-base version (4.1)
 # We are using the more secure long form of pgp key ID of marutter@gmail.com
 # based on these instructions (avoiding firewall issue for some users):
 # https://cran.rstudio.com/bin/linux/ubuntu/#secure-apt
@@ -9,13 +11,13 @@ RUN apt-get update \
   && apt-get install --yes software-properties-common apt-transport-https \
   && gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9 \
   && gpg -a --export E298A3A825C0D65DFD57CBB651716619E084DAB9 | sudo apt-key add - \
-  && add-apt-repository 'deb [arch=amd64,i386] https://cran.rstudio.com/bin/linux/ubuntu xenial-cran35/' \
+  && add-apt-repository -y 'deb [arch=amd64,i386] https://cran.rstudio.com/bin/linux/ubuntu bionic-cran40/' \
   && apt-get update \
   && apt-get install --yes \
     libssl-dev \
     r-base \
     r-base-dev \
-  && add-apt-repository -r 'deb [arch=amd64,i386] https://cran.rstudio.com/bin/linux/ubuntu xenial-cran35/' \
+  && add-apt-repository -r 'deb [arch=amd64,i386] https://cran.rstudio.com/bin/linux/ubuntu bionic-cran40/' \
   && apt-key del E298A3A825C0D65DFD57CBB651716619E084DAB9 \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
@@ -39,8 +41,8 @@ RUN apt-get update \
  && apt-get install -y python \
  # Install gdebi-core.
  && apt-get install -y gdebi-core \
- # Download rstudio 1.2 package for ubuntu 16.04 and install it.
+ # Download rstudio 1.2 package for ubuntu 18.04 and install it.
  && apt-get install -y wget \
- && wget https://download2.rstudio.org/server/trusty/amd64/rstudio-server-1.2.5042-amd64.deb -O rstudio-server.deb \
+ && wget https://download2.rstudio.org/server/bionic/amd64/rstudio-server-1.2.5042-amd64.deb -O rstudio-server.deb \
  && gdebi -n rstudio-server.deb \
  && rm rstudio-server.deb

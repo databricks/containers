@@ -17,7 +17,7 @@ RUN virtualenv -p python3.8 --system-site-packages /databricks/python3
 RUN /databricks/python3/bin/pip install \
   six==1.15.0 \
   # downgrade ipython to maintain backwards compatibility with 7.x and 8.x runtimes
-  ipython==7.4.0 \
+  ipython==7.19.0 \
   numpy==1.19.2 \
   pandas==1.2.4 \
   pyarrow==4.0.0 \

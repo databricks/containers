@@ -2,7 +2,13 @@
 
 **NOTE:** The `latest` tags have been removed on most images in favor of runtime-specific tags, with the exception being the `databricksruntime/standard` image. If your build relied on an image tagged with `latest`, please update it to match the runtime version of the cluster.
 
+**NOTE:** The `latest` tags have been removed on most images in favor of runtime-specific tags, with the exception being the `databricksruntime/standard` image. If your build relied on an image tagged with `latest`, please update it to match the runtime version of the cluster.
+
 This repository provides Dockerfiles for use with Databricks Container Services. These Dockerfiles are meant as a reference and a starting point, enabling users to build their own custom images to suit thier specific needs.
+
+## Warning: Runtime Incompatability
+
+The Dockerfiles on the master branch are currently not maintained to be backwards compatible with every Databricks Runtime version, and are not always updated for new versions. The only guarantee of compatability is for images on [DockerHub](https://hub.docker.com/u/databricksruntime) that are tagged for specific runtime versions.
 
 ### Documentation
 - [Azure](https://docs.azuredatabricks.net/user-guide/clusters/custom-containers.html)

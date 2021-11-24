@@ -69,13 +69,15 @@ RUN mkdir -p /etc/monit/conf.d
 
 SHELL ["/bin/bash", "-c"]
 
-RUN echo $'check process ganglia-monitor with pidfile /var/run/ganglia-monitor.pid\n\
+RUN echo $'\n\
+check process ganglia-monitor with pidfile /var/run/ganglia-monitor.pid\n\
       start program = "/usr/sbin/service ganglia-monitor start"\n\
       stop program = "/usr/sbin/service ganglia-monitor stop"\n\
       if memory usage > 500 MB for 3 cycles then restart\n\
 ' > /etc/monit/conf.d/ganglia-monitor-not-active
 
-RUN echo $'check process gmetad with pidfile /var/run/gmetad.pid\n\
+RUN echo $'\n\
+check process gmetad with pidfile /var/run/gmetad.pid\n\
       start program = "/usr/sbin/service gmetad start"\n\
       stop program = "/usr/sbin/service gmetad stop"\n\
       if memory usage > 500 MB for 3 cycles then restart\n\
@@ -86,10 +88,12 @@ check process apache2 with pidfile /var/run/apache2/apache2.pid\n\
       if memory usage > 500 MB for 3 cycles then restart\n\
 ' > /etc/monit/conf.d/gmetad-not-active
 
-# add local monit shell script in the right location
-RUN mkdir -p /etc/init.d
-ADD monit /etc/init.d
-RUN chmod 775 /etc/init.d/monit
+RUN echo $'\n\
+check process spark-slave with pidfile /tmp/spark-root-org.apache.spark.deploy.worker.Worker-1.pid\n\
+      start program = "/databricks/spark/scripts/restart-workers"\n\
+      stop program = "/databricks/spark/scripts/kill_worker.sh"\n\
+' > /etc/monit/conf.d/spark-slave-not-active
+
 
 # add Ganglia configuration file indicating the DocumentRoot - Databricks checks this to enable Ganglia upon cluster startup
 RUN mkdir -p /etc/apache2/sites-enabled
@@ -97,4 +101,13 @@ ADD ganglia.conf /etc/apache2/sites-enabled
 RUN chmod 775 /etc/apache2/sites-enabled/ganglia.conf
 
 ADD gconf/* /etc/ganglia/
+RUN mkdir -p /databricks/spark/scripts/ganglia/
+ADD ganglia/* /databricks/spark/scripts/ganglia/
+#RUN /databricks/spark/scripts/ganglia/start_ganglia.sh --services ganglia-monitor --driver_ip 10.0.7.77
+RUN mkdir -p /databricks/spark/scripts/
+ADD start_spark_slave.sh /databricks/spark/scripts/start_spark_slave.sh
 
+# add local monit shell script in the right location
+RUN mkdir -p /etc/init.d
+ADD monit /etc/init.d
+RUN chmod 775 /etc/init.d/monit

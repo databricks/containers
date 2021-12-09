@@ -24,8 +24,8 @@ RUN apt-get update \
 
 # hwriterPlus is used by Databricks to display output in notebook cells
 # Rserve allows Spark to communicate with a local R process to run R code
-RUN R -e "install.packages(c('hwriterPlus'), repos='https://mran.revolutionanalytics.com/snapshot/2017-02-26')" \
- && R -e "install.packages(c('htmltools'), repos='https://cran.microsoft.com/')" \
+RUN R -e "options(repos = list(MRAN = 'https://mran.microsoft.com/snapshot/2018-08-01', CRAN = 'https://cran.microsoft.com/')); install.packages(c('hwriterPlus'))" \
+ && R -e "options(repos = list(MRAN = 'https://mran.microsoft.com/snapshot/2018-08-01', CRAN = 'https://cran.microsoft.com/')); install.packages(c('htmltools'))" \
  && R -e "install.packages('Rserve', repos='http://rforge.net/')"
 
 # Additional instructions to setup rstudio. If you dont need rstudio, you can 
@@ -41,8 +41,8 @@ RUN apt-get update \
  && apt-get install -y python \
  # Install gdebi-core.
  && apt-get install -y gdebi-core \
- # Download rstudio 1.2 package for ubuntu 18.04 and install it.
+ # Download rstudio 1.4 package for ubuntu 18.04 and install it.
  && apt-get install -y wget \
- && wget https://download2.rstudio.org/server/bionic/amd64/rstudio-server-1.2.5042-amd64.deb -O rstudio-server.deb \
- && gdebi -n rstudio-server.deb \
- && rm rstudio-server.deb
+ && sudo apt-get install -y gdebi-core \
+ && wget https://download2.rstudio.org/server/bionic/amd64/rstudio-server-1.4.1106-amd64.deb \
+ && sudo gdebi rstudio-server-1.4.1106-amd64.deb

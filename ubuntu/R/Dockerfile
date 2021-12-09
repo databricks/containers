@@ -43,6 +43,6 @@ RUN apt-get update \
  && apt-get install -y gdebi-core \
  # Download rstudio 1.4 package for ubuntu 18.04 and install it.
  && apt-get install -y wget \
- && sudo apt-get install -y gdebi-core \
+ && apt-get install -y gdebi-core \
  && wget https://download2.rstudio.org/server/bionic/amd64/rstudio-server-1.4.1106-amd64.deb \
- && sudo gdebi rstudio-server-1.4.1106-amd64.deb
+ && gdebi -n rstudio-server-1.4.1106-amd64.deb && rstudio-server version

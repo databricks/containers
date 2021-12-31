@@ -18,8 +18,8 @@ RUN dnf clean all \
 # Versions are intended to reflect DBR 9.0
 RUN $python_dir/pip install \
   six==1.15.0 \
-  # downgrade ipython to maintain backwards compatibility with 7.x and 8.x runtimes
-  ipython==7.4.0 \
+  # ensure minimum ipython version for Python autocomplete with jedi 0.17.x
+  ipython==7.19.0 \
   numpy==1.19.2 \
   pandas==1.2.4 \
   pyarrow==4.0.0 \

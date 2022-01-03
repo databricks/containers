@@ -1,4 +1,4 @@
-FROM centos:centos8
+FROM quay.io/centos/centos:stream8
 
 # Import keys to suppress warnings about GPG-keys
 RUN rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial \

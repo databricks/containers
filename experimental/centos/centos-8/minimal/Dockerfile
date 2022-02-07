@@ -10,7 +10,7 @@ RUN rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial \
 RUN dnf install -y \
     java-1.8.0-openjdk \
     sudo \
-    procps \
+    procps iproute \
     && update-ca-trust \
     && update-crypto-policies --set LEGACY
 

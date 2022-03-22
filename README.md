@@ -4,7 +4,11 @@
 
 This repository provides Dockerfiles for use with Databricks Container Services. These Dockerfiles are meant as a reference and a starting point, enabling users to build their own custom images to suit thier specific needs.
 
-### Documentation
+## Warning: Runtime Incompatibility
+
+The Dockerfiles on the master branch are currently not maintained to be backwards compatible with every Databricks Runtime version, and are not always updated for new versions.
+
+## Documentation
 - [Azure](https://docs.azuredatabricks.net/user-guide/clusters/custom-containers.html)
 - [AWS](https://docs.databricks.com/user-guide/clusters/custom-containers.html)
 

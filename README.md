@@ -6,7 +6,7 @@ This repository provides Dockerfiles for use with Databricks Container Services.
 
 ## Warning: Runtime Incompatibility
 
-The Dockerfiles on the master branch are currently not maintained to be backwards compatible with every Databricks Runtime version, and are not always updated for new versions. The only guarantee of compatibility is for images on [DockerHub](https://hub.docker.com/u/databricksruntime) that are tagged for specific runtime versions.
+The Dockerfiles on the master branch are currently not maintained to be backwards compatible with every Databricks Runtime version, and are not always updated for new versions.
 
 ## Documentation
 - [Azure](https://docs.azuredatabricks.net/user-guide/clusters/custom-containers.html)

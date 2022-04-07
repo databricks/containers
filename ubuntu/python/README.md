@@ -1,6 +1,6 @@
 # Python Container
 
-**Disclaimer** This image is not regularly patched for security updates. It is the user's responsibility to regularly patch and rebuild the images. If concerned, you can always opt to build the containers using your own Dockerfile.
+**Disclaimer** This image is not regularly patched for security updates. It is the user's responsibility to regularly patch and rebuild the images. If this is a concern, please set automation to regularly rebuild your DCS base images
 
 This image adds a working Python environment to `databricksruntime/minimal` using virtualenv, and is supported for Databricks Runtime 7.3 LTS and above.
 For a conda-based Python environment, an alternative image can be found [here](https://github.com/databricks/containers/tree/master/ubuntu/python-conda).

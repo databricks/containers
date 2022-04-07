@@ -1,6 +1,6 @@
 # Minimal Container
 
-**Disclaimer** This image is not regularly patched for security updates. It is the user's responsibility to regularly patch and rebuild the images. If concerned, you can always opt to build the containers using your own Dockerfile.
+**Disclaimer** This image is not regularly patched for security updates. It is the user's responsibility to regularly patch and rebuild the images. If this is a concern, please set automation to regularly rebuild your DCS base images
 
 **Note:** This image specifically for Databricks Runtime 7.x and above; see the [latest runtime releases](https://docs.databricks.com/release-notes/runtime/releases.html#databricks-runtime-releases) for reference. 
 

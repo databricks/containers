@@ -1,5 +1,7 @@
 # SSH Container
 
+**Disclaimer** This image is not regularly patched for security updates. It is the user's responsibility to regularly patch and rebuild the images. If concerned, you can always opt to build the containers using your own Dockerfile.
+
 This image is an example of how to install and setup SSH for your Docker containers.
 It is as simple as:
 1. Installing `openssh-server`

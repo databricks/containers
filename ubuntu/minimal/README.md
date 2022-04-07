@@ -1,5 +1,7 @@
 # Minimal Container
 
+**Disclaimer** This image is not regularly patched for security updates. It is the user's responsibility to regularly patch and rebuild the images. If concerned, you can always opt to build the containers using your own Dockerfile.
+
 **Note:** This image specifically for Databricks Runtime 7.x and above; see the [latest runtime releases](https://docs.databricks.com/release-notes/runtime/releases.html#databricks-runtime-releases) for reference. 
 
 This image is the smallest example of what is necessary to launch a cluster in Databricks.

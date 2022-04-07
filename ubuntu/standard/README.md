@@ -1,5 +1,7 @@
 # Standard Container
 
+**Disclaimer** This image is not regularly patched for security updates. It is the user's responsibility to regularly patch and rebuild the images. If concerned, you can always opt to build the containers using your own Dockerfile.
+
 This image is intended to have feature parity with the current Databricks Runtime.
 Support for features will be added over time.
 

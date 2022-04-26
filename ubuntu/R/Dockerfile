@@ -7,7 +7,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update \
   && apt-get install -y \
     python3.8 \
-    virtualenv \
+    virtualenv
 
 # We add RStudio's debian source to install the latest r-base version (4.1)
 # We are using the more secure long form of pgp key ID of marutter@gmail.com

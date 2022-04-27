@@ -3,6 +3,12 @@ FROM databricksruntime/minimal:10.4-LTS
 # Suppress interactive configuration prompts
 ENV DEBIAN_FRONTEND=noninteractive
 
+# Install python 3.8 and virtualenv for Spark and Notebooks
+RUN apt-get update \
+  && apt-get install -y \
+    python3.8 \
+    virtualenv
+
 # We add RStudio's debian source to install the latest r-base version (4.1)
 # We are using the more secure long form of pgp key ID of marutter@gmail.com
 # based on these instructions (avoiding firewall issue for some users):
@@ -38,8 +44,6 @@ COPY Rprofile.site /usr/lib/R/etc/Rprofile.site
 
 # Rstudio installation.
 RUN apt-get update \
- # Installation of rstudio in databricks needs /usr/bin/python.
- && apt-get install -y python \
  # Install gdebi-core.
  && apt-get install -y gdebi-core \
  # Download rstudio 1.4 package for ubuntu 18.04 and install it.
@@ -48,3 +52,5 @@ RUN apt-get update \
  && wget https://download2.rstudio.org/server/bionic/amd64/rstudio-server-2022.02.1-461-amd64.deb \
  && gdebi -n rstudio-server-2022.02.1-461-amd64.deb && rstudio-server version
 
+# Initialize the default environment that Spark and notebooks will use
+RUN virtualenv -p python3.8 --system-site-packages /databricks/python3

@@ -3,7 +3,7 @@ FROM databricksruntime/minimal:10.4-LTS
 # Suppress interactive configuration prompts
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Installs python 3.8 and virtualenv for Spark and Notebooks
+# Install python 3.8 and virtualenv for Spark and Notebooks
 RUN apt-get update \
   && apt-get install -y \
     python3.8 \

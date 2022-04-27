@@ -14,7 +14,7 @@ RUN apt-get update && apt-get install -q -y --force-yes --fix-missing --ignore-m
         ganglia-monitor \
         ganglia-webfrontend \
         ganglia-monitor-python \
-        python-pip \
+        python3-pip \
         rsync \
         cron \
     && apt-get clean \

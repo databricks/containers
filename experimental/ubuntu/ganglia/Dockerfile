@@ -14,7 +14,7 @@ RUN apt-get update && apt-get install -q -y --force-yes --fix-missing --ignore-m
         ganglia-monitor \
         ganglia-webfrontend \
         ganglia-monitor-python \
-        python-pip \
+        python3-pip \
         rsync \
         cron \
     && apt-get clean \
@@ -61,7 +61,6 @@ RUN chmod 775 /etc/apache2/sites-enabled/ganglia.conf
 
 ADD gconf/* /etc/ganglia/
 RUN mkdir -p /databricks/spark/scripts/ganglia/
-ADD ganglia/* /databricks/spark/scripts/ganglia/
 RUN mkdir -p /databricks/spark/scripts/
 ADD start_spark_slave.sh /databricks/spark/scripts/start_spark_slave.sh
 

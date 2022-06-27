@@ -1,4 +1,4 @@
-FROM kingjatu/databricks:python
+FROM kingjatu/databricks-centos-8-python:latest
 
 # Fuse:
 RUN dnf install -y \

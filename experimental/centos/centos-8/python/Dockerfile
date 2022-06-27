@@ -1,4 +1,4 @@
-FROM kingjatu/databricks:minimal
+FROM kingjatu/databricks-centos-8-minimal:latest
 
 # Python:
 ARG python_dir=/databricks/python3/bin

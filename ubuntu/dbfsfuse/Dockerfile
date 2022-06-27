@@ -1,4 +1,4 @@
-FROM databricksruntime/python:9.x
+FROM databricksruntime/python:10.4-LTS
 
 RUN apt-get update \
   && apt-get install -y fuse \

@@ -1,4 +1,4 @@
-FROM databricksruntime/dbfsfuse:9.x
+FROM databricksruntime/dbfsfuse:10.4-LTS
 
 RUN apt-get update \
   && apt-get install -y openssh-server \

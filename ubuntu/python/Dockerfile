@@ -16,8 +16,9 @@ RUN virtualenv -p python3.8 --system-site-packages /databricks/python3
 # Versions are intended to reflect DBR 9.0
 RUN /databricks/python3/bin/pip install \
   six==1.15.0 \
+  jedi==0.17.2 \
   # ensure minimum ipython version for Python autocomplete with jedi 0.17.x
-  ipython==7.19.0 \
+  ipython==7.22.0 \
   numpy==1.19.2 \
   pandas==1.2.4 \
   pyarrow==4.0.0 \

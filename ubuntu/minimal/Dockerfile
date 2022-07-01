@@ -1,6 +1,7 @@
 FROM ubuntu:20.04
 
 RUN apt-get update \
+  && apt-get -y upgrade \
   && apt-get install --yes \
     openjdk-8-jdk \
     iproute2 \

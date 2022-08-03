@@ -1,4 +1,4 @@
-FROM databricksruntime/minimal:9.x
+FROM databricksruntime/minimal:9.1-LTS
 
 # Installs python 3.8 and virtualenv for Spark and Notebooks
 RUN apt-get update \

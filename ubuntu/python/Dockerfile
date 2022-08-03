@@ -1,4 +1,4 @@
-FROM databricksruntime/minimal:10.4-LTS
+FROM databricksruntime/minimal:experimental
 
 # Installs python 3.8 and virtualenv for Spark and Notebooks
 RUN apt-get update \
@@ -23,7 +23,8 @@ RUN /databricks/python3/bin/pip install \
   pandas==1.2.4 \
   pyarrow==4.0.0 \
   matplotlib==3.4.2 \
-  jinja2==2.11.3
+  jinja2==2.11.3 \
+  ipykernel==6.21.1
 
 # Specifies where Spark will look for the python process
 ENV PYSPARK_PYTHON=/databricks/python3/bin/python3

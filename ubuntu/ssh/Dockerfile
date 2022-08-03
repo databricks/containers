@@ -1,4 +1,4 @@
-FROM databricksruntime/minimal:10.4-LTS
+FROM databricksruntime/minimal:experimental
 
 RUN apt-get update \
   && apt-get install --yes openssh-server \

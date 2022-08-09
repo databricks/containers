@@ -1,23 +1,33 @@
 FROM databricksruntime/minimal:9.1-LTS
 
+# These are the versions compatible for DBR 9.x and 10.x
+ARG python_version="3.8"
+ARG pip_version="21.0.1"
+ARG setuptools_version="52.0.0"
+ARG wheel_version="0.36.2"
+ARG virtualenv_version="20.4.1"
+
 # Installs python 3.8 and virtualenv for Spark and Notebooks
 RUN apt-get update \
-  && apt-get install -y \
-    python3.8 \
-    virtualenv \
-  && apt-get clean \
-  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+  && apt-get install curl software-properties-common -y python${python_version} python${python_version}-dev python${python_version}-distutils \
+  && curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py \
+  && /usr/bin/python${python_version} get-pip.py pip==${pip_version} setuptools==${setuptools_version} wheel==${wheel_version} \
+  && rm get-pip.py
+
+RUN /usr/local/bin/pip${python_version} install --no-cache-dir virtualenv==${virtualenv_version} \
+  && sed -i -r 's/^(PERIODIC_UPDATE_ON_BY_DEFAULT) = True$/\1 = False/' /usr/local/lib/python${python_version}/dist-packages/virtualenv/seed/embed/base_embed.py \
+  && /usr/local/bin/pip${python_version} download pip==${pip_version} --dest \
+  /usr/local/lib/python${python_version}/dist-packages/virtualenv_support/
 
 # Initialize the default environment that Spark and notebooks will use
-RUN virtualenv -p python3.8 --system-site-packages /databricks/python3
+RUN virtualenv --python=python${python_version} --system-site-packages /databricks/python3 --no-download  --no-setuptools
 
 # These python libraries are used by Databricks notebooks and the Python REPL
 # You do not need to install pyspark - it is injected when the cluster is launched
-# Versions are intended to reflect DBR 9.0
+# Versions are intended to reflect DBR 9.1 LTS: https://docs.databricks.com/release-notes/runtime/9.1.html#system-environment
 RUN /databricks/python3/bin/pip install \
   six==1.15.0 \
-  # downgrade ipython to maintain backwards compatibility with 7.x and 8.x runtimes
-  ipython==7.4.0 \
+  ipython==7.22.0 \
   numpy==1.19.2 \
   pandas==1.2.4 \
   pyarrow==4.0.0 \

@@ -1,6 +1,6 @@
 FROM databricksruntime/minimal:10.4-LTS
 
-# These are the versions compatible for DBR 9.x and 10.x
+# These are the versions compatible for 10.x
 ARG python_version="3.8"
 ARG pip_version="21.0.1"
 ARG setuptools_version="52.0.0"

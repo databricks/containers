@@ -13,10 +13,10 @@ RUN python3.9 -m venv --system-site-packages /databricks/python3
 # Versions are intended to reflect DBR 9.0
 RUN $python_dir/pip install --upgrade pip
 RUN $python_dir/pip install \
-  six==1.15.0 \
+  six==1.16.0 \
   # ensure minimum ipython version for Python autocomplete with jedi 0.17.x
-  ipython==7.19.0 \
-  numpy==1.19.2
+  ipython==7.32.0 \
+  numpy==1.20.3
 
 
 
@@ -38,9 +38,9 @@ COPY --from=compile-image /databricks/python3 /databricks/python3
 RUN $python_dir/pip install \
   virtualenv \
   ipykernel \
-  pandas==1.2.4 \
+  pandas==1.3.4 \
   pyarrow==4.0.0 \
-  matplotlib==3.4.2 \
+  matplotlib==3.4.3 \
   jinja2==2.11.3
 
 

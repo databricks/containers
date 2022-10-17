@@ -15,3 +15,9 @@ RUN dnf install -y \
 # Clean-up:
 RUN dnf clean all \
       && rm -rf /tmp/* /var/tmp/*
+
+# Runtime version:
+# Databricks has, but it needs to be a proper dotted version.
+#ENV DATABRICKS_RUNTIME_VERSION=
+ENV DATABRICKS_CUSTOM_RUNTIME_VERSION="Base 11.2 / CentOS9-Stream"
+

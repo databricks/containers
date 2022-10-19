@@ -1,4 +1,4 @@
-FROM kingjatu/databricks-centos-9-minimal:latest AS compile-image
+FROM kingjatu/databricks-centos-9-base:latest AS compile-image
 
 # Python:
 ARG python_dir=/databricks/python3/bin
@@ -20,7 +20,7 @@ RUN $python_dir/pip install \
 
 
 
-FROM kingjatu/databricks-centos-9-minimal:latest AS build-image
+FROM kingjatu/databricks-centos-9-base:latest AS build-image
 
 # Python:
 ARG python_dir=/databricks/python3/bin
@@ -46,3 +46,4 @@ RUN $python_dir/pip install \
 
 # Specifies where Spark will look for the python process
 ENV PYSPARK_PYTHON=/databricks/python3/bin/python3
+

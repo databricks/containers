@@ -1,4 +1,4 @@
-FROM kingjatu/databricks-centos-9-minimal:latest
+FROM kingjatu/databricks-centos-9-r:latest
 
 # Fuse:
 RUN dnf install -y \

@@ -39,9 +39,10 @@ RUN $python_dir/pip install \
   virtualenv \
   ipykernel \
   pandas==1.3.4 \
-  pyarrow==4.0.0 \
+  pyarrow==9.0.0 \
   matplotlib==3.4.3 \
-  jinja2==2.11.3
+  jinja2==2.11.3 \
+  databricks-sql-connector==2.1.0
 
 
 # Specifies where Spark will look for the python process

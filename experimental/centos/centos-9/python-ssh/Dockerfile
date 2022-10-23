@@ -8,6 +8,12 @@ RUN dnf install -y \
 RUN dnf clean all \
       && rm -rf /tmp/* /var/tmp/*
 
+# SSHd setup
+CMD ["/usr/libexec/openssh/sshd-keygen", "ecdsa"]
+CMD ["/usr/libexec/openssh/sshd-keygen", "rsa"]
+CMD ["/usr/libexec/openssh/sshd-keygen", "ed25519"]
+CMD ["/sbin/sshd", "-p", "2200"]
+
 # Add new user: bricks
 # Warning: the created user has root permissions inside the container
 # Warning: you still need to start the ssh process with `sudo service ssh start`

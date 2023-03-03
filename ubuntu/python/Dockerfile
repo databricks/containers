@@ -1,4 +1,4 @@
-FROM databricksruntime/minimal:experimental
+FROM databricksruntime/minimal:12.2-LTS
 
 # These are the versions compatible for DBR 11.x
 ARG python_version="3.9"

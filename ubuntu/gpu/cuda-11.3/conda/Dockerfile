@@ -1,0 +1,13 @@
+FROM docker.io/rithwikdb/gpu-base:cuda11.3
+
+ENV PATH /databricks/conda/bin:$PATH
+
+RUN wget -q https://repo.continuum.io/miniconda/Miniconda3-py39_23.3.1-0-Linux-aarch64.sh -O miniconda.sh && \
+    bash miniconda.sh -b -p /databricks/conda && \
+    rm miniconda.sh && \
+    # Source conda.sh for all login and interactive shells.
+    ln -s /databricks/conda/etc/profile.d/conda.sh /etc/profile.d/conda.sh && \
+    echo ". /etc/profile.d/conda.sh" >> ~/.bashrc && \
+    # Set always_yes for non-interactive shells.
+    conda config --system --set always_yes True && \
+    conda clean --all

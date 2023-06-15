@@ -1,0 +1,14 @@
+name: pytorch
+channels:
+  - defaults
+dependencies:
+- numpy=1.21.5  # required by PySpark MLlib
+- pandas=1.4.2  # required by PySpark
+- pip=21.2.4
+- python=3.9.5
+- six=1.16.0  # required by PySpark
+- traitlets=5.1.1 # required by PySpark
+- pip:
+  - pyarrow==7.0.0  # required by PySpark
+  - torch==1.13.1
+  - torchvision==0.14.1

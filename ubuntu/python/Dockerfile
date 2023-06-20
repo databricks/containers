@@ -1,13 +1,13 @@
 FROM databricksruntime/minimal:experimental
 
-# These are the versions compatible for DBR 11.x
-ARG python_version="3.9"
-ARG pip_version="21.2.4"
+# These are the versions compatible for DBR 13.x
+ARG python_version="3.10"
+ARG pip_version="22.2.2"
 ARG setuptools_version="58.0.4"
 ARG wheel_version="0.37.0"
-ARG virtualenv_version="20.8.0"
+ARG virtualenv_version="20.16.3"
 
-# Installs python 3.8 and virtualenv for Spark and Notebooks
+# Installs python 3.10 and virtualenv for Spark and Notebooks
 RUN apt-get update \
   && apt-get install curl software-properties-common -y python${python_version} python${python_version}-dev python${python_version}-distutils \
   && curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py \
@@ -27,15 +27,15 @@ RUN virtualenv --python=python${python_version} --system-site-packages /databric
 # Versions are intended to reflect latest DBR: https://docs.databricks.com/release-notes/runtime/11.1.html#system-environment
 RUN /databricks/python3/bin/pip install \
   six==1.16.0 \
-  jedi==0.18.0 \
+  jedi==0.18.1 \
   # ensure minimum ipython version for Python autocomplete with jedi 0.17.x
-  ipython==7.32.0 \
-  numpy==1.20.3 \
-  pandas==1.3.4 \
-  pyarrow==7.0.0 \
-  matplotlib==3.4.3 \
+  ipython==8.10.0 \
+  numpy==1.21.5 \
+  pandas==1.4.4 \
+  pyarrow==8.0.0 \
+  matplotlib==3.5.2 \
   jinja2==2.11.3 \
-  ipykernel==6.12.1
+  ipykernel==6.17.1
 
 # Specifies where Spark will look for the python process
 ENV PYSPARK_PYTHON=/databricks/python3/bin/python3

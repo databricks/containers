@@ -9,4 +9,5 @@ if (grepl("rstudio", system(paste0("cat /proc/", Sys.getpid(), "/cmdline"), inte
   .Last <- function() {
     system(paste0('wget -qO - \'http://localhost:6061/?type="com.databricks.backend.common.rpc.DriverMessages$StopRStudioSparkRBackend"\' --post-data=\'{"@class":"com.databricks.backend.common.rpc.DriverMessages$StopRStudioSparkRBackend", "port": "', Sys.getenv("EXISTING_SPARKR_BACKEND_PORT") , '"}\' --no-check-certificate'), intern = TRUE)
   }
+  Sys.setenv("RETICULATE_PYTHON" = "/databricks/python3/bin/python3")
 }

@@ -3,8 +3,7 @@ FROM nvidia/cuda:11.0.3-cudnn8-runtime-ubuntu18.04
 
 # Disable NVIDIA repos to prevent accidental upgrades.
 RUN cd /etc/apt/sources.list.d && \
-    mv cuda.list cuda.list.disabled && \
-    mv nvidia-ml.list nvidia-ml.list.disabled
+    mv cuda.list cuda.list.disabled
 
 # See https://github.com/databricks/containers/blob/master/ubuntu/minimal/Dockerfile
 RUN apt-get update && \

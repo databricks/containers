@@ -1,4 +1,4 @@
-FROM databricksruntime/gpu-base:cuda11
+FROM databricksruntime/gpu-base:cuda11.8
 
 ENV PATH /databricks/conda/bin:$PATH
 

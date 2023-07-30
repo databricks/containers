@@ -1,27 +1,23 @@
 # GPU Containers
 
-There are two variations of GPU containers that can be used depending upon the CUDA version you wish to use:
-[`cuda-10.1`](cuda-10.1) contains the layers which install CUDA 10.1
-[`cuda-11.0`](cuda-11.0) contains the layers which install CUDA 11.0
+**WARNING**: Using conda in DCS images is no longer supported since the Databricks Runtime 9.x. We highly recommend users to extend [`cuda-11.8`](cuda-11.8) examples.
+ We no longer support [`cuda-10.1`](cuda-10.1) and [`cuda-11.0`](cuda-11.0) complatibility with latest databricks runtime.
+ 
+There are three variations of GPU containers that can be used depending upon the CUDA version you wish to use:
+[`cuda-11.8`](cuda-11.8) contains the layers which install CUDA 11.8
+[`cuda-11.0`](cuda-11.0)(*Deprecated*) contains the layers which install CUDA 11.0
+[`cuda-10.1`](cuda-10.1)(*Deprecated*) contains the layers which install CUDA 10.1
 
+ 
 Example base layers to build your own container:
 * [`gpu-base`](cuda-11.0/base) extends the official [NVIDIA CUDA container](https://hub.docker.com/r/nvidia/cuda) with Databricks Container Service minimal requirements.
-* [`gpu-conda`](cuda-11.0/conda) extends `gpu-base` by installing [Miniconda](https://docs.conda.io/en/latest/miniconda.html).
+* [`gpu-venv`](cuda-11.8/venv) extends `gpu-base` by installing cuda dependencies and commmon Databricks python dependencies in venv.
 
 Example containers for common GPU use cases:
-* [`gpu-tensorflow`](cuda-11.0/tensorflow) extends `gpu-conda` by creating a conda environment that contains [TensorFlow](https://www.tensorflow.org/).
-* [`gpu-pytorch`](cuda-11.0/pytorch) extends `gpu-conda` by creating a conda environment that contains [PyTorch](https://pytorch.org/).
-* [`gpu-rapids`](cuda-11.0/rapids) extends `gpu-conda` by creating a conda environment that contains [RAPIDS](https://rapids.ai/).
-  * RAPIDS requires NVIDIA Pascal GPU or better.
-    If you receive a `cudaErrorNoKernelImageForDevice: no kernel image is available for execution on the device` error,
-    you likely are using GPUs that are incompatible, e.g., K80 on EC2 P2 instances.
-    You should try switching to newer instance types.
-  * The Dockerfile provides an example to create the root conda environment from an environment spec file, which does not require dependency resolution.
+* [`gpu-tensorflow`](cuda-11.0/tensorflow) extends `gpu-venv` by creating a conda environment that contains [TensorFlow](https://www.tensorflow.org/).
+* [`gpu-pytorch`](cuda-11.0/pytorch) extends `gpu-venv` by creating a conda environment that contains [PyTorch](https://pytorch.org/).
 
 ## Launching GPU Clusters
-
-* When launching a GPU cluster with a custom container with conda, we recommend setting the Spark conf `spark.databricks.libraryIsolation.enabled false`. This disables notebook-scoped libraries, which do not support conda. The example images use conda for environment creation.
-
 * After the cluster is ready, you can run `%sh nvidia-smi` to view GPU devices and confirm that they are available.
 
 ## Creating Custom Dockerfiles:

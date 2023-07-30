@@ -1,10 +1,6 @@
-FROM databricksruntime/gpu-conda:cuda11
+FROM databricksruntime/gpu-venv:cuda11.8 
 
-COPY tensorflow.yml /tmp/env.yml
-
-RUN conda env create --file /tmp/env.yml && \
-    rm -f /tmp/env.yml && \
-    rm -rf $HOME/.cache/pip/*
-
-# Set an environment variable used by Databricks to decide which conda environment to activate by default.
-ENV DEFAULT_DATABRICKS_ROOT_CONDA_ENV=tensorflow
+# install the tensorflow versions
+RUN /databricks/python3/bin/pip install \
+    tensorflow==2.11.0 \
+    tensorboard==2.11.0

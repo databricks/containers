@@ -1,7 +1,7 @@
 # GPU Containers
 
-**WARNING**: Using conda in DCS images is no longer supported since the Databricks Runtime 9.x. We highly recommend users to extend [`cuda-11.8`](cuda-11.8) examples.
- We no longer support [`cuda-10.1`](cuda-10.1) and [`cuda-11.0`](cuda-11.0) complatibility with latest databricks runtime.
+**WARNING**: Using conda in DCS images is no longer supported starting Databricks Runtime 9.0. We highly recommend users to extend [`cuda-11.8`](cuda-11.8) examples.
+ We no longer support [`cuda-10.1`](cuda-10.1) and [`cuda-11.0`](cuda-11.0) compatibility with latest databricks runtime.
  
 There are three variations of GPU containers that can be used depending upon the CUDA version you wish to use:
 [`cuda-11.8`](cuda-11.8) contains the layers which install CUDA 11.8
@@ -14,8 +14,8 @@ Example base layers to build your own container:
 * [`gpu-venv`](cuda-11.8/venv) extends `gpu-base` by installing cuda dependencies and commmon Databricks python dependencies in venv.
 
 Example containers for common GPU use cases:
-* [`gpu-tensorflow`](cuda-11.0/tensorflow) extends `gpu-venv` by creating a conda environment that contains [TensorFlow](https://www.tensorflow.org/).
-* [`gpu-pytorch`](cuda-11.0/pytorch) extends `gpu-venv` by creating a conda environment that contains [PyTorch](https://pytorch.org/).
+* [`gpu-tensorflow`](cuda-11.8/tensorflow) extends `gpu-venv` by creating a conda environment that contains [TensorFlow](https://www.tensorflow.org/).
+* [`gpu-pytorch`](cuda-11.8/pytorch) extends `gpu-venv` by creating a conda environment that contains [PyTorch](https://pytorch.org/).
 
 ## Launching GPU Clusters
 * After the cluster is ready, you can run `%sh nvidia-smi` to view GPU devices and confirm that they are available.

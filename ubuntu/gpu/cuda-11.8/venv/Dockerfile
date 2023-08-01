@@ -31,7 +31,7 @@ RUN virtualenv --python=/usr/bin/python3.10 /databricks/python3 --system-site-pa
 
 # These python libraries are used by Databricks notebooks and the Python REPL
 # You do not need to install pyspark - it is injected when the cluster is launched
-# Versions are intended to reflect DBR 14.x: https://docs.databricks.com/release-notes/runtime/releases.html
+# Versions are intended to reflect DBR 14.0: https://docs.databricks.com/release-notes/runtime/releases.html
 RUN /databricks/python3/bin/pip install \
   six==1.16.0 \
   jedi==0.18.1 \
@@ -50,7 +50,7 @@ RUN /databricks/python3/bin/pip install \
 
 
 
-# Specifies where Spark will look for the python process
+# Specifies where Spark will look for the python binary
 ENV PYSPARK_PYTHON=/databricks/python3/bin/python3
 
 # Use pip cache purge to cleanup the cache safely

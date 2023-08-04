@@ -35,7 +35,10 @@ RUN /databricks/python3/bin/pip install \
   pyarrow==8.0.0 \
   matplotlib==3.5.2 \
   jinja2==2.11.3 \
-  ipykernel==6.17.1
+  ipykernel==6.17.1 \
+  grpcio==1.48.1 \
+  grpcio-status==1.48.1 \
+  databricks-sdk==0.1.6
 
 # Specifies where Spark will look for the python process
 ENV PYSPARK_PYTHON=/databricks/python3/bin/python3

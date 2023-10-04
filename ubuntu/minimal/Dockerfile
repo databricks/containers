@@ -9,6 +9,7 @@ RUN apt-get update \
     sudo \
     coreutils \
     procps \
+    acl \
   && /var/lib/dpkg/info/ca-certificates-java.postinst configure \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*

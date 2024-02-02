@@ -1,4 +1,4 @@
-FROM databricksruntime/python:experimental
+FROM databricksruntime/python:14.3-LTS
 
 RUN apt-get update \
   && apt-get install -y fuse \

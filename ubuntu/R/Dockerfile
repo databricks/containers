@@ -1,4 +1,4 @@
-FROM databricksruntime/minimal:experimental
+FROM databricksruntime/minimal:12.2-LTS
 
 # Suppress interactive configuration prompts
 ENV DEBIAN_FRONTEND=noninteractive

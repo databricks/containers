@@ -25,7 +25,7 @@ RUN apt-get update \
 # hwriterPlus is used by Databricks to display output in notebook cells
 # hwriterPlus is removed for newer version of R, so we hardcode the dependency to archived version
 # Rserve allows Spark to communicate with a local R process to run R code
-RUN R -e "options(repos = list(MRAN = 'https://mran.microsoft.com/snapshot/2022-04-08', CRAN = 'https://cran.microsoft.com/')); install.packages(c('hwriter', 'TeachingDemos', 'htmltools'))" \
+RUN R -e "options(repos = list(CRAN = 'https://packagemanager.posit.co/cran/2022-02-24')); install.packages(c('hwriter', 'TeachingDemos', 'htmltools'))" \
  && R -e "install.packages('https://cran.r-project.org/src/contrib/Archive/hwriterPlus/hwriterPlus_1.0-3.tar.gz', repos=NULL, type='source')" \
  && R -e "install.packages('Rserve', repos='http://rforge.net/')"
 

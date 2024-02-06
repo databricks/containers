@@ -1,4 +1,4 @@
-FROM databricksruntime/minimal:14.3-LTS
+FROM databricksruntime/minimal:experimental
 
 # These are the versions compatible for DBR 13.x
 ARG python_version="3.10"

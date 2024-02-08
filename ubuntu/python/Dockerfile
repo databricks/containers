@@ -1,11 +1,10 @@
 FROM databricksruntime/minimal:experimental
 
-# These are the versions compatible for DBR 13.x
 ARG python_version="3.10"
-ARG pip_version="22.2.2"
-ARG setuptools_version="58.0.4"
-ARG wheel_version="0.37.0"
-ARG virtualenv_version="20.16.3"
+ARG pip_version="22.3.1"
+ARG setuptools_version="65.6.3"
+ARG wheel_version="0.38.4"
+ARG virtualenv_version="20.16.7"
 
 # Installs python 3.10 and virtualenv for Spark and Notebooks
 RUN apt-get update \
@@ -24,21 +23,11 @@ RUN virtualenv --python=python${python_version} --system-site-packages /databric
 
 # These python libraries are used by Databricks notebooks and the Python REPL
 # You do not need to install pyspark - it is injected when the cluster is launched
-# Versions are intended to reflect latest DBR: https://docs.databricks.com/release-notes/runtime/11.1.html#system-environment
-RUN /databricks/python3/bin/pip install \
-  six==1.16.0 \
-  jedi==0.18.1 \
-  # ensure minimum ipython version for Python autocomplete with jedi 0.17.x
-  ipython==8.10.0 \
-  numpy==1.21.5 \
-  pandas==1.4.4 \
-  pyarrow==8.0.0 \
-  matplotlib==3.5.2 \
-  jinja2==2.11.3 \
-  ipykernel==6.17.1 \
-  grpcio==1.48.1 \
-  grpcio-status==1.48.1 \
-  databricks-sdk==0.1.6
+# Versions are intended to reflect latest DBR: https://docs.databricks.com/release-notes/runtime/13.3.html#system-environment
+
+COPY requirements.txt /databricks/.
+
+RUN /databricks/python3/bin/pip install -r /databricks/requirements.txt
 
 # Specifies where Spark will look for the python process
 ENV PYSPARK_PYTHON=/databricks/python3/bin/python3

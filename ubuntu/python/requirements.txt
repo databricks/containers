@@ -1,0 +1,12 @@
+# required packages
+
+six==1.16.0
+jedi==0.18.1
+ipython==8.14.0
+numpy==1.23.5
+pandas==1.5.3
+pyarrow==8.0.0
+matplotlib==3.7.0
+jinja2==3.1.2
+ipykernel==6.25.0
+

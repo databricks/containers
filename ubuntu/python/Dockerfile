@@ -24,18 +24,11 @@ RUN virtualenv --python=python${python_version} --system-site-packages /databric
 
 # These python libraries are used by Databricks notebooks and the Python REPL
 # You do not need to install pyspark - it is injected when the cluster is launched
-# Versions are intended to reflect latest DBR: https://docs.databricks.com/release-notes/runtime/11.1.html#system-environment
-RUN /databricks/python3/bin/pip install \
-  six==1.16.0 \
-  jedi==0.18.0 \
-  # ensure minimum ipython version for Python autocomplete with jedi 0.17.x
-  ipython==7.32.0 \
-  numpy==1.20.3 \
-  pandas==1.3.4 \
-  pyarrow==7.0.0 \
-  matplotlib==3.4.3 \
-  jinja2==2.11.3 \
-  ipykernel==6.12.1
+# Versions are intended to reflect latest DBR: https://docs.databricks.com/release-notes/runtime/12.2.html#system-environment
+
+COPY requirements.txt /databricks/.
+
+RUN /databricks/python3/bin/pip install -r /databricks/requirements.txt
 
 # Specifies where Spark will look for the python process
 ENV PYSPARK_PYTHON=/databricks/python3/bin/python3

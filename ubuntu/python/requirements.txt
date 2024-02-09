@@ -46,5 +46,5 @@ urllib3==1.26.9
 wcwidth==0.2.5
 
 # overwrite
-setuptools_version="61.2.0"
+setuptools_version==61.2.0
 

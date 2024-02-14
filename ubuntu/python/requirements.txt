@@ -12,39 +12,30 @@ ipykernel==6.17.1
 
 # brought in by above packages, need to pin version
 asttokens==2.2.1
-certifi==2022.9.14
-chardet==4.0.0
-charset-normalizer==2.0.4
+cryptography==37.0.1
 cycler==0.11.0
 debugpy==1.6.0
 distlib==0.3.7
 executing==1.2.0
 filelock==3.12.2
 fonttools==4.25.0
-idna==3.3
-jupyter-client==7.3.4
 jupyter_core==4.11.2
 kiwisolver==1.4.2
 MarkupSafe==2.0.1
-matplotlib-inline==0.1.6
 nest-asyncio==1.5.5
 packaging==21.3
 pexpect==4.8.0
-pillow==9.2.0
+platformdirs==2.5.2
 prompt-toolkit==3.0.36
 psutil==5.9.0
 Pygments==2.11.2
 pyparsing==3.0.9
 pytz==2022.1
 pyzmq==23.2.0
-requests==2.28.1
+setuptools==63.4.1
 stack-data==0.6.2
 tornado==6.1
 traitlets==5.1.1
-urllib3==1.26.11
 wcwidth==0.2.5
-
-# overwrite
-setuptools==63.4.1
-wheel==0.37.1
+cffi==1.15.1
 

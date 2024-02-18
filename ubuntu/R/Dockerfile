@@ -1,12 +1,12 @@
-FROM databricksruntime/minimal:experimental
+FROM databricksruntime/minimal:14.3-LTS
 
 # Suppress interactive configuration prompts
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Install python 3.8 and virtualenv for Spark and Notebooks
+# Install python 3.10 and virtualenv for Spark and Notebooks
 RUN apt-get update \
   && apt-get install -y \
-    python3.8 \
+    python3.10 \
     virtualenv
 
 # We add RStudio's debian source to install the latest r-base version (4.1)
@@ -31,7 +31,7 @@ RUN apt-get update \
 # hwriterPlus is used by Databricks to display output in notebook cells
 # hwriterPlus is removed for newer version of R, so we hardcode the dependency to archived version
 # Rserve allows Spark to communicate with a local R process to run R code
-RUN R -e "options(repos = list(MRAN = 'https://mran.microsoft.com/snapshot/2022-04-08', CRAN = 'https://cran.microsoft.com/')); install.packages(c('hwriter', 'TeachingDemos', 'htmltools'))" \
+RUN R -e "options(repos = list(CRAN = 'https://packagemanager.posit.co/cran/latest')); install.packages(c('hwriter', 'TeachingDemos', 'htmltools'))" \
  && R -e "install.packages('https://cran.r-project.org/src/contrib/Archive/hwriterPlus/hwriterPlus_1.0-3.tar.gz', repos=NULL, type='source')" \
  && R -e "install.packages('Rserve', repos='http://rforge.net/')"
 
@@ -46,11 +46,11 @@ COPY Rprofile.site /usr/lib/R/etc/Rprofile.site
 RUN apt-get update \
  # Install gdebi-core.
  && apt-get install -y gdebi-core \
- # Download rstudio 1.4 package for ubuntu 18.04 and install it.
+ # Download rstudio and install it.
  && apt-get install -y wget \
  && apt-get install -y gdebi-core \
- && wget https://download2.rstudio.org/server/bionic/amd64/rstudio-server-2022.02.1-461-amd64.deb \
- && gdebi -n rstudio-server-2022.02.1-461-amd64.deb && rstudio-server version
+ && wget https://download2.rstudio.org/server/jammy/amd64/rstudio-server-2022.12.0-353-amd64.deb \
+ && gdebi -n rstudio-server-2022.12.0-353-amd64.deb && rstudio-server version
 
 # Initialize the default environment that Spark and notebooks will use
-RUN virtualenv -p python3.8 --system-site-packages /databricks/python3
+RUN virtualenv -p python3.10 --system-site-packages /databricks/python3

@@ -1,4 +1,4 @@
-FROM ubuntu:20.04
+FROM ubuntu:22.04
 
 RUN apt-get update \
   && apt-get -y upgrade \
@@ -9,6 +9,11 @@ RUN apt-get update \
     sudo \
     coreutils \
     procps \
+    acl \
   && /var/lib/dpkg/info/ca-certificates-java.postinst configure \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+# Add new user for cluster library installation
+RUN useradd libraries \
+  && usermod -L libraries

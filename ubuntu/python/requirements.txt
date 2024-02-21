@@ -9,4 +9,7 @@ pyarrow==8.0.0
 matplotlib==3.7.0
 jinja2==3.1.2
 ipykernel==6.25.0
+grpcio==1.48.2
+grpcio-status==1.48.1
+databricks-sdk==0.1.6
 

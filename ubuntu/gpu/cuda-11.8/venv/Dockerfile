@@ -10,6 +10,8 @@ RUN apt-get update \
   && curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py \
   && /usr/bin/python3.10 get-pip.py pip==22.3.1 setuptools==65.6.3 wheel==0.38.4 \
   && rm get-pip.py
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 
 # virtualenv 20.0.24 introduced a periodic update feature, which attempts to update all
@@ -46,13 +48,10 @@ RUN /databricks/python3/bin/pip install \
   protobuf==4.23.3 \
   grpcio==1.48.2 \
   grpcio-status==1.48.1 \
-  databricks-sdk==0.1.6
+  databricks-sdk==0.1.6 \
+  && /databricks/python3/bin/pip cache purge
 
 
 
 # Specifies where Spark will look for the python binary
 ENV PYSPARK_PYTHON=/databricks/python3/bin/python3
-
-# Use pip cache purge to cleanup the cache safely
-RUN /databricks/python3/bin/pip cache purge
-

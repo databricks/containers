@@ -8,7 +8,7 @@ ARG virtualenv_version="20.16.7"
 
 # Installs python 3.10 and virtualenv for Spark and Notebooks
 RUN apt-get update \
-  && apt-get install -y curl gcc libcairo2-dev software-properties-common pkg-config python${python_version} python${python_version}-dev python${python_version}-distutils \
+  && apt-get install -y curl software-properties-common python${python_version} python${python_version}-dev python${python_version}-distutils \
   && curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py \
   && /usr/bin/python${python_version} get-pip.py pip==${pip_version} setuptools==${setuptools_version} wheel==${wheel_version} \
   && rm get-pip.py
@@ -27,7 +27,7 @@ RUN virtualenv --python=python${python_version} --system-site-packages /databric
 
 COPY requirements.txt /databricks/.
 
-RUN /databricks/python3/bin/pip install -r /databricks/requirements.txt
+RUN /databricks/python3/bin/pip install --no-deps -r /databricks/requirements.txt
 
 # Specifies where Spark will look for the python process
 ENV PYSPARK_PYTHON=/databricks/python3/bin/python3

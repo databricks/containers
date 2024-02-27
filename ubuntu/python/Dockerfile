@@ -27,7 +27,7 @@ RUN virtualenv --python=python${python_version} --system-site-packages /databric
 
 COPY requirements.txt /databricks/.
 
-RUN /databricks/python3/bin/pip install -r /databricks/requirements.txt
+RUN /databricks/python3/bin/pip install --no-deps -r /databricks/requirements.txt
 
 # Specifies where Spark will look for the python process
 ENV PYSPARK_PYTHON=/databricks/python3/bin/python3

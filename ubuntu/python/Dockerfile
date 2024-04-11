@@ -19,7 +19,7 @@ RUN /usr/local/bin/pip${python_version} install --no-cache-dir virtualenv==${vir
   /usr/local/lib/python${python_version}/dist-packages/virtualenv_support/
 
 # Initialize the default environment that Spark and notebooks will use
-RUN virtualenv --python=python${python_version} --system-site-packages /databricks/python3 --no-download  --no-setuptools
+RUN virtualenv --python=python${python_version} --system-site-packages /databricks/python3 --no-download --no-setuptools
 
 # These python libraries are used by Databricks notebooks and the Python REPL
 # You do not need to install pyspark - it is injected when the cluster is launched
@@ -28,6 +28,12 @@ RUN virtualenv --python=python${python_version} --system-site-packages /databric
 COPY requirements.txt /databricks/.
 
 RUN /databricks/python3/bin/pip install -r /databricks/requirements.txt
-
 # Specifies where Spark will look for the python process
 ENV PYSPARK_PYTHON=/databricks/python3/bin/python3
+
+RUN virtualenv --python=python${python_version} --system-site-packages /databricks/python-lsp --no-download --no-setuptools
+
+COPY python-lsp-requirements.txt /databricks/.
+
+RUN /databricks/python-lsp/bin/pip install -r /databricks/python-lsp-requirements.txt
+

@@ -1,4 +1,4 @@
-FROM databricksruntime/minimal:9.1-LTS
+FROM databricksruntime/minimal:9.1-ubuntu20-LTS
 
 # These are the versions compatible for DBR 9.x
 ARG python_version="3.8"

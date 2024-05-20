@@ -1,4 +1,4 @@
-FROM databricksruntime/python:9.1-LTS
+FROM databricksruntime/python:9.1-ubuntu20-LTS
 
 RUN apt-get update \
   && apt-get install -y fuse \

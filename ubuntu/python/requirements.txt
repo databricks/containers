@@ -60,6 +60,7 @@ PyGObject==3.42.1
 PyJWT==2.3.0
 pyparsing==3.0.9
 python-dateutil==2.8.2
+python-lsp-jsonrpc==1.1.2
 pytz==2022.1
 pyzmq==23.2.0
 requests==2.28.1

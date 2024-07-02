@@ -8,12 +8,13 @@ RUN cd /etc/apt/sources.list.d && \
 # See https://github.com/databricks/containers/blob/master/ubuntu/minimal/Dockerfile
 RUN apt-get update && \
     apt-get install --yes \
-      openjdk-8-jdk-headless \
+      openjdk-8-jdk \
       iproute2 \
       bash \
       sudo \
       coreutils \
       procps \
+      acl \
       wget && \
     /var/lib/dpkg/info/ca-certificates-java.postinst configure && \
     apt-get clean && \
@@ -36,3 +37,7 @@ RUN apt-get update \
   && apt-key del E298A3A825C0D65DFD57CBB651716619E084DAB9 \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+# Add new user for cluster library installation
+RUN useradd libraries \
+&& usermod -L libraries

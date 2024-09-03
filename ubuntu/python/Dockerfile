@@ -23,7 +23,7 @@ RUN virtualenv --python=python${python_version} --system-site-packages /databric
 
 # These python libraries are used by Databricks notebooks and the Python REPL
 # You do not need to install pyspark - it is injected when the cluster is launched
-# Versions are intended to reflect latest DBR: https://docs.databricks.com/release-notes/runtime/14.3.html#system-environment
+# Versions are intended to reflect latest DBR LTS: https://docs.databricks.com/en/release-notes/runtime/15.4lts.html#system-environment 
 
 COPY requirements.txt /databricks/.
 

@@ -35,25 +35,13 @@ RUN /usr/local/bin/pip${python_version} install --no-cache-dir virtualenv==${vir
 # Initialize the default environment that Spark and notebooks will use
 RUN virtualenv --python=python${python_version} --system-site-packages /databricks/python3 --no-download --no-setuptools
 
-
 # These python libraries are used by Databricks notebooks and the Python REPL
 # You do not need to install pyspark - it is injected when the cluster is launched
 # Versions are intended to reflect DBR 14.0: https://docs.databricks.com/release-notes/runtime/releases.html
-RUN /databricks/python3/bin/pip install \
-  six==1.16.0 \
-  jedi==0.18.1 \
-  ipython==8.14.0 \
-  ipython-genutils==0.2.0 \
-  numpy==1.23.5 \
-  pandas==1.5.3 \
-  pyarrow==8.0.0 \
-  matplotlib==3.7.0 \
-  Jinja2==3.1.2\
-  ipykernel==6.25.0 \
-  protobuf==4.23.3 \
-  grpcio==1.48.2 \
-  grpcio-status==1.48.1 \
-  databricks-sdk==0.1.6
+# Certain libraries are added to avoiding breaking 15.4 LTS
+COPY requirements.txt /databricks/.
+
+RUN /databricks/python3/bin/pip install -r /databricks/requirements.txt
 
 
 

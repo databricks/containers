@@ -1,0 +1,15 @@
+six==1.16.0
+jedi==0.18.1
+ipython==8.14.0
+ipython-genutils==0.2.0
+numpy==1.23.5
+pandas==1.5.3
+pyarrow==8.0.0
+matplotlib==3.7.0
+Jinja2==3.1.2
+ipykernel==6.25.0
+protobuf==4.23.3
+pyccolo==0.0.52
+grpcio==1.48.2
+grpcio-status==1.48.1
+databricks-sdk==0.1.6

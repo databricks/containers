@@ -3,15 +3,14 @@
 **WARNING**: Using conda in DCS images is no longer supported starting Databricks Runtime 9.0. We highly recommend users to extend [`cuda-11.8`](cuda-11.8) examples.
  We no longer support [`cuda-10.1`](cuda-10.1) and [`cuda-11.0`](cuda-11.0) compatibility with latest databricks runtime.
 
-```suggestion
 **WARNING**: DCS images which extends [`venv`](cuda-11.8/venv/) need to be paired with DBR 14.x when creating a
 cluster. In order for REPL to launch successfully, the python packages used in the image HAVE to match with python packges used in the paried DBR version. [`venv`](cuda-11.8/venv/) uses version set from DBR 14.0
 
 
 There are three variations of GPU containers that can be used depending upon the CUDA version you wish to use:
-[`cuda-11.8`](cuda-11.8) contains the layers which install CUDA 11.8
-[`cuda-11.0`](cuda-11.0)(*Deprecated*) contains the layers which install CUDA 11.0
-[`cuda-10.1`](cuda-10.1)(*Deprecated*) contains the layers which install CUDA 10.1
+- [`cuda-11.8`](cuda-11.8) contains the layers which install CUDA 11.8
+- [`cuda-11.0`](cuda-11.0)(*Deprecated*) contains the layers which install CUDA 11.0
+- [`cuda-10.1`](cuda-10.1)(*Deprecated*) contains the layers which install CUDA 10.1
 
  
 Example base layers to build your own container:

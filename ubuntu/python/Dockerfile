@@ -40,7 +40,7 @@ RUN /databricks/python3/bin/pip install \
   parso==0.7.1 \
   pexpect==4.9.0 \
   pickleshare==0.7.5 \
-  pillow==10.4.0 \
+  pillow==10.3.0 \
   prompt-toolkit==3.0.48 \
   ptyprocess==0.7.0 \
   pyarrow==4.0.0 \

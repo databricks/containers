@@ -26,15 +26,31 @@ RUN virtualenv --python=python${python_version} --system-site-packages /databric
 # You do not need to install pyspark - it is injected when the cluster is launched
 # Versions are intended to reflect DBR 10.4 LTS: https://docs.databricks.com/release-notes/runtime/10.4.html#system-environment
 RUN /databricks/python3/bin/pip install \
-  six==1.15.0 \
-  jedi==0.17.2 \
-  # ensure minimum ipython version for Python autocomplete with jedi 0.17.x
+  backcall==0.2.0 \
+  cycler==0.12.1 \
+  decorator==5.1.1 \
   ipython==7.22.0 \
+  jedi==0.17.2 \
+  Jinja2==2.11.3 \
+  kiwisolver==1.4.7 \
+  MarkupSafe==2.1.5 \
+  matplotlib==3.4.2 \
   numpy==1.20.1 \
   pandas==1.2.4 \
+  parso==0.7.1 \
+  pexpect==4.9.0 \
+  pickleshare==0.7.5 \
+  pillow==10.4.0 \
+  prompt-toolkit==3.0.48 \
+  ptyprocess==0.7.0 \
   pyarrow==4.0.0 \
-  matplotlib==3.4.2 \
-  jinja2==2.11.3
+  pygments==2.18.0 \
+  pyparsing==3.1.4 \
+  python-dateutil==2.9.0.post0 \
+  pytz==2024.2 \
+  six==1.15.0 \
+  traitlets==5.14.3 \
+  wcwidth==0.2.13
 
 # Specifies where Spark will look for the python process
 ENV PYSPARK_PYTHON=/databricks/python3/bin/python3

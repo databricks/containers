@@ -1,0 +1,14 @@
+Copyright (2024) Databricks, Inc.
+
+This Software includes software developed at Databricks (https://www.databricks.com/) and its use is subject to the included LICENSE file.
+
+________________
+This Software contains code from the following open source projects, licensed under the BSD 3-Clause Clear license (https://spdx.org/licenses/BSD-3-Clause-Clear.html):
+
+zulu-openjdk/zulu-openjdk - https://github.com/zulu-openjdk/zulu-openjdk
+Copyright (c) 2005–2023, Azul Systems, Incorporated, 375 Moffett Park Drive, Suite 115, Sunnyvale, CA 94089.
+All rights reserved.
+
+Azul Zulu incorporates third-party licensed software packages. Some of these have distribution restrictions, and some have only reporting requirements. Please see docs.azul.com/core/tpl⁠ for the links to the documents with licenses for third-party software included in the latest version of Azul Platform Core.
+As with all Docker images, these likely also contain other software which may be under other licenses. It is the image user's responsibility to ensure that any use of this image complies with any relevant licenses for all software contained within.
+

@@ -26,16 +26,43 @@ RUN virtualenv --python=python${python_version} --system-site-packages /databric
 # You do not need to install pyspark - it is injected when the cluster is launched
 # Versions are intended to reflect latest DBR: https://docs.databricks.com/release-notes/runtime/11.1.html#system-environment
 RUN /databricks/python3/bin/pip install \
-  six==1.16.0 \
-  jedi==0.18.0 \
-  # ensure minimum ipython version for Python autocomplete with jedi 0.17.x
+  backcall==0.2.0 \
+  cycler==0.12.1 \
+  debugpy==1.8.7 \
+  decorator==5.1.1 \
+  importlib_metadata==8.5.0 \
+  ipykernel==6.12.1 \
   ipython==7.32.0 \
-  numpy==1.20.3 \
-  pandas==1.3.4 \
-  pyarrow==7.0.0 \
+  jedi==0.18.0 \
+  Jinja2==2.11.3 \
+  jupyter_client==8.6.3 \
+  jupyter_core==5.7.2 \
+  kiwisolver==1.4.7 \
+  MarkupSafe==3.0.1 \
   matplotlib==3.4.3 \
-  jinja2==2.11.3 \
-  ipykernel==6.12.1
+  matplotlib-inline==0.1.7 \
+  nest-asyncio==1.6.0 \
+  numpy==1.20.3 \
+  packaging==24.1 \
+  pandas==1.3.4 \
+  parso==0.8.4 \
+  pexpect==4.9.0 \
+  pickleshare==0.7.5 \
+  pillow==10.3.0 \
+  prompt_toolkit==3.0.48 \
+  psutil==6.0.0 \
+  ptyprocess==0.7.0 \
+  pyarrow==7.0.0 \
+  Pygments==2.18.0 \
+  pyparsing==3.1.4 \
+  python-dateutil==2.9.0.post0 \
+  pytz==2024.2 \
+  pyzmq==26.2.0 \
+  six==1.16.0 \
+  tornado==6.4.1 \
+  traitlets==5.14.3 \
+  wcwidth==0.2.13 \
+  zipp==3.20.2
 
 # Specifies where Spark will look for the python process
 ENV PYSPARK_PYTHON=/databricks/python3/bin/python3

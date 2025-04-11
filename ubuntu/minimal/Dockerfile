@@ -1,4 +1,4 @@
-FROM ubuntu:22.04
+FROM ubuntu:24.04
 
 ENV LANG=C.UTF-8
 ENV LC_ALL=C.UTF-8
@@ -24,8 +24,8 @@ RUN curl -O https://cdn.azul.com/zulu/bin/zulu-repo_1.0.0-3_all.deb \
     && apt-get install ./zulu-repo_1.0.0-3_all.deb \
     && rm zulu-repo_1.0.0-3_all.deb
 
-ARG JDK8_VERSION="8.0.412-1"
-ARG JDK17_VERSION="17.0.11-1"
+ARG JDK8_VERSION="8.0.432-1"
+ARG JDK17_VERSION="17.0.13-1"
 
 RUN apt-get update
 RUN apt-get install -y zulu8=$JDK8_VERSION zulu8-jre=$JDK8_VERSION zulu8-jre-headless=$JDK8_VERSION zulu8-jdk=$JDK8_VERSION \
@@ -36,7 +36,7 @@ RUN apt-get install -y zulu17=$JDK17_VERSION zulu17-jre=$JDK17_VERSION zulu17-jr
         zulu17-jdk-headless=$JDK17_VERSION zulu17-doc=$JDK17_VERSION zulu17-ca=$JDK17_VERSION zulu17-ca-jre=$JDK17_VERSION zulu17-ca-jre-headless=$JDK17_VERSION \
         zulu17-ca-jdk=$JDK17_VERSION zulu17-ca-jdk-headless=$JDK17_VERSION zulu17-ca-doc=$JDK17_VERSION
 
-RUN update-java-alternatives -s zulu8-ca-amd64
+RUN update-java-alternatives -s zulu17-ca-amd64
 
 # This will install the cert store provided by ubuntu openjdk in case it's needed
 # it's installed under /etc/ssl/certs/java/cacerts 

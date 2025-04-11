@@ -1,12 +1,12 @@
 FROM databricksruntime/minimal:experimental
 
-ARG python_version="3.11"
-ARG pip_version="23.2.1"
-ARG setuptools_version="68.0.0"
+ARG python_version="3.12"
+ARG pip_version="24.0"
+ARG setuptools_version="74.0.0"
 ARG wheel_version="0.38.4"
-ARG virtualenv_version="20.24.2"
+ARG virtualenv_version="20.26.2"
 
-# Installs python 3.11 and virtualenv for Spark and Notebooks
+# Installs python and virtualenv for Spark and Notebooks
 RUN apt-get update \
   && apt-get install -y curl software-properties-common python${python_version} python${python_version}-dev python${python_version}-distutils \
   && curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py \

@@ -3,6 +3,9 @@ FROM ubuntu:24.04
 ENV LANG=C.UTF-8
 ENV LC_ALL=C.UTF-8
 
+# Workaround for https://bugs.launchpad.net/ubuntu/+source/ca-certificates/+bug/2066990
+ENV OPENSSL_FORCE_FIPS_MODE=0
+
 RUN apt-get update \
   && apt-get -y upgrade \
   && apt-get install --yes \

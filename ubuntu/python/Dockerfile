@@ -8,12 +8,12 @@ ARG virtualenv_version="20.26.2"
 
 # Installs python and virtualenv for Spark and Notebooks
 RUN apt-get update \
-  && apt-get install -y curl software-properties-common python${python_version} python${python_version}-dev python${python_version}-distutils \
+  && apt-get install -y curl software-properties-common python${python_version} python${python_version}-dev \
   && curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py \
-  && /usr/bin/python${python_version} get-pip.py pip==${pip_version} setuptools==${setuptools_version} wheel==${wheel_version} \
+  && /usr/bin/python${python_version} get-pip.py --break-system-packages pip==${pip_version} setuptools==${setuptools_version} wheel==${wheel_version} \
   && rm get-pip.py
 
-RUN /usr/local/bin/pip${python_version} install --no-cache-dir virtualenv==${virtualenv_version} \
+RUN /usr/local/bin/pip${python_version} install --break-system-packages --no-cache-dir virtualenv==${virtualenv_version} \
   && sed -i -r 's/^(PERIODIC_UPDATE_ON_BY_DEFAULT) = True$/\1 = False/' /usr/local/lib/python${python_version}/dist-packages/virtualenv/seed/embed/base_embed.py \
   && /usr/local/bin/pip${python_version} download pip==${pip_version} --dest \
   /usr/local/lib/python${python_version}/dist-packages/virtualenv_support/

@@ -25,6 +25,19 @@ RUN dpkg --force-confdef --force-confold --install ./* || true \
 WORKDIR ..
 RUN rm -rf .python3.11/
 
+# Installing 3.11.11 instead of 3.11.0rc1 pulls in different transitive dependencies.
+# The following are added after upgrading to 3.11.11:
+# - file
+# - libmagic-mgc
+# - libmagic1
+# - mailcap
+# - mime-support
+# - tzdata
+# The following are removed after upgrading to 3.11.11:
+# - zlib1g-dev
+# Try to make the dependencies match more closely without breaking anything.
+RUN apt-get install -y zlib1g-dev && apt-get remove -y file libmagic-mgc libmagic1
+
 # Installs python and virtualenv for Spark and Notebooks
 RUN apt-get update \
   && apt-get install -y curl software-properties-common python${python_version}-distutils \

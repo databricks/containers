@@ -36,7 +36,7 @@ RUN rm -rf .python3.11/
 # The following are removed after upgrading to 3.11.11:
 # - zlib1g-dev
 # Try to make the dependencies match more closely without breaking anything.
-RUN apt-get install -y zlib1g-dev && apt-get remove -y file libmagic-mgc libmagic1
+RUN apt-get install -y zlib1g-dev && apt-get purge -y file libmagic-mgc libmagic1
 
 # Installs python and virtualenv for Spark and Notebooks
 RUN apt-get update \

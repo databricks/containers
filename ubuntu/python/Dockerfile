@@ -7,6 +7,7 @@ ARG wheel_version="0.38.4"
 ARG virtualenv_version="20.24.2"
 
 # Install python 3.11.11 from deadsnakes, since Ubuntu only packages 3.11.0rc1
+# See release notes: https://docs.databricks.com/aws/en/release-notes/runtime/maintenance-updates#databricks-runtime-154
 RUN mkdir .python3.11/
 WORKDIR .python3.11
 ARG deadsnakes_files="https://launchpad.net/~deadsnakes/+archive/ubuntu/ppa/+files"

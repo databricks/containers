@@ -6,9 +6,42 @@ ARG setuptools_version="68.0.0"
 ARG wheel_version="0.38.4"
 ARG virtualenv_version="20.24.2"
 
-# Installs python 3.10 and virtualenv for Spark and Notebooks
+# Install python 3.11.11 from deadsnakes, since Ubuntu only packages 3.11.0rc1
+# See release notes: https://docs.databricks.com/aws/en/release-notes/runtime/maintenance-updates#databricks-runtime-154
+RUN mkdir .python3.11/
+WORKDIR .python3.11
+ARG deadsnakes_files="https://launchpad.net/~deadsnakes/+archive/ubuntu/ppa/+files"
+RUN curl -LO ${deadsnakes_files}/libpython3.11-minimal_3.11.11-1+jammy1_amd64.deb \
+    && curl -LO ${deadsnakes_files}/libpython3.11-stdlib_3.11.11-1+jammy1_amd64.deb \
+    && curl -LO ${deadsnakes_files}/libpython3.11-dev_3.11.11-1+jammy1_amd64.deb \
+    && curl -LO ${deadsnakes_files}/libpython3.11_3.11.11-1+jammy1_amd64.deb \
+    && curl -LO ${deadsnakes_files}/python3.11-minimal_3.11.11-1+jammy1_amd64.deb \
+    && curl -LO ${deadsnakes_files}/python3.11-dev_3.11.11-1+jammy1_amd64.deb \
+    && curl -LO ${deadsnakes_files}/python3.11_3.11.11-1+jammy1_amd64.deb
+# We expect dpkg to exit non-zero because not all dependencies are installed yet
+# Use DEBIAN_FRONTEND=noninteractive to skip tzdata configuration
+RUN dpkg --force-confdef --force-confold --install ./* || true \
+    && apt-get update \
+    && env DEBIAN_FRONTEND=noninteractive apt-get install --fix-broken -y
+WORKDIR ..
+RUN rm -rf .python3.11/
+
+# Installing 3.11.11 instead of 3.11.0rc1 pulls in different transitive dependencies.
+# The following are added after upgrading to 3.11.11:
+# - file
+# - libmagic-mgc
+# - libmagic1
+# - mailcap
+# - mime-support
+# - tzdata
+# The following are removed after upgrading to 3.11.11:
+# - zlib1g-dev
+# Try to make the dependencies match more closely without breaking anything.
+RUN apt-get install -y zlib1g-dev && apt-get purge -y file libmagic-mgc libmagic1
+
+# Installs python and virtualenv for Spark and Notebooks
 RUN apt-get update \
-  && apt-get install -y curl software-properties-common python${python_version} python${python_version}-dev python${python_version}-distutils \
+  && apt-get install -y curl software-properties-common python${python_version}-distutils \
   && curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py \
   && /usr/bin/python${python_version} get-pip.py pip==${pip_version} setuptools==${setuptools_version} wheel==${wheel_version} \
   && rm get-pip.py

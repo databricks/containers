@@ -9,7 +9,7 @@ RUN apt-get update \
     python3.12 \
     virtualenv
 
-# We add RProject's debian source to install the latest r-base version
+# We add CRAN's debian source to install the latest r-base version
 # We are using the more secure long form of pgp key ID of marutter@gmail.com
 # based on these instructions (avoiding firewall issue for some users):
 # https://cran.rstudio.com/bin/linux/ubuntu/#secure-apt

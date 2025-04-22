@@ -13,7 +13,7 @@ RUN apt-get update \
 # We are using the more secure long form of pgp key ID of marutter@gmail.com
 # based on these instructions (avoiding firewall issue for some users):
 # https://cran.rstudio.com/bin/linux/ubuntu/#secure-apt
-ARG r_version="4.4.0"
+ARG r_version="4.4.0-2.2404.0"
 RUN apt-get update \
   && apt-get install --yes software-properties-common apt-transport-https \
   && gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9 \
@@ -24,6 +24,7 @@ RUN apt-get update \
     libssl-dev \
     r-base=${r_version} \
     r-base-dev=${r_version} \
+    r-recommended=${r_version} \
   && add-apt-repository -r "deb https://cloud.r-project.org/bin/linux/ubuntu $(lsb_release -cs)-cran40/" \
   && apt-key del E298A3A825C0D65DFD57CBB651716619E084DAB9 \
   && apt-get clean \

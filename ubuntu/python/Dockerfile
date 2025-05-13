@@ -1,4 +1,4 @@
-FROM databricksruntime/minimal:experimental
+FROM databricksruntime/minimal:16.4-LTS
 
 ARG python_version="3.12"
 ARG pip_version="24.0"

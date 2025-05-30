@@ -6,20 +6,13 @@ ARG setuptools_version="68.0.0"
 ARG wheel_version="0.38.4"
 ARG virtualenv_version="20.24.2"
 
-# Install python 3.11.11 from deadsnakes, since Ubuntu only packages 3.11.0rc1
+# Install python 3.11.11, downloaded from deadsnake, since Ubuntu only packages 3.11.0rc1
 # See release notes: https://docs.databricks.com/aws/en/release-notes/runtime/maintenance-updates#databricks-runtime-154
 RUN mkdir .python3.11/
-WORKDIR .python3.11
-ARG deadsnakes_files="https://launchpad.net/~deadsnakes/+archive/ubuntu/ppa/+files"
-RUN curl -LO ${deadsnakes_files}/libpython3.11-minimal_3.11.11-1+jammy1_amd64.deb \
-    && curl -LO ${deadsnakes_files}/libpython3.11-stdlib_3.11.11-1+jammy1_amd64.deb \
-    && curl -LO ${deadsnakes_files}/libpython3.11-dev_3.11.11-1+jammy1_amd64.deb \
-    && curl -LO ${deadsnakes_files}/libpython3.11_3.11.11-1+jammy1_amd64.deb \
-    && curl -LO ${deadsnakes_files}/python3.11-minimal_3.11.11-1+jammy1_amd64.deb \
-    && curl -LO ${deadsnakes_files}/python3.11-dev_3.11.11-1+jammy1_amd64.deb \
-    && curl -LO ${deadsnakes_files}/python3.11_3.11.11-1+jammy1_amd64.deb
+COPY *.deb .python3.11/
 # We expect dpkg to exit non-zero because not all dependencies are installed yet
 # Use DEBIAN_FRONTEND=noninteractive to skip tzdata configuration
+WORKDIR .python3.11
 RUN dpkg --force-confdef --force-confold --install ./* || true \
     && apt-get update \
     && env DEBIAN_FRONTEND=noninteractive apt-get install --fix-broken -y

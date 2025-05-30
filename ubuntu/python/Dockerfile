@@ -10,7 +10,7 @@ ARG virtualenv_version="20.4.1"
 # Installs python 3.8 and virtualenv for Spark and Notebooks
 RUN apt-get update \
   && apt-get install curl software-properties-common -y python${python_version} python${python_version}-dev python${python_version}-distutils \
-  && curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py \
+  && curl https://bootstrap.pypa.io/pip/3.8/get-pip.py -o get-pip.py \
   && /usr/bin/python${python_version} get-pip.py pip==${pip_version} setuptools==${setuptools_version} wheel==${wheel_version} \
   && rm get-pip.py
 

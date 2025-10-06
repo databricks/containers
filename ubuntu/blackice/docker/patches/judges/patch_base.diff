@@ -1,0 +1,54 @@
+--- judges/base.py
++++ judges/base.py
+@@ -3,12 +3,12 @@
+ from typing import Annotated, Optional, Literal
+ 
+ import instructor
+-
++import os
+ from pydantic import BaseModel, Field, field_validator
+ 
+ from judges.voting_methods import AVAILABLE_VOTING_METHODS
++from openai import OpenAI
+ 
+-
+ ScoreType = Annotated[
+     Literal["boolean", "numerical", "likert"], 
+     Field(
+@@ -146,13 +146,30 @@
+         """
+         messages = self._build_messages(user_prompt, system_prompt)
+ 
+-        client = instructor.from_provider(self.model)
++        if 'databricks' in self.model:
++            client = instructor.from_openai(
++                OpenAI(
++                    base_url = os.environ["DATABRICKS_BASE_URL"],
++                    api_key = os.environ["DATABRICKS_API_KEY"]
++                ),
++                mode=instructor.Mode.TOOLS
++            )
++            judgment = client.chat.completions.create(          
++                 model=self.model,
++                 messages=messages,
++                 temperature=1.0,           
++                 response_model=Judgment)              
++        else:
++            client = instructor.from_provider(self.model)
+ 
+-        judgment = client.chat.completions.create(
+-            messages=messages,
+-            temperature=0.0,
+-            response_model=Judgment,
+-        )
++            judgment = client.chat.completions.create(
++                messages=messages,
++                temperature=0.0,
++                response_model=Judgment,
++            )    
++       
++       
++       
+         return judgment.reasoning, judgment.score
+ 
+     @abstractmethod

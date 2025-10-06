@@ -1,0 +1,25 @@
+#!/venvs/lm-eval-harness/bin/python3
+
+import sys
+import subprocess
+import os
+
+
+def main():
+    """CLI wrapper for running LM Eval."""
+
+    # cd into the lm-eval-harness directory
+    os.chdir("/venvs/lm-eval-harness/source/lm-evaluation-harness")
+
+    # Construct the base command
+    cmd = [sys.executable, "lm_eval/__main__.py"]
+
+    # Append all user-provided CLI arguments
+    cmd.extend(sys.argv[1:])
+
+    # Execute the command
+    subprocess.run(cmd, env=os.environ)
+
+
+if __name__ == "__main__":
+    main()

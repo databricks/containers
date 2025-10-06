@@ -1,0 +1,18 @@
+--- PyRIT/pyrit/prompt_target/__init__.py
++++ PyRIT/pyrit/prompt_target/__init__.py
+@@ -6,6 +6,7 @@
+ from pyrit.prompt_target.common.utils import limit_requests_per_minute
+ from pyrit.prompt_target.openai.openai_target import OpenAITarget
+ from pyrit.prompt_target.openai.openai_chat_target import OpenAIChatTarget
++from pyrit.prompt_target.databricks_chat_target import DatabricksChatTarget
+ 
+ 
+ from pyrit.prompt_target.azure_blob_storage_target import AzureBlobStorageTarget
+@@ -50,6 +51,7 @@
+     "OpenAISoraTarget",
+     "OpenAITTSTarget",
+     "OpenAITarget",
++    "DatabricksChatTarget",  
+     "PlaywrightTarget",
+     "PromptChatTarget",
+     "PromptShieldTarget",

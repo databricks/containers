@@ -1,0 +1,23 @@
+#!/venvs/easyedit/bin/python3
+import typer
+
+
+app = typer.Typer(add_completion=False)
+
+
+message = (
+    "EasyEdit does not have command-line functionality.\n"
+    "For usage and documentation, visit: https://github.com/zjunlp/EasyEdit"
+)
+
+
+@app.command(help=message)
+def main():
+    """
+    EasyEdit: Refer to the official documentation for usage.
+    """
+    typer.echo(message)
+
+
+if __name__ == "__main__":
+    app()

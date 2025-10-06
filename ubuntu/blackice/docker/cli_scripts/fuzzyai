@@ -1,0 +1,25 @@
+#!/venvs/fuzzyai/bin/python3
+
+import os
+import sys
+import subprocess
+
+
+def main():
+    """CLI wrapper for running Fuzzyai."""
+
+    # Run from the project directory
+    os.chdir("/venvs/fuzzyai/source/FuzzyAI")
+
+    # Construct the base command
+    cmd = [sys.executable, "-m", "src.fuzzyai.cli"]
+
+    # Append all user-provided CLI arguments
+    cmd.extend(sys.argv[1:])
+
+    # Execute the command
+    subprocess.run(cmd, env=os.environ)
+
+
+if __name__ == "__main__":
+    main()

@@ -1,0 +1,18 @@
+--- PurpleLlama/CybersecurityBenchmarks/benchmark/llms/llm_base.py
++++ PurpleLlama/CybersecurityBenchmarks/benchmark/llms/llm_base.py
+@@ -42,6 +42,7 @@
+ class LLMConfig:
+     model: str
+     api_key: str | None = None
++    base_url: str | None = None
+     max_tokens: int = DEFAULT_MAX_TOKENS
+     cot_end_tokens: list[str] | None = None
+ 
+@@ -53,6 +54,7 @@
+     ) -> None:
+         self.model: str = config.model
+         self.api_key: str | None = config.api_key
++        self.base_url: str | None = config.base_url
+         self.cache_handler: CacheHandler | None = None
+         self.max_tokens: int = config.max_tokens
+         self.cot_end_tokens: list[str] | None = config.cot_end_tokens

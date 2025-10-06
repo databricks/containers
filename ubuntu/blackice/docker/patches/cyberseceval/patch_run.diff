@@ -1,0 +1,25 @@
+--- PurpleLlama/CybersecurityBenchmarks/benchmark/run.py
++++ PurpleLlama/CybersecurityBenchmarks/benchmark/run.py
+@@ -264,7 +264,14 @@
+         "--input-modality",
+         type=str,
+         help="Optional keyword to specify the input modality/modialities for the benchmark. Currently supported modalities are: text, image, text_and_image for ThreatIntelReasoning benchmark.",
++        default=None,
++    )
++
++    parser.add_argument(
++        "--system-prompt",
++        type=str,
+         default=None,
++        help="Custom system prompt to provide to the model during response generation.",
+     )
+ 
+     args = validate_arguments(parser)
+@@ -352,6 +359,7 @@
+         benchmark.query_llm_to_generate_responses(
+             prompt_path=Path(args.prompt_path),
+             run_llm_in_parallel=args.run_llm_in_parallel,
++            system_prompt=args.system_prompt,
+         )
+ 
+     if not args.only_generate_llm_responses:

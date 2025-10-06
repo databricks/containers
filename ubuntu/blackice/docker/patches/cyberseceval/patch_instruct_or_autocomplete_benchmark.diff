@@ -1,0 +1,27 @@
+--- PurpleLlama/CybersecurityBenchmarks/benchmark/instruct_or_autocomplete_benchmark.py
++++ PurpleLlama/CybersecurityBenchmarks/benchmark/instruct_or_autocomplete_benchmark.py
+@@ -8,6 +8,7 @@
+ import json
+ import logging
+ from pathlib import Path
++from typing import Optional
+ 
+ from CodeShield.insecure_code_detector import insecure_code_detector
+ from CodeShield.insecure_code_detector.languages import Language
+@@ -31,7 +32,7 @@
+         return ["autocomplete", "instruct"]
+ 
+     def query_llm_to_generate_responses(
+-        self, prompt_path: Path, run_llm_in_parallel: int = 1
++        self, prompt_path: Path, run_llm_in_parallel: int = 1, system_prompt: Optional[str] = None,
+     ) -> None:
+         # The query requires the valid prompt path
+         response_result = []
+@@ -43,6 +44,7 @@
+                     run_llm_in_parallel,
+                     num_test_cases=self.num_test_cases,
+                     pass_k=self.pass_k,
++                    system_prompt=system_prompt,
+                 )
+             )
+ 

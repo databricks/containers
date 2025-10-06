@@ -1,0 +1,25 @@
+#!/venvs/cleverhans/bin/python3
+import typer
+
+
+app = typer.Typer(add_completion=False)
+
+
+message = (
+    "Cleverhans does not have command-line functionality.\n"
+    "To use cleverhans, activate its Python virtual environment, then import the library within your Python code.\n"
+    "For usage and documentation, visit: https://github.com/cleverhans-lab/cleverhans"
+)
+
+
+@app.command(help=message)
+def main():
+    """Cleverhans: Refer to the official documentation for usage.
+
+    Visit: https://github.com/cleverhans-lab/cleverhans
+    """
+    typer.echo(message)
+
+
+if __name__ == "__main__":
+    app()

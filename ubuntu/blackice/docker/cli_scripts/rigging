@@ -1,0 +1,24 @@
+#!/usr/bin/env python3
+import typer
+
+
+app = typer.Typer(add_completion=False)
+
+
+message = (
+    "Rigging does not have command-line functionality.\n"
+    "For usage and documentation, visit: https://docs.dreadnode.io/open-source/rigging/intro"
+)
+
+
+@app.command(help=message)
+def main():
+    """Rigging: Refer to the official documentation for usage.
+
+    Visit: https://docs.dreadnode.io/open-source/rigging/intro
+    """
+    typer.echo(message)
+
+
+if __name__ == "__main__":
+    app()

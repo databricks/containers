@@ -1,0 +1,24 @@
+#!/usr/bin/python3
+import typer
+
+
+app = typer.Typer(add_completion=False)
+
+
+message = (
+    "PyRIT does not have command-line functionality.\n"
+    "For usage and documentation, visit: https://azure.github.io/PyRIT/index.html"
+)
+
+
+@app.command(help=message)
+def main():
+    """PyRIT: Refer to the official documentation for usage.
+
+    Visit: https://azure.github.io/PyRIT/index.html
+    """
+    typer.echo(message)
+
+
+if __name__ == "__main__":
+    app()

@@ -1,0 +1,24 @@
+#!/usr/bin/python3
+import typer
+
+
+app = typer.Typer(add_completion=False)
+
+
+message = (
+    "Dropbox LLM Security research code and results:\n"
+    "https://github.com/dropbox/llm-security\n\n"
+    "The phenomena demonstrated by llm-security has been largely replicated "
+    "in Garak's divergence and glitch probes.\n\n"
+    "For usage and documentation, visit: https://reference.garak.ai/en/latest/probes.html"
+)
+
+
+@app.command(help=message)
+def main():
+    """Dropbox LLM Security research code and results: https://github.com/dropbox/llm-security"""
+    typer.echo(message)
+
+
+if __name__ == "__main__":
+    app()

@@ -1,5 +1,3 @@
-![Alt text](blackice.webp)
-
 # BlackIce: Containerized AI Red Teaming Toolkit
 
 BlackIce is an open-source containerized toolkit designed for red teaming AI models, including Large Language Models (LLMs) and classical machine learning (ML) models. Inspired by the convenience and standardization of Kali Linux in traditional penetration testing, BlackIce simplifies AI security assessments by providing a reproducible container image preconfigured with specialized evaluation tools.

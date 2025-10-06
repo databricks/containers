@@ -1,0 +1,10 @@
+--- setup.py
++++ setup.py
+@@ -13,6 +13,7 @@
+     "six",
+     "setuptools",
+     "tqdm",
++    "packaging",
+ ]
+ 
+ docs_require = [

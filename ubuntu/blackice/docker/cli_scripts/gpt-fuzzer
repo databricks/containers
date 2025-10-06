@@ -1,0 +1,23 @@
+#!/usr/bin/python3
+import typer
+
+
+app = typer.Typer(add_completion=False)
+
+
+message = (
+    "Red Teaming Large Language Models with Auto-Generated Jailbreak Prompts:\n"
+    "https://github.com/sherdencooper/GPTFuzz\n\n"
+    "This functionality has been added to PyRIT: https://github.com/Azure/PyRIT/pull/378.\n\n"
+    "For usage and documentation, visit: https://azure.github.io/PyRIT/code/orchestrators/fuzzing_jailbreak_templates.html"
+)
+
+
+@app.command(help=message)
+def main():
+    """Red Teaming Large Language Models with Auto-Generated Jailbreak Prompts: https://github.com/sherdencooper/GPTFuzz"""
+    typer.echo(message)
+
+
+if __name__ == "__main__":
+    app()

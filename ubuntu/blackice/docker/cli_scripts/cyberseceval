@@ -1,0 +1,30 @@
+#!/venvs/cyberseceval/bin/python3
+
+import os
+import sys
+import subprocess
+
+
+def main():
+    """CLI wrapper for running Cyberseceval (PurpleLlama) benchmark evaluations."""
+
+    # Run from the project directory
+    os.chdir("/venvs/cyberseceval/source/PurpleLlama")
+
+    # Define the fixed DATASETS path used by Cyberseceval
+    os.environ["DATASETS"] = (
+        "/venvs/cyberseceval/source/PurpleLlama/CybersecurityBenchmarks/datasets"
+    )
+
+    # Construct the base command
+    cmd = [sys.executable, "-m", "CybersecurityBenchmarks.benchmark.run"]
+
+    # Append all user-provided CLI arguments
+    cmd.extend(sys.argv[1:])
+
+    # Execute the command
+    subprocess.run(cmd, env=os.environ)
+
+
+if __name__ == "__main__":
+    main()

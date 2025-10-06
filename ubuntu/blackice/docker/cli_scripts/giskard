@@ -1,0 +1,264 @@
+#!/venvs/giskard/bin/python3
+
+import typer
+import os
+import pandas as pd
+import giskard
+import enum
+from giskard.llm.client.litellm import LiteLLMClient
+from giskard.llm.client.base import ChatMessage
+
+
+class Giskard_LLM(enum.Enum):
+    """
+    Enum for the different LLMs that Giskard supports.
+    """
+
+    Databricks = "databricks"
+    OpenAI = "openai"
+    AzureOpenAI = "azure"
+    Mistral = "mistral"
+    Ollama = "ollama"
+    AWSBedrock = "bedrock"
+    Gemini = "gemini"
+
+
+class GiskardDetectorTags(enum.Enum):
+    """
+    Enum for the different detector tags that Giskard supports.
+    """
+
+    HARMFULNESS = "harmfulness"
+    LLM = "llm"
+    DISCRIMINATION = "discrimination"
+    FAITHFULNESS = "faithfulness"
+    DATA_LEAKAGE = "data_leakage"
+    OUTPUT_FORMATTING = "output_formatting"
+    SPURIOUS_CORRELATION = "spurious_correlation"
+    MISINFORMATION = "misinformation"
+    ETHICS = "ethics"
+    OVERCONFIDENCE = "overconfidence"
+    IMPLAUSIBLE_OUTPUT = "implausible_output"
+    HALLUCINATION = "hallucination"
+    CONTROL_CHARS_INJECTION = "control_chars_injection"
+    NUMERICAL_PERTURBATION = "numerical_perturbation"
+    UNDERCONFIDENCE = "underconfidence"
+    ETHICAL_BIAS = "ethical_bias"
+    PERFORMANCE_BIAS = "performance_bias"
+    TEXT_PERTURBATION = "text_perturbation"
+    REGRESSION = "regression"
+    GENERATIVE = "generative"
+    LLM_HARMFUL_CONTENT = "llm_harmful_content"
+    LLM_STEREOTYPES_DETECTOR = "llm_stereotypes_detector"
+    STOCHASTICITY = "stochasticity"
+    PROMPT_INJECTION = "prompt_injection"
+    INFORMATION_DISCLOSURE = "information_disclosure"
+    JAILBREAK = "jailbreak"
+    TEXT_GENERATION = "text_generation"
+    STEREOTYPES = "stereotypes"
+    SYCOPHANCY = "sycophancy"
+    CLASSIFICATION = "classification"
+    ROBUSTNESS = "robustness"
+    PERFORMANCE = "performance"
+
+
+def update_giskard_llm(llm_type: Giskard_LLM, llm_name: str, embedding=False):
+    """
+    Update the LLM used in Giskard.
+    """
+    update_fun = (
+        giskard.llm.set_llm_model if not embedding else giskard.llm.set_embedding_model
+    )
+    if llm_type == Giskard_LLM.Databricks:
+        for env in ["DATABRICKS_BASE_URL", "DATABRICKS_API_KEY"]:
+            assert os.getenv(env) is not None, f"{env} is not set"
+        # under the hood, we make use of the litellm client which supports databricks
+        # but wants the environment variable "DATABRICKS_API_BASE" to be set
+        # since we want "DATABRICKS_BASE_URL" for the other tools, we set this variable
+        os.environ["DATABRICKS_API_BASE"] = os.getenv("DATABRICKS_BASE_URL")
+        update_fun(f"databricks/{llm_name}")
+
+    elif llm_type == Giskard_LLM.OpenAI:
+        assert os.getenv("OPENAI_API_KEY") is not None, "OPENAI_API_KEY is not set"
+        update_fun(llm_name)
+
+    elif llm_type == Giskard_LLM.AzureOpenAI:
+        for env in ["AZURE_API_KEY", "AZURE_API_BASE", "AZURE_API_VERSION"]:
+            assert os.getenv(env) is not None, f"{env} is not set"
+        update_fun(f"{llm_type.value}/{llm_name}")
+
+    elif llm_type == Giskard_LLM.Mistral:
+        assert os.getenv("MISTRAL_API_KEY") is not None, "MISTRAL_API_KEY is not set"
+        if embedding:
+            assert llm_name == "mistral-embed", (
+                "Mistral embed is the only embedding model supported by Mistral"
+            )
+            update_fun(f"{llm_type.value}/{llm_name}")
+        else:
+            assert llm_name == "mistral-large-latest", (
+                "Mistral large latest is the only model supported by Mistral"
+            )
+            update_fun(f"{llm_type.value}/{llm_name}")
+
+    elif llm_type == Giskard_LLM.Ollama:
+        api_base = "http://localhost:11434"
+        if embedding:
+            assert llm_name == "nomic-embed-text", (
+                "Nomic embed text is the only embedding model supported by Ollama"
+            )
+            update_fun(f"{llm_type.value}/{llm_name}", api_base=api_base)
+        else:
+            update_fun(
+                f"{llm_type.value}/{llm_name}",
+                api_base=api_base,
+                disable_structured_output=True,
+            )
+
+    elif llm_type == Giskard_LLM.AWSBedrock:
+        for env in ["AWS_ACCESS_KEY_ID", "AWS_SECRET_ACCESS_KEY", "AWS_REGION_NAME"]:
+            assert os.getenv(env) is not None, f"{env} is not set"
+        if embedding:
+            assert llm_name == "amazon.titan-embed-image-v1", (
+                "Titan embed image is the only embedding model supported by Bedrock"
+            )
+            update_fun(f"{llm_type.value}/{llm_name}", api_base=api_base)
+        else:
+            assert llm_name == "anthropic.claude-3-sonnet-20240229-v1:0", (
+                "Claude 3 sonnet is the only model supported by Bedrock"
+            )
+            update_fun(
+                f"{llm_type.value}/{llm_name}",
+                api_base=api_base,
+                disable_structured_output=True,
+            )
+
+    elif llm_type == Giskard_LLM.Gemini:
+        assert os.getenv("GEMINI_API_KEY") is not None, "GEMINI_API_KEY is not set"
+        if embedding:
+            assert llm_name == "gemini-text-embedding-004", (
+                "Gemini text embedding-004 is the only embedding model supported by Gemini"
+            )
+            update_fun(f"{llm_type.value}/{llm_name}")
+        else:
+            assert llm_name == "gemini-1.5-pro", (
+                "Gemini 1.5 pro is the only model supported by Gemini"
+            )
+            update_fun(f"{llm_type.value}/{llm_name}")
+
+
+# app = typer.Typer(pretty_exceptions_show_locals=False)
+app = typer.Typer()
+
+
+def get_response(
+    model_type: Giskard_LLM,
+    model_name: str,
+    prompt: str,
+    max_tokens: int = 256,
+    system_prompt: str = "You are an AI assistant",
+):
+    client = LiteLLMClient(f"{model_type.value}/{model_name}")
+    messages_list = [
+        ChatMessage(role="system", content=system_prompt),
+        ChatMessage(role="user", content=prompt),
+    ]
+    response = client.complete(messages=messages_list, max_tokens=max_tokens)
+    response_str = response.content
+    return response_str
+
+
+def get_model_predict_fn(
+    model_type: Giskard_LLM,
+    model_name: str,
+    max_tokens: int = 256,
+    system_prompt: str = "You are an AI assistant",
+):
+    def model_predict(df: pd.DataFrame):
+        """Wraps the LLM call in a simple Python function.
+
+        The function takes a pandas.DataFrame containing the input variables needed
+        by your model, and must return a list of the outputs (one for each row).
+        """
+        responses = []
+        for question in df["messages"]:
+            question_w_json = question
+            response = get_response(
+                model_type, model_name, question_w_json, max_tokens, system_prompt
+            )
+            responses.append(response)
+        return responses
+
+    return model_predict
+
+
+@app.command()
+def main(
+    model_name: str = typer.Argument(..., help="Name of the model under test"),
+    model_type: Giskard_LLM = typer.Argument(..., help="Type of the model under test"),
+    max_tokens: int = typer.Option(
+        256, help="Maximum number of tokens in the response"
+    ),
+    system_prompt: str = typer.Option(
+        "You are an AI assistant", help="System prompt to provide context to the model"
+    ),
+    name: str = typer.Option(
+        "chatbot", help="Name to identify the model under test in Giskard"
+    ),
+    description: str = typer.Option(
+        "This model is a chatbot that answers questions about anything.",
+        help="Description of what the model  under test does",
+    ),
+    feature_names: list[str] = typer.Option(
+        ["messages"], help="Names of the features in the example inputs."
+    ),
+    giskard_llm_type: Giskard_LLM = typer.Option(
+        Giskard_LLM.Databricks,
+        help="Type of LLM that Giskard is using in the background to generate prompts, requirements and judge the results.",
+    ),
+    giskard_llm_model: str = typer.Option(
+        "databricks-meta-llama-3-3-70b-instruct",
+        help="Model name to use for the LLM that Giskard is using in the background to generate prompts, requirements and judge the results.",
+    ),
+    giskard_llm_embedding_model: str = typer.Option(
+        "databricks-bge-large-en",
+        help="Model name to use for the LLM that Giskard is using in the background to generate embeddings.",
+    ),
+    giskard_detector_tags: list[GiskardDetectorTags] = typer.Option(
+        None, help="Detector tags to use for the Giskard scan."
+    ),
+    save_dir: str = typer.Option(
+        "/workspace/giskard_reports", help="Directory to save the Giskard report"
+    ),
+    verbose: bool = typer.Option(False, help="Whether to print verbose output"),
+):
+    # litellm._turn_on_debug()
+    model_predict_fn = get_model_predict_fn(
+        model_type, model_name, max_tokens, system_prompt
+    )
+
+    if model_type == Giskard_LLM.Databricks and "json" not in description:
+        description += " The responses are structured as valid JSON."
+
+    # This is the model under test
+    giskard_model = giskard.Model(
+        model=model_predict_fn,
+        model_type="text_generation",
+        name=name,
+        description=description,
+        feature_names=feature_names,
+    )
+
+    # specify the LLM used internally in giskard (to generate prompts, requirements and judge the results)
+    update_giskard_llm(giskard_llm_type, giskard_llm_model, embedding=False)
+    update_giskard_llm(giskard_llm_type, giskard_llm_embedding_model, embedding=True)
+    report = giskard.scan(
+        giskard_model,
+        verbose=verbose,
+        only=[tag.value for tag in giskard_detector_tags],
+    )
+    report.to_json(os.path.join(save_dir, "report.json"))
+    print(f"Report saved to {save_dir}/report.json")
+
+
+if __name__ == "__main__":
+    app()

@@ -1,0 +1,60 @@
+Copyright (2025) Databricks, Inc.
+
+This Software includes software developed at Databricks (https://www.databricks.com/) and its use is subject to the included LICENSE file.
+
+________________
+This Software contains code from the following open source projects, licensed under the Apache 2.0 license (https://www.apache.org/licenses/LICENSE-2.0):
+
+NVIDIA/garak - https://github.com/NVIDIA/garak
+(c) 2023- Leon Derczynski
+
+Giskard-AI/giskard - https://github.com/Giskard-AI/giskard-oss
+Copyright (c) 2024-present GISKARD AI
+
+cyberark/FuzzyAI - https://github.com/cyberark/FuzzyAI
+Copyright (c) 2024 CyberArk Software Ltd. All rights reserved.
+
+quotient-ai/judges - https://github.com/quotient-ai/judges
+Copyright [2024] [Quotient AI]
+
+________________
+This Software contains code from the following open source projects, licensed under the MIT license (https://opensource.org/license/mit):
+
+PurpleLlama/CybersecurityBenchmarks - https://github.com/meta-llama/PurpleLlama/blob/main/CybersecurityBenchmarks
+Copyright (c) Meta Platforms, Inc. and affiliates.
+
+Azure/PyRIT - https://github.com/Azure/PyRIT
+Copyright (c) Microsoft Corporation.
+
+promptfoo/promptfoo - https://github.com/promptfoo/promptfoo
+Copyright (c) Promptfoo 2025
+
+EleutherAI/lm-evaluation-harness - https://github.com/EleutherAI/lm-evaluation-harness
+Copyright (c) 2020 EleutherAI
+
+zjunlp/EasyEdit - https://github.com/zjunlp/EasyEdit
+Copyright (c) 2022 Kevin Meng
+
+dreadnode/rigging - https://github.com/dreadnode/rigging
+Copyright (c) 2024 dreadnode
+
+Trusted-AI/adversarial-robustness-toolbox - https://github.com/Trusted-AI/adversarial-robustness-toolbox
+Copyright (C) The Adversarial Robustness Toolbox (ART) Authors 2018
+
+cleverhans-lab/cleverhans - https://github.com/cleverhans-lab/cleverhans
+Copyright (c) 2019 Google Inc., OpenAI and Pennsylvania State UniversityCopyright (c) 2019 Google Inc., OpenAI and Pennsylvania State University
+
+________________
+This Software contains code from the following open source projects, licensed under the LGPL-3.0 license (https://www.gnu.org/licenses/lgpl-3.0.en.html):
+
+trailofbits/fickling - https://github.com/trailofbits/fickling
+(c) 2021, Trail of Bits
+
+________________
+This Software contains code from the following open source projects, licensed under the GPL-3.0 license (https://www.gnu.org/licenses/gpl-3.0.en.html):
+
+utkusen/promptmap - https://github.com/utkusen/promptmap
+Copyright Promptmap Authors
+
+Promptmap is provided under and subject to the GPL-3.0 license. It is included with this Software in its original form as a standalone tool, separate from and not integrated with software developed at Databricks. The GPL-3.0 license applies only to Promptmap and does not extend to any other portions of this Software, which are licensed under the terms of the included LICENSE file.
+

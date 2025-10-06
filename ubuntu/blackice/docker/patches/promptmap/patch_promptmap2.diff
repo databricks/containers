@@ -1,0 +1,112 @@
+--- promptmap/promptmap2.py
++++ promptmap/promptmap2.py
+@@ -384,6 +384,11 @@
+             raise ValueError("OPENAI_API_KEY environment variable is required for OpenAI models")
+         elif model_type == "anthropic" and not os.getenv("ANTHROPIC_API_KEY"):
+             raise ValueError("ANTHROPIC_API_KEY environment variable is required for Anthropic models")
++        elif model_type == "databricks":
++            if not os.getenv("DATABRICKS_API_KEY"):
++                raise ValueError("DATABRICKS_API_KEY environment variable is required for Databricks models")
++            if not os.getenv("DATABRICKS_BASE_URL"):
++                raise ValueError("DATABRICKS_BASE_URL environment variable is required for Databricks models")
+         elif model_type == "google" and not os.getenv("GOOGLE_API_KEY"):
+             raise ValueError("GOOGLE_API_KEY environment variable is required for Google models")
+         elif model_type == "xai" and not os.getenv("XAI_API_KEY"):
+@@ -397,6 +402,8 @@
+         return OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+     elif model_type == "anthropic":
+         return anthropic.Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
++    elif model_type == "databricks":
++        return OpenAI(api_key=os.getenv("DATABRICKS_API_KEY"), base_url=os.getenv("DATABRICKS_BASE_URL"))
+     elif model_type == "google":
+         if genai is None:
+             raise ImportError("google-genai package is required for Google models. Install with: pip install google-genai")
+@@ -447,7 +454,7 @@
+     """Send a test prompt to the LLM and get the response.
+     Returns (response, is_error)"""
+     try:
+-        if model_type == "openai":
++        if model_type in ["openai", "databricks"]:
+             response = client.chat.completions.create(
+                 model=model,
+                 messages=[
+@@ -1341,52 +1348,56 @@
+     print("""
+ Usage Examples:
+ -------------
+-1. Test with OpenAI (same model for target and controller):
++1. Test with Databricks:
++   python promptmap2.py --target-model databricks-dbrx-instruct --target-model-type databricks
++
++2. Test with OpenAI (same model for target and controller):
+    python promptmap2.py --target-model gpt-3.5-turbo --target-model-type openai
+ 
+-2. Test with Anthropic:
++3. Test with Anthropic:
+    python promptmap2.py --target-model claude-3-opus-20240229 --target-model-type anthropic
+ 
+-3. Test with Google Gemini:
++4. Test with Google Gemini:
+    python promptmap2.py --target-model gemini-2.5-flash --target-model-type google
+ 
+-4. Test with Ollama (local):
++5. Test with Ollama (local):
+    python promptmap2.py --target-model llama2 --target-model-type ollama
+    
+    Test with Ollama (custom URL):
+    python promptmap2.py --target-model llama2 --target-model-type ollama --ollama-url http://192.168.1.100:11434
+ 
+-5. Test with XAI Grok:
++6. Test with XAI Grok:
+    python promptmap2.py --target-model grok-beta --target-model-type xai
+ 
+-6. Test with different target and controller models:
++7. Test with different target and controller models:
+    python promptmap2.py --target-model llama2 --target-model-type ollama --controller-model gpt-4 --controller-model-type openai
+ 
+-5. Run specific rules:
++8. Run specific rules:
+    python promptmap2.py --target-model gpt-4 --target-model-type openai --rules harmful_hidden_recording,distraction_basic
+ 
+-6. Run specific rule types:
++9. Run specific rule types:
+    python promptmap2.py --target-model gpt-4 --target-model-type openai --rule-type distraction,hate
+    # Available types: distraction, prompt_stealing, hate, social_bias, harmful, jailbreak
+ 
+-7. Custom options:
++10. Custom options:
+    python promptmap2.py --target-model gpt-4 --target-model-type openai --iterations 3 --output results_gpt4.json
+ 
+-8. Firewall testing mode:
++11. Firewall testing mode:
+    python promptmap2.py --target-model gpt-4 --target-model-type openai --firewall --pass-condition="true"
+    # In firewall mode, tests pass only if the response contains the specified string
+    # and is not more than twice its length
+ 
+-9. Show only failed tests (hide passed tests):
++12. Show only failed tests (hide passed tests):
+    python promptmap2.py --target-model gpt-4 --target-model-type openai --fail
+ 
+-10. Test an external HTTP endpoint (black-box scan):
++13. Test an external HTTP endpoint (black-box scan):
+     python promptmap2.py --target-model external --target-model-type http \
+         --http-config examples/http-config-example.yaml \
+         --controller-model gpt-4 --controller-model-type openai
+ 
+ 
+ Note: Make sure to set the appropriate API key in your environment:
++- For Databricks models: export DATABRICKS_API_KEY="your-key"; export DATABRICKS_BASE_URL="your-url"
+ - For OpenAI models: export OPENAI_API_KEY="your-key"
+ - For Anthropic models: export ANTHROPIC_API_KEY="your-key"  
+ - For Google models: export GOOGLE_API_KEY="your-key"
+@@ -1410,8 +1421,8 @@
+     
+     # Target model arguments (required)
+     parser.add_argument("--target-model", required=True, help="Target LLM model name (model to be tested)")
+-    parser.add_argument("--target-model-type", required=True, choices=["openai", "anthropic", "google", "ollama", "xai", "http"], 
+-                       help="Type of the target model (openai, anthropic, google, ollama, xai, http)")
++    parser.add_argument("--target-model-type", required=True, choices=["openai", "anthropic", "databricks", "google", "ollama", "xai", "http"], 
++                       help="Type of the target model (openai, anthropic, databricks, google, ollama, xai, http)")
+     
+     # Controller model arguments (optional - defaults to target model)
+     parser.add_argument("--controller-model", help="Controller LLM model name (model for evaluation, defaults to target model)")

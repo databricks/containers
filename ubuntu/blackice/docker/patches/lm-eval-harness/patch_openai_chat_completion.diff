@@ -1,0 +1,75 @@
+--- lm-evaluation-harness/lm_eval/models/openai_completions.py
++++ lm-evaluation-harness/lm_eval/models/openai_completions.py
+@@ -294,3 +294,72 @@ class OpenAIChatCompletion(LocalChatCompletion):
+         elif "o3" in self.model:
+             output.pop("temperature")
+         return output
++
++@register_model("databricks-chat-completions")
++class DatabricksChatCompletion(OpenAICompletionsAPI):
++    def __init__(
++        self,
++        base_url=None,
++        tokenizer_backend=None,
++        tokenized_requests=False,
++        **kwargs,
++    ):
++        super().__init__(
++            base_url=base_url,
++            tokenizer_backend=tokenizer_backend,
++            tokenized_requests=tokenized_requests,
++            **kwargs,
++        )
++
++    @cached_property
++    def api_key(self):
++        """Override this property to return the API key for the API request."""
++        key = os.environ.get("DATABRICKS_API_KEY", None)
++        if key is None:
++            raise ValueError(
++                "API key not found. Please set the `DATABRICKS_API_KEY` environment variable."
++            )
++        return key
++
++    def _create_payload(
++        self,
++        messages: List[Dict],
++        generate=False,
++        gen_kwargs: dict = None,
++        eos="<|endoftext|>",
++        **kwargs,
++    ) -> dict:
++        assert type(messages) is not str, (
++            "chat-completions require the --apply_chat_template flag."
++        )
++        gen_kwargs.pop("do_sample", False)
++        if "max_tokens" in gen_kwargs:
++            max_tokens = gen_kwargs.pop("max_tokens")
++        else:
++            max_tokens = gen_kwargs.pop("max_gen_toks", self._max_gen_toks)
++        temperature = gen_kwargs.pop("temperature", 0)
++        stop = handle_stop_sequences(gen_kwargs.pop("until", ["<|endoftext|>"]), eos)
++        if not isinstance(stop, (list, tuple)):
++            stop = [stop]
++        output = {
++            "messages": messages,
++            "model": self.model,
++            "max_tokens": max_tokens,
++            "temperature": temperature,
++            "stop": stop[:4],
++            **gen_kwargs,
++        }
++
++        return output
++
++    @staticmethod
++    def parse_generations(outputs: Union[Dict, List[Dict]], **kwargs) -> List[str]:
++        res = []
++        if not isinstance(outputs, list):
++            outputs = [outputs]
++        for out in outputs:
++            tmp = [None] * len(out["choices"])
++            for choices in out["choices"]:
++                tmp[choices["index"]] = choices["message"]["content"]
++            res = res + tmp
++        return res

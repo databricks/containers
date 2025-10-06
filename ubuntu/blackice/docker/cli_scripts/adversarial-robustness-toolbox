@@ -1,0 +1,25 @@
+#!/venvs/adversarial-robustness-toolbox/bin/python3
+import typer
+
+
+app = typer.Typer(add_completion=False)
+
+
+message = (
+    "ART does not have command-line functionality.\n"
+    "To use ART, activate its Python virtual environment, then import the library within your Python code.\n"
+    "For usage and documentation, visit: https://adversarial-robustness-toolbox.readthedocs.io/en/latest/"
+)
+
+
+@app.command(help=message)
+def main():
+    """ART: Refer to the official documentation for usage.
+
+    Visit: https://adversarial-robustness-toolbox.readthedocs.io/en/latest/
+    """
+    typer.echo(message)
+
+
+if __name__ == "__main__":
+    app()

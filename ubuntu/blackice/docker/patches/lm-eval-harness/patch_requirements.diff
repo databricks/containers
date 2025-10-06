@@ -1,0 +1,5 @@
+--- lm-evaluation-harness/requirements.txt
++++ lm-evaluation-harness/requirements.txt
+@@ -1 +1 @@
+--e .
++/venvs/lm-eval-harness/source/lm-evaluation-harness[api]

@@ -21,6 +21,7 @@ The Dockerfiles on the master branch are currently not maintained to be backward
 - [DBFS FUSE](ubuntu/dbfsfuse)
 - [SSH](ubuntu/ssh)
 - [GPU](ubuntu/gpu)
+- [BlackIce](ubuntu/blackice)
 
 ## DockerHub
 The Databricks provided sample images have been published to [DockerHub](https://hub.docker.com/u/databricksruntime)

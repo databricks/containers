@@ -1,5 +1,5 @@
 # Dockerfile Design and Setup Guide
-![blackice-flowchart-with-caption](https://github.com/user-attachments/assets/da54e407-5429-47a6-9d68-276d4b86f400)
+![Diagram showing BlackIce architecture](blackice-flowchart-with-caption.png)
 
 ## 1. Dockerfile Structure
 
@@ -61,6 +61,7 @@ BlackIce provides an easy mechanism for modifying or customizing tool source cod
 - Each file should include the relative path to the target file within the tool’s source tree.  
 - For tools installed via **Git**, this path must include the root directory of the cloned repository (e.g., `PyRIT/pyrit/prompt_target/__init__.py`).  
 - For tools installed via **PyPI**, the path should start directly from the package’s internal structure (e.g., `judges/base.py`).
+- If you are adding a new file, include its path as a single-line comment beginning with `# NEW_FILE_PATH` at the top of the file (e.g., `# NEW_FILE_PATH: PyRIT/pyrit/prompt_target/databricks_chat_target.py`).
 
 These patches are applied automatically by the Dockerfile build process just before the tools' installation step.
 
@@ -78,33 +79,20 @@ Additionally, you can add fully custom, self-contained CLI scripts to extend Bla
 
 ## 5. Testing
 
-Testing is performed using `pytest`, with test scripts stored in the `tests` directory. All tests are automatically executed upon submission of a pull request. Therefore, any new tool integrated into the Dockerfile must also include corresponding tests to confirm proper installation and functionality.
-
-If you have built the Docker image locally, you can execute tests with the following command:
+Testing is performed using `pytest` with test scripts stored in the `tests/` directory. If you built the Docker image yourself, you can run the tests using the following command:
 
 ```bash
 docker run --rm \
   --platform=linux/amd64 \
-  -e IS_GPU_IMAGE=false \
   -v "$(pwd)/tests:/tests" \
   -w /tests \
   blackice:latest \
   pytest -v /tests
 ```
 
+The test suite can also be easily extended to cover any additional tools you include.
+
 # GPU-enabled BlackIce
 
-While the container architecture described above is effective for tools with modest dependencies, disk usage grows significantly when multiple isolated environments each install their own GPU-enabled `torch`. To address this, BlackIce provides a dedicated GPU-supported version (`Dockerfile.GPU`) that modifies the standard isolation approach to efficiently manage disk space.
+By default, BlackIce is designed to remain as lightweight as possible, which means limiting `torch` installations to their `+cpu` variants. For most LLM-focused tools, this is sufficient since models are typically hosted externally and accessed through model APIs rather than run directly inside the container. Because `pip` can resolve `torch` dependencies to a CUDA build during installation, each tool that depends on `torch` includes a constraints file in `torch_constraints/{TOOL_NAME}.txt` that pins the CPU-only version explicitly. To enable GPU support for a specific tool, edit that file to specify the appropriate CUDA build.
 
-### Shared PyTorch Installation
-
-A single, GPU-enabled PyTorch installation is provided at the system level via `PyRIT`, which satisfies the requirements of other popular tools like `Garak` and `LM Eval Harness`. To allow these tools direct access to this shared `torch` installation, their virtual environments are created using the `--system-site-packages` flag, effectively breaking strict isolation for disk-space efficiency. These tools are explicitly listed in the build argument `SHARED_GPU_TORCH_TOOLS`.
-
-### Selective Tool Inclusion
-
-To further manage disk usage:
-
-- Most tools requiring conflicting versions of PyTorch (e.g., `FuzzyAI` and `EasyEdit`) are omitted from the GPU image.
-- Classical ML evaluation tools with legacy dependencies are also omitted.
-
-The complete list of included tools is explicitly defined at the top of `Dockerfile.GPU`.

@@ -413,11 +413,10 @@ FuzzyAI is a powerful tool that incorporates multiple attacks from literature.
 
 **Setup with Databricks Provider**
 
-The easiest way to use FuzzyAI with a model hosted on databricks is using the rest interface. To this end, it is required to create a config file in the source directory that shows a raw HTTP request. If we save the following content in a file called rest-config
+The easiest way to use FuzzyAI with a model hosted on databricks is using the rest interface. To this end, it is required to create a config file in the source directory that shows a raw HTTP request. If we save the following content in a file called rest-config in the source directory of fuzzyai
 
 ```
 POST /serving-endpoints/<model_name>/invocations  HTTP/1.1
-Host: <databricks_address>.cloud.databricks.com
 Content-Type: application/json
 Authorization: Bearer $DATABRICKS_API_KEY
 
@@ -438,6 +437,9 @@ Additionally, we are required to parse a `response_jsonpath` argument to let fuz
 An example call could look like this
 
 `fuzzyai fuzz -a def -m rest/rest-config -e scheme=https -t "Harmful Prompt" -e response_jsonpath="$.choices[0].message.content" -e host=<databricks_address>.cloud.databricks.com`
+
+Here, it is worth mentioning that fuzzyai generates the final url for the API request as `{protocol}://{host}:{port}/{PATH}`, where the first three arguments can be passed via the command line and the PATH is from the config.
+Therefore, make sure to have no protocol in the `host` argument and specify the correct path to the api in the rest-config file.
 
 Here, we simply ask the model to generate a "harmful prompt", we recommend checking out the [official documentation](https://github.com/cyberark/FuzzyAI) in
 order to learn about different attacks provided by the tool.

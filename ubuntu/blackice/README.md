@@ -13,6 +13,8 @@ BlackIce is an open-source containerized toolkit designed for red teaming AI mod
 ### Image Customization and Reproducibility
 Details on how to customize the BlackIce image can be found in `docker/README.md`. The published image is validated through the tests located in `tests/`. Although all tool versions are strictly pinned in the Dockerfile, the tools themselves rely on other packages whose versions aren’t always fixed, which can cause minor differences when rebuilding the image from the same Dockerfile compared to the hosted version.
 
+For more details, see our paper [BlackIce: A Containerized Red Teaming Toolkit for AI Security Testing](https://arxiv.org/abs/2510.11823)
+
 ## Integrated Toolset
 
 BlackIce integrates 14 widely-adopted open-source AI red teaming tools, chosen for their effectiveness and broad adoption across industry-leading AI security teams. Tools included cover a wide spectrum of evaluation capabilities, from basic static vulnerability assessments to highly customizable dynamic attack frameworks.
@@ -40,55 +42,22 @@ Tools within BlackIce are organized into three categories (Static, Dynamic, and 
 - **Dynamic tools** support advanced, Python-based customizations, enabling users to implement and execute sophisticated, custom attack scenarios. These tools are installed globally within the system-level Python environment, with dependency conflicts explicitly managed via the global_requirements.txt file.
 - **Hybrid tools** combine features from both static and dynamic tools, providing robust static evaluations alongside customizable functionality. Depending on their static capabilities, degree of customizability, and complexity of dependencies, hybrid tools are installed either in isolated environments (as static tools) or globally (as dynamic tools).
 
-**Note:** Several dynamic tools with significant legacy dependencies (CleverHans, ART, and EasyEdit) are placed in isolated environments to avoid dependency conflicts with modern LLM evaluation frameworks. 
+> **Note:** Several dynamic tools with significant legacy dependencies (CleverHans, ART, and EasyEdit) are placed in isolated environments to avoid dependency conflicts with modern LLM evaluation frameworks. 
 
 In addition to the tools listed above, BlackIce includes a custom CLI tool called [biasforge](#biasforge), which systematically assesses bias in language models through synthetic prompts and structured evaluations. This serves as one example of how custom AI red teaming functionality can be seamlessly integrated into the container image.
 
-## Evaluation Coverage
+## Tool Coverage
 
-BlackIce enables comprehensive AI security assessments across three evaluation domains: Responsible AI Testing, Security Testing, and Classical ML Testing. While Responsible AI and Security Testing apply broadly, many modern tools are designed to evaluate risks specific to LLMs. Classical ML Testing covers vulnerabilities common to traditional ML models.
+The selected tools were evaluated for their collective coverage of major AI security risk categories by mapping the capabilities of BlackIce to [MITRE ATLAS](https://atlas.mitre.org/matrices/ATLAS) and the [Databricks AI Security Framework (DASF)](https://www.databricks.com/resources/whitepaper/databricks-ai-security-framework-dasf). The table below highlights that BlackIce provides comprehensive coverage across domains such as prompt injection, data leakage, hallucination detection, and supply-chain integrity.
 
-### Responsible AI Testing
-
-Responsible AI (RAI) Testing evaluates whether models behave ethically, safely, and in alignment with usage policies across a range of scenarios.
-
-- **Harmful Content (Harassment / Hate / Violence / Self-Harm):** Evaluates whether the model produces toxic, hateful, violent, or self-harm content when prompted. 
-  - *Example:* Garak includes probes such as `HijackKillHumans` that attempt to override safety instructions and elicit violent completions, testing whether the model will glorify or endorse harmful actions.
-    
-- **Bias & Fairness:** Checks for demographic bias or stereotyping in model responses.
-  - *Example:* LM-Evaluation-Harness includes tasks like `BBQ` and `CrowS-Pairs` that measure model preferences across race, gender, and other sensitive categories by comparing completions to controlled bias test cases.
-    
-- **Misinformation & Hallucinations:** Verifies factual accuracy to ensure the model doesn't confidently generate incorrect or misleading outputs.
-  - *Example:* Promptfoo uses model-graded rubrics to fact-check responses by prompting a judge-LLM to evaluate the truthfulness of a model's output against known facts.
-    
-- **Alignment & Policy Compliance:** Assesses the model's ability to follow established content policies, including issuing correct refusals for disallowed requests while remaining helpful on benign queries.  
-  - *Example:* PyRIT's `RefusalScorer` evaluates whether the model correctly refuses prompts that violate safety policies, such as requests for bomb-making instructions.
-
-### Security Testing
-
-Security Testing focuses on an AI system's resilience to adversarial attacks, unauthorized access, data leakage, and abuse.
-
-- **Prompt Injections & Jailbreaks:** Evaluates whether adversarially crafted inputs can override system prompts, reveal hidden instructions, or otherwise bypass guardrails.  
-  - *Example:* Promptmap systematically executes prompt injection attacks to test whether it can extract hidden system prompts or bypass safety instructions.
-    
-- **Data Poisoning & Backdoors:** Detects malicious alterations to model checkpoints or training data that result in unauthorized behaviors.  
-  - *Example:* Fickling statically analyzes PyTorch model files and flags unsafe `pickle` opcodes used in backdoored models.
-
-- **Privacy Leakage & Attacks:** Tests whether the model reveals memorized training data, sensitive information, or user-provided inputs it should not expose.
-  - *Example:* Garak's `divergence.Repeat` probe tests if repeating a phrase causes the model to generate unintended or memorized continuations.
- 
-- **Cybersecurity Vulnerabilities:** Evaluates whether the model assists in or enables cyberattacks, generates insecure code, or is itself vulnerable to cyber exploitation.
-  - *Example:* CybersecurityBenchmark's Secure Code Generation tests evaluate whether the model follows secure programming practices or suggests vulnerable code when completing or writing functions.
-
-### Classical ML Testing
-
-Classical ML Testing evaluates models such as image or tabular classifiers for robustness to adversarial manipulation and risks of model or data leakage.
-
-- **Adversarial Examples & Robustness:** Measures how small, intentionally crafted perturbations can force misclassifications and assesses the effectiveness of any defenses.
-  - *Example:* Cleverhans implements the Fast Gradient Sign Method (FGSM) to generate imperceptible pixel perturbations that make an otherwise accurate image classifier label an object incorrectly.
-
-- **Model Extraction & Membership Inference:** Assesses whether an attacker can steal the model or infer if specific data were used in training through repeated queries.
-  - *Example:* ART's `KnockoffNets` attack trains a surrogate model from query-response pairs, demonstrating how an adversary can replicate a proprietary classifier's decision boundaries without direct access to its parameters.
+| **BlackIce Capability** | **MITRE ATLAS** | **Databricks AI Security Framework (DASF)** |
+|--------------------------|-----------------|---------------------------------------------|
+| Prompt–injection and jailbreak testing of LLMs | AML.T0051 LLM Prompt Injection; AML.T0054 LLM Jailbreak; AML.T0056 LLM Meta Prompt Extraction | 9.1 Prompt inject; 9.12 LLM jailbreak |
+| Indirect prompt injection via untrusted content (e.g., RAG/email) | AML.T0051 LLM Prompt Injection [Indirect] | 9.9 Input resource control |
+| LLM data leakage testing | AML.T0057 LLM Data Leakage | 10.6 Sensitive data output from a model |
+| Hallucination stress–testing and detection | AML.T0062 Discover LLM Hallucinations | 9.8 LLM hallucinations |
+| Adversarial example generation and evasion testing (CV/ML) | AML.T0015 Evade ML Model; AML.T0043 Craft Adversarial Data | 10.5 Black box attacks |
+| Supply–chain and artifact safety scanning (e.g., malicious pickles) | AML.T0010 AI Supply Chain Compromise; AML.T0110 Unsafe AI Artifacts | 7.3 ML supply chain vulnerabilities |
 
 # Tool Usage Examples
 
@@ -106,7 +75,10 @@ In order to use the tool with a databricks hosted model, it is required to set `
 
 **Running LM-Evaluation-Harness**
 
-An example call is given by `lm-eval-harness --model databricks-chat-completions --model_args base_url=$MODEL_URL --tasks gsm8k --apply_chat_template --limit 5 --log_samples --output_path out`.
+An example call is given by: 
+```bash
+lm-eval-harness --model databricks-chat-completions --model_args base_url=$MODEL_URL --tasks gsm8k --apply_chat_template --limit 5 --log_samples --output_path out
+```
 
 Refer to the [GitHub Repository](https://github.com/EleutherAI/lm-evaluation-harness) for more details.
 
@@ -117,7 +89,7 @@ Promptfoo is a powerful tool designed for testing and evaluating LLM prompts sys
 **Setup with Databricks Provider**
 
 Create a configuration YAML file (e.g., `promptfooconfig.yaml`) specifying your prompts, Databricks LLM provider, and test cases. Example configuration:
-```
+```yaml
 # yaml-language-server: $schema=https://promptfoo.dev/config-schema.json
 description: 'Getting started'
 prompts:
@@ -146,7 +118,7 @@ tests:
 **Running Promptfoo**
 
 Save your configuration (e.g., as `promptfooconfig.yaml`) and execute tests with:
-```
+```bash
 promptfoo eval -c promptfooconfig.yaml
 ```
 Ensure that the environment variables (`DATABRICKS_WORKSPACE_URL` and `DATABRICKS_TOKEN`) referenced in the YAML configuration are properly set.
@@ -177,7 +149,7 @@ requirement for this approach is a json file which tells garak how to send reque
 
 To create the json file as generic as possible, we instantiate the environment variables `REST_API_KEY`, `ENDPOINT_URL` and `MODEL_NAME` with the API key, the endpoint URL and the model name, respectively.
 
-```
+```bash
 export REST_API_KEY=<your_api_key>
 export ENDPOINT_URL=<your_endpoint_url>
 export MODEL_NAME=<your_model_name>
@@ -185,7 +157,7 @@ export MODEL_NAME=<your_model_name>
 
 Afterwards we can create a dictionary that would be included in a HTML request to the model. For a given endpoint, this dictionary can be found at *use*->*query*->*browser* and might look like this
 
-```
+```python
 req_template = {
     "messages": [
         {
@@ -204,7 +176,7 @@ req_template = {
 
 Now, the final json file can be created using the following python script
 
-```
+```python
 import os
 import json
 
@@ -231,7 +203,9 @@ Notice that garak will fill in the `KEY` variable with the value of the `REST_AP
 
 With this setup, starting a garak run in the container is as simple as running
 
-`garak --model_type rest -G rest_json.json`
+```bash
+garak --model_type rest -G rest_json.json
+```
 
 Check out `garak --help`, the [official documentation](https://docs.garak.ai/garak), or the [GitHub Repository](https://github.com/NVIDIA/garak) for more information regarding the different options available.
 
@@ -250,7 +224,7 @@ Giskard is an open-source testing framework for AI models, particularly focused 
 
 Before running giskard, set up the required environment variables:
 
-```
+```bash
 export DATABRICKS_BASE_URL=<your_databricks_base_url>
 export DATABRICKS_API_KEY=<your_databricks_api_key>
 export OPENAI_API_KEY=<your_openai_api_key>
@@ -262,7 +236,7 @@ Note that Giskard requires an OpenAI API key to work and causes costs for a scan
 
 To run a scan in its most basic form, use the following command:
 
-```
+```bash
 giskard <model_name>
 ```
 
@@ -277,14 +251,14 @@ A comprehensive benchmark suite by Meta, designed to evaluate cybersecurity vuln
 **Setting Up Environment Variables**
 
 Before running evaluations, you must set the required environment variables. These environment variables allow you to specify API keys, endpoint URLs, and model names dynamically. Run the following commands in your terminal to set them:
-```
+```bash
 export REST_API_KEY=<your_api_key>
 export ENDPOINT_URL=<your_endpoint_url>
 export MODEL_NAME=<your_model_name>
 ```
 
 The `DATASETS` environment variable is already set inside the cyberseceval CLI as: 
-```
+```bash
 DATASETS="/venvs/cyberseceval/source/PurpleLlama/CybersecurityBenchmarks/datasets"
 ```
 
@@ -293,7 +267,7 @@ This is the directory where cyberseceval stores its datasets. You can reference 
 **Running Evaluations**
 
 Once the environment variables are set, you can run an evaluation with the following command:
-```
+```bash
 cyberseceval \
    --benchmark=<benchmark_name> \
    --prompt-path="$DATASETS/<benchmark_name>/<INPUT_DATASET>" \
@@ -323,7 +297,7 @@ This section demonstrates how to use PyRIT with a Databricks model serving endpo
 
 Before running PyRIT, set the following environment variables:
 
-```
+```bash
 export DATABRICKS_BASE_URL=<your_endpoint_url>
 export DATABRICKS_API_KEY=<your_api_key>
 export DATABRICKS_MODEL_NAME=<your_model_name>
@@ -335,7 +309,7 @@ Alternatively, these variables can be provided directly as arguments when creati
 
 The `DatabricksChatTarget` allows interaction with Databricks endpoints in both single-turn and multi-turn attacks. The following example, adapted from the official PyRIT documentation, demonstrates configuring and executing the `RedTeamingAttack` with several `DatabricksChatTarget` instances:
 
-```
+```python
 import logging
 
 from pyrit.common import IN_MEMORY, initialize_pyrit
@@ -395,11 +369,13 @@ Refer to the official [EasyEdit documentation](https://github.com/zjunlp/EasyEdi
 
 Promptmap is a vulnerability scanning tool that automatically tests prompt injection attacks by analyzing the system prompt. You can start a promptmap run with the command
 
-`promptmap --target-model_type <model_type> --target-model_name <model_name>`
+```bash
+promptmap --target-model_type <model_type> --target-model_name <model_name>
+```
 
 `target-model_type` can be one of `["databricks", "openai", "anthropic", "ollama"]` and `target-model_name` specifies the model on the platform. Depending on the `model_type`, you have to set up environment variables. For example, if you are targeting a model hosted on Databricks, you have to set
 
-```
+```bash
 export DATABRICKS_BASE_URL=<your_endpoint_url>
 export DATABRICKS_API_KEY=<your_api_key>
 ```
@@ -415,7 +391,7 @@ FuzzyAI is a powerful tool that incorporates multiple attacks from literature.
 
 The easiest way to use FuzzyAI with a model hosted on databricks is using the rest interface. To this end, it is required to create a config file in the source directory that shows a raw HTTP request. If we save the following content in a file called rest-config in the source directory of fuzzyai
 
-```
+```http
 POST /serving-endpoints/<model_name>/invocations  HTTP/1.1
 Content-Type: application/json
 Authorization: Bearer $DATABRICKS_API_KEY

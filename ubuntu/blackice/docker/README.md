@@ -45,7 +45,7 @@ Tools included in BlackIce are defined explicitly through clearly structured lis
 - `CUSTOM_TOOLS`: Self-contained CLI scripts integrated directly into the unified command-line interface without additional dependencies.
 
 Example configuration snippet:
-```
+```dockerfile
 ARG PYTHON_TOOLS="rigging==3.0.2 garak==0.12.0 giskard[llm]==2.17.0 pyrit cyberseceval"
 ARG GIT_TOOLS="pyrit[gcg]=https://github.com/Azure/PyRIT.git=v0.9.0 cyberseceval=https://github.com/meta-llama/PurpleLlama.git=ef5a774=CybersecurityBenchmarks/requirements.txt"
 ARG SYSTEM_TOOLS="pyrit rigging"

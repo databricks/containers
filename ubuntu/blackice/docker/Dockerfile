@@ -2,7 +2,7 @@
 #                         GLOBAL ARGUMENTS                                    #
 ###############################################################################
 # Base Docker image
-ARG BASE_IMAGE=databricksruntime/python:experimental
+ARG BASE_IMAGE=databricksruntime/python:17.3-LTS
 ARG PYTHON_VERSION="3.12"
 ARG LEGACY_PYTHON_VERSION="3.10"
 ARG TORCH_INDEX_URL="https://download.pytorch.org/whl/torch/"

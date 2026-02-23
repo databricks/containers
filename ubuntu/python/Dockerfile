@@ -38,4 +38,4 @@ RUN virtualenv --python=python${python_version} --system-site-packages /databric
 
 COPY python-lsp-requirements.txt /databricks/.
 
-RUN /databricks/python-lsp/bin/pip install -r /databricks/python-lsp-requirements.txt
+RUN /databricks/python-lsp/bin/pip install --no-deps -r /databricks/python-lsp-requirements.txt

@@ -1,6 +1,7 @@
 
 FROM databricksruntime/gpu-base:cuda11.8
 
+ARG package_index_url="https://pypi.org/simple"
 ARG python_version="3.10"
 ARG pip_version="22.3.1"
 ARG setuptools_version="65.6.3"
@@ -14,7 +15,7 @@ WORKDIR /databricks
 RUN apt-get update \
   && apt-get install curl software-properties-common -y python${python_version} python${python_version}-dev python${python_version}-distutils \
   && curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py \
-  && /usr/bin/python${python_version} get-pip.py pip==${pip_version} setuptools==${setuptools_version} wheel==${wheel_version} \
+  && /usr/bin/python${python_version} get-pip.py --index-url $package_index_url pip==${pip_version} setuptools==${setuptools_version} wheel==${wheel_version} \
   && rm get-pip.py
 
 
@@ -23,9 +24,9 @@ RUN apt-get update \
 # with user cleanup and may allow users to inadvertently update pip to newer versions
 # incompatible with Databricks. Instead, we patch virtualenv to disable periodic updates per
 # https://virtualenv.pypa.io/en/latest/user_guide.html#embed-wheels-for-distributions.
-RUN /usr/local/bin/pip${python_version} install --no-cache-dir virtualenv==${virtualenv_version} \
+RUN /usr/local/bin/pip${python_version} install --index-url $package_index_url --no-cache-dir virtualenv==${virtualenv_version} \
     && sed -i -r 's/^(PERIODIC_UPDATE_ON_BY_DEFAULT) = True$/\1 = False/' /usr/local/lib/python${python_version}/dist-packages/virtualenv/seed/embed/base_embed.py \
-    && /usr/local/bin/pip${python_version} download pip==${pip_version} --dest \
+    && /usr/local/bin/pip${python_version} download --index-url $package_index_url pip==${pip_version} --dest \
     /usr/local/lib/python${python_version}/dist-packages/virtualenv_support/
 
 # Create /databricks/python3 environment.
@@ -39,7 +40,7 @@ RUN virtualenv --python=python${python_version} --system-site-packages /databric
 # These python libraries are used by Databricks notebooks and the Python REPL
 # You do not need to install pyspark - it is injected when the cluster is launched
 # Versions are intended to reflect DBR 14.0: https://docs.databricks.com/release-notes/runtime/releases.html
-RUN /databricks/python3/bin/pip install \
+RUN /databricks/python3/bin/pip install --index-url $package_index_url \
   six==1.16.0 \
   jedi==0.18.1 \
   ipython==8.14.0 \
@@ -64,7 +65,7 @@ RUN virtualenv --python=python${python_version} --system-site-packages /databric
 
 COPY python-lsp-requirements.txt /databricks/.
 
-RUN /databricks/python-lsp/bin/pip install -r /databricks/python-lsp-requirements.txt
+RUN /databricks/python-lsp/bin/pip install --index-url $package_index_url -r /databricks/python-lsp-requirements.txt
 
 # Use pip cache purge to cleanup the cache safely
 RUN /databricks/python3/bin/pip cache purge

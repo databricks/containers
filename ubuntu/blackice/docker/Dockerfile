@@ -3,6 +3,7 @@
 ###############################################################################
 # Base Docker image
 ARG BASE_IMAGE=databricksruntime/python:16.4-LTS
+ARG package_index_url="https://pypi.org/simple"
 ARG PYTHON_VERSION="3.12"
 ARG LEGACY_PYTHON_VERSION="3.10"
 ARG TORCH_INDEX_URL="https://download.pytorch.org/whl/torch/"
@@ -43,7 +44,7 @@ ARG STUB_TOOLS="llm-security-scripts gpt-fuzzer"
 FROM ${BASE_IMAGE} AS builder
 
 # Re-expose global ARGs
-ARG PYTHON_VERSION LEGACY_PYTHON_VERSION TORCH_INDEX_URL PYTHON_TOOLS SYSTEM_TOOLS GIT_TOOLS TOOLS_WITH_TORCH_DEP TOOLS_WITH_LEGACY_DEPS NODEJS_TOOLS STUB_TOOLS
+ARG package_index_url PYTHON_VERSION LEGACY_PYTHON_VERSION TORCH_INDEX_URL PYTHON_TOOLS SYSTEM_TOOLS GIT_TOOLS TOOLS_WITH_TORCH_DEP TOOLS_WITH_LEGACY_DEPS NODEJS_TOOLS STUB_TOOLS
 
 # Set essential environment variables
 ENV DEBIAN_FRONTEND=noninteractive
@@ -65,7 +66,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends curl \
        patch \
     && rm -rf /var/lib/apt/lists/* \
     && curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y \
-    && /usr/local/bin/pip install --no-cache-dir --upgrade --break-system-packages pip uv
+    && /usr/local/bin/pip install --index-url $package_index_url --no-cache-dir --upgrade --break-system-packages pip uv
 
 ENV PATH="/root/.cargo/bin:${PATH}"
 
@@ -98,7 +99,7 @@ RUN for tool in $PYTHON_TOOLS; do \
             SRC_DIR="$VENV_BASE/$TOOL_NAME/source"; \
         fi; \
         mkdir -p $SRC_DIR && \
-        pip download --no-cache-dir --no-deps --no-binary=$TOOL_NAME --dest $SRC_DIR $tool && \
+        pip download --index-url $package_index_url --no-cache-dir --no-deps --no-binary=$TOOL_NAME --dest $SRC_DIR $tool && \
         tar -xvf $SRC_DIR/*.tar.gz -C $SRC_DIR --strip-components=1 && \
         rm $SRC_DIR/*.tar.gz || true; \
     done \
@@ -308,7 +309,7 @@ RUN for tool in $PYTHON_TOOLS; do \
 FROM ${BASE_IMAGE} AS final
 
 # Re-expose global ARGs
-ARG PYTHON_VERSION PYTHON_TOOLS SYSTEM_TOOLS GIT_TOOLS NODEJS_TOOLS CUSTOM_TOOLS STUB_TOOLS
+ARG package_index_url PYTHON_VERSION PYTHON_TOOLS SYSTEM_TOOLS GIT_TOOLS NODEJS_TOOLS CUSTOM_TOOLS STUB_TOOLS
 
 # Set essential environment variables
 ENV DEBIAN_FRONTEND=noninteractive
@@ -334,7 +335,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends curl nano vim \
     && curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
     && apt-get install -y --no-install-recommends figlet nodejs libgl1 libglib2.0-0\
     && rm -rf /var/lib/apt/lists/* \
-    && pip install --no-cache-dir --upgrade --break-system-packages pip uv \
+    && pip install --index-url $package_index_url --no-cache-dir --upgrade --break-system-packages pip uv \
     \
     # Remove conflcting packages from /databricks virtual env
     && for pkg in $(awk -F'[=<>]' '{print $1}' /opt/global_requirements.txt | grep -vE '^#|^$'); do \

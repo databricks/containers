@@ -1,4 +1,6 @@
-FROM databricksruntime/gpu-venv:cuda11.8 
+FROM databricksruntime/gpu-venv:cuda11.8
+
+ARG package_index_url="https://pypi.org/simple"
 
 # Enable NVIDIA repos to install cuda-toolkit required by tensorflow.
 RUN cd /etc/apt/sources.list.d && \
@@ -13,6 +15,6 @@ RUN cd /etc/apt/sources.list.d && \
     mv cuda-ubuntu2204-x86_64.list cuda-ubuntu2204-x86_64.list.disabled
 
 # install the tensorflow versions
-RUN /databricks/python3/bin/pip install \
+RUN /databricks/python3/bin/pip install --index-url $package_index_url \
     tensorflow==2.13.0 \
     tensorboard==2.13.0

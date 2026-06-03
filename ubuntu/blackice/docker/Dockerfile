@@ -20,7 +20,7 @@ ARG PYTHON_TOOLS="fickling==0.1.4 rigging==3.3.2 judges==0.1.1 garak==0.13.1 gis
  # - GIT_REF: Can be a commit hash, tag, or branch name to checkout.
  # - REQUIREMENTS_FILE (optional): Path (relative to repo root) to a requirements file (e.g., requirements.txt, requirements/requirements_2.txt).
  #      - If pyproject.toml or setup.py is present in the repo root, REQUIREMENTS_FILE should not be specified.
-ARG GIT_TOOLS="pyrit[gcg]=https://github.com/Azure/PyRIT.git=v0.10.0rc0 cyberseceval=https://github.com/meta-llama/PurpleLlama.git=3494754=CybersecurityBenchmarks/requirements.txt lm-eval-harness[api]=https://github.com/EleutherAI/lm-evaluation-harness.git=v0.4.9.1 promptmap=https://github.com/utkusen/promptmap.git=9e1b4fe=requirements.txt fuzzyai=https://github.com/cyberark/FuzzyAI.git=2d1d4e6 easyedit=https://github.com/zjunlp/EasyEdit.git=da6f731=requirements_2.txt cleverhans=https://github.com/cleverhans-lab/cleverhans.git=574efc1=requirements/requirements.txt"
+ARG GIT_TOOLS="pyrit[gcg]=https://github.com/microsoft/PyRIT.git=v0.13.0 cyberseceval=https://github.com/meta-llama/PurpleLlama.git=3494754=CybersecurityBenchmarks/requirements.txt lm-eval-harness[api]=https://github.com/EleutherAI/lm-evaluation-harness.git=v0.4.9.1 promptmap=https://github.com/utkusen/promptmap.git=9e1b4fe=requirements.txt fuzzyai=https://github.com/cyberark/FuzzyAI.git=2d1d4e6 easyedit=https://github.com/zjunlp/EasyEdit.git=da6f731=requirements_2.txt cleverhans=https://github.com/cleverhans-lab/cleverhans.git=574efc1=requirements/requirements.txt"
 
 # Subset of PYTHON_TOOLS installed globally into the system Python environment
 ARG SYSTEM_TOOLS="pyrit fickling rigging judges"

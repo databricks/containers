@@ -4,6 +4,7 @@
 # Base Docker image
 ARG BASE_IMAGE=databricksruntime/python:experimental
 ARG package_index_url="https://pypi.org/simple"
+ARG npm_registry_url="https://registry.npmjs.org/"
 ARG PYTHON_VERSION="3.12"
 ARG LEGACY_PYTHON_VERSION="3.10"
 ARG TORCH_INDEX_URL="https://download.pytorch.org/whl/torch/"
@@ -20,7 +21,7 @@ ARG PYTHON_TOOLS="fickling==0.1.4 rigging==3.3.2 judges==0.1.1 garak==0.13.1 gis
  # - GIT_REF: Can be a commit hash, tag, or branch name to checkout.
  # - REQUIREMENTS_FILE (optional): Path (relative to repo root) to a requirements file (e.g., requirements.txt, requirements/requirements_2.txt).
  #      - If pyproject.toml or setup.py is present in the repo root, REQUIREMENTS_FILE should not be specified.
-ARG GIT_TOOLS="pyrit[gcg]=https://github.com/Azure/PyRIT.git=v0.10.0rc0 cyberseceval=https://github.com/meta-llama/PurpleLlama.git=3494754=CybersecurityBenchmarks/requirements.txt lm-eval-harness[api]=https://github.com/EleutherAI/lm-evaluation-harness.git=v0.4.9.1 promptmap=https://github.com/utkusen/promptmap.git=9e1b4fe=requirements.txt fuzzyai=https://github.com/cyberark/FuzzyAI.git=2d1d4e6 easyedit=https://github.com/zjunlp/EasyEdit.git=da6f731=requirements_2.txt cleverhans=https://github.com/cleverhans-lab/cleverhans.git=574efc1=requirements/requirements.txt"
+ARG GIT_TOOLS="pyrit[gcg]=https://github.com/microsoft/PyRIT.git=v0.10.0rc0 cyberseceval=https://github.com/meta-llama/PurpleLlama.git=3494754=CybersecurityBenchmarks/requirements.txt lm-eval-harness[api]=https://github.com/EleutherAI/lm-evaluation-harness.git=v0.4.9.1 promptmap=https://github.com/utkusen/promptmap.git=9e1b4fe=requirements.txt fuzzyai=https://github.com/cyberark/FuzzyAI.git=2d1d4e6 easyedit=https://github.com/zjunlp/EasyEdit.git=da6f731=requirements_2.txt cleverhans=https://github.com/cleverhans-lab/cleverhans.git=574efc1=requirements/requirements.txt"
 
 # Subset of PYTHON_TOOLS installed globally into the system Python environment
 ARG SYSTEM_TOOLS="pyrit fickling rigging judges"
@@ -44,11 +45,15 @@ ARG STUB_TOOLS="llm-security-scripts gpt-fuzzer"
 FROM ${BASE_IMAGE} AS builder
 
 # Re-expose global ARGs
-ARG package_index_url PYTHON_VERSION LEGACY_PYTHON_VERSION TORCH_INDEX_URL PYTHON_TOOLS SYSTEM_TOOLS GIT_TOOLS TOOLS_WITH_TORCH_DEP TOOLS_WITH_LEGACY_DEPS NODEJS_TOOLS STUB_TOOLS
+ARG package_index_url npm_registry_url PYTHON_VERSION LEGACY_PYTHON_VERSION TORCH_INDEX_URL PYTHON_TOOLS SYSTEM_TOOLS GIT_TOOLS TOOLS_WITH_TORCH_DEP TOOLS_WITH_LEGACY_DEPS NODEJS_TOOLS STUB_TOOLS
 
 # Set essential environment variables
 ENV DEBIAN_FRONTEND=noninteractive
 ENV VENV_BASE=/venvs
+ENV PIP_INDEX_URL=${package_index_url}
+ENV UV_INDEX_URL=${package_index_url}
+ENV UV_DEFAULT_INDEX=${package_index_url}
+ENV NPM_CONFIG_REGISTRY=${npm_registry_url}
 
 # ---------------------------------------------------------------------------- #
 # Install System-Level Build Dependencies                                      #
@@ -287,7 +292,7 @@ RUN for tool in $PYTHON_TOOLS; do \
         TOOL_VERSION=$(echo $tool | sed 's/.*==//'); \
         TOOL_VENV="$VENV_BASE/$TOOL_NAME"; \
         mkdir -p $TOOL_VENV && cd $TOOL_VENV && npm init -y && \
-        npm install "$TOOL_NAME@$TOOL_VERSION" && \
+        npm install "$TOOL_NAME@$TOOL_VERSION" --registry "$npm_registry_url" && \
         npm cache clean --force || true; \
     done \
     \
@@ -309,11 +314,15 @@ RUN for tool in $PYTHON_TOOLS; do \
 FROM ${BASE_IMAGE} AS final
 
 # Re-expose global ARGs
-ARG package_index_url PYTHON_VERSION PYTHON_TOOLS SYSTEM_TOOLS GIT_TOOLS NODEJS_TOOLS CUSTOM_TOOLS STUB_TOOLS
+ARG package_index_url npm_registry_url PYTHON_VERSION PYTHON_TOOLS SYSTEM_TOOLS GIT_TOOLS NODEJS_TOOLS CUSTOM_TOOLS STUB_TOOLS
 
 # Set essential environment variables
 ENV DEBIAN_FRONTEND=noninteractive
 ENV VENV_BASE=/venvs
+ENV PIP_INDEX_URL=${package_index_url}
+ENV UV_INDEX_URL=${package_index_url}
+ENV UV_DEFAULT_INDEX=${package_index_url}
+ENV NPM_CONFIG_REGISTRY=${npm_registry_url}
 
 # Copy from builder
 COPY --from=builder /usr/local/lib/python${PYTHON_VERSION}/dist-packages/ /usr/local/lib/python${PYTHON_VERSION}/dist-packages/

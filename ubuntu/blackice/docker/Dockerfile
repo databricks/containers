@@ -2,7 +2,7 @@
 #                         GLOBAL ARGUMENTS                                    #
 ###############################################################################
 # Base Docker image
-ARG BASE_IMAGE=databricksruntime/python:experimental
+ARG BASE_IMAGE=databricksruntime/python:18.3-LTS
 ARG package_index_url="https://pypi.org/simple"
 ARG npm_registry_url="https://registry.npmjs.org/"
 ARG PYTHON_VERSION="3.12"

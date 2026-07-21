@@ -1,4 +1,4 @@
-FROM databricksruntime/minimal:experimental
+FROM databricksruntime/minimal:18.3-LTS
 
 ARG package_index_url="https://pypi.org/simple"
 ARG python_version="3.12"

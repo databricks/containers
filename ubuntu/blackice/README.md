@@ -17,7 +17,7 @@ For more details, see our paper [BlackIce: A Containerized Red Teaming Toolkit f
 
 ## Integrated Toolset
 
-BlackIce integrates 14 widely-adopted open-source AI red teaming tools, chosen for their effectiveness and broad adoption across industry-leading AI security teams. Tools included cover a wide spectrum of evaluation capabilities, from basic static vulnerability assessments to highly customizable dynamic attack frameworks.
+BlackIce integrates 15 widely-adopted open-source AI red teaming tools, chosen for their effectiveness and broad adoption across industry-leading AI security teams. Tools included cover a wide spectrum of evaluation capabilities, from basic static vulnerability assessments to highly customizable dynamic attack frameworks.
 
 | Tool                                      | Organization   | Stars | Type    | Environment | Source | License   |
 |-------------------------------------------|----------------|-------|---------|-------------|--------|-----------|
@@ -28,6 +28,7 @@ BlackIce integrates 14 widely-adopted open-source AI red teaming tools, chosen f
 | [ART](#art)                               | IBM            | 5.6K  | Dynamic | Isolated    | PyPI   | MIT       |
 | [Giskard](#giskard)                       | Giskard        | 4.9K  | Hybrid  | Isolated    | PyPI   | Apache 2.0|
 | [CyberSecEval](#cyberseceval)             | Meta           | 3.8K  | Static  | Isolated    | GitHub | MIT       |
+| [AI-Infra-Guard](#ai-infra-guard)         | Tencent        | 2.9K  | Hybrid  | Isolated    | GitHub | MIT       |
 | [PyRIT](#pyrit)                           | Microsoft      | 2.9K  | Dynamic | Global      | PyPI   | MIT       |
 | [EasyEdit](#easyedit)                     | ZJUNLP         | 2.6K  | Dynamic | Isolated    | GitHub | MIT       |
 | [Promptmap](#promptmap)                   | -              | 1K    | Static  | Isolated    | GitHub | GPL-3.0   |
@@ -286,6 +287,20 @@ Make sure to replace:
 - <your_api_key>, <your_endpoint_url>, and <your_model_name> with your actual API credentials.
 
 Check out `cyberseceval --help`, the [official documentation](https://meta-llama.github.io/PurpleLlama/), or the [GitHub Repository](https://github.com/meta-llama/PurpleLlama/tree/main/CybersecurityBenchmarks) for more information regarding the different options available.
+
+## AI-Infra-Guard
+AI-Infra-Guard is an AI red teaming platform from Tencent Zhuque Lab that integrates AI infra vulnerability scanning, MCP Server risk scanning, and jailbreak evaluation to help teams assess AI security risks.
+
+**Quick start (Docker)**
+```bash
+git clone https://github.com/Tencent/AI-Infra-Guard.git
+cd AI-Infra-Guard
+docker-compose -f docker-compose.images.yml up -d
+```
+
+Once running, open `http://localhost:8088` to access the web interface.
+
+Refer to the [official documentation](https://tencent.github.io/AI-Infra-Guard/) or the [GitHub Repository](https://github.com/Tencent/AI-Infra-Guard) for more details.
 
 ## PyRIT
 

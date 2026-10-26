@@ -2,7 +2,7 @@ FROM databricksruntime/minimal:experimental
 
 ARG package_index_url="https://pypi.org/simple"
 ARG python_version="3.12"
-ARG pip_version="25.0.1"
+ARG pip_version="26.2.2"
 ARG setuptools_version="78.1.1"
 ARG wheel_version="0.45.1"
 ARG virtualenv_version="20.29.3"

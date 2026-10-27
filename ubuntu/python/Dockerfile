@@ -33,7 +33,7 @@ RUN apt-get install -y libpq-dev build-essential
 # Constrain setuptools<82 in pip build isolation environments because
 # setuptools 82+ removed pkg_resources, which pandas 1.5.3's setup.py requires.
 RUN echo 'setuptools<82' > /databricks/build-constraints.txt
-RUN PIP_CONSTRAINT=/databricks/build-constraints.txt \
+RUN PIP_BUILD_CONSTRAINT=/databricks/build-constraints.txt \
     /databricks/python3/bin/pip install --index-url $package_index_url --no-deps -r /databricks/requirements.txt
 
 # Specifies where Spark will look for the python process
@@ -43,7 +43,7 @@ RUN virtualenv --python=python${python_version} --system-site-packages /databric
 
 COPY python-lsp-requirements.txt /databricks/.
 
-RUN PIP_CONSTRAINT=/databricks/build-constraints.txt \
+RUN PIP_BUILD_CONSTRAINT=/databricks/build-constraints.txt \
     /databricks/python-lsp/bin/pip install --index-url $package_index_url --no-deps -r /databricks/python-lsp-requirements.txt
 
 ENV GRPC_DEFAULT_SSL_ROOTS_FILE_PATH=/databricks/python3/lib/python${python_version}/site-packages/certifi/cacert.pem

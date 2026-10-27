@@ -20,7 +20,7 @@ RUN /usr/local/bin/pip${python_version} install --index-url $package_index_url -
   /usr/local/lib/python${python_version}/dist-packages/virtualenv_support/
 
 # Initialize the default environment that Spark and notebooks will use
-RUN virtualenv --python=python${python_version} --system-site-packages /databricks/python3 --no-download --no-setuptools
+RUN virtualenv --python=python${python_version} --system-site-packages /databricks/python3 --no-download --no-setuptools --pip=${pip_version} --extra-search-dir=/usr/local/lib/python${python_version}/dist-packages/virtualenv_support
 
 # These python libraries are used by Databricks notebooks and the Python REPL
 # You do not need to install pyspark - it is injected when the cluster is launched
@@ -35,8 +35,10 @@ RUN /databricks/python3/bin/pip install --index-url $package_index_url --no-deps
 # Specifies where Spark will look for the python process
 ENV PYSPARK_PYTHON=/databricks/python3/bin/python3
 
-RUN virtualenv --python=python${python_version} --system-site-packages /databricks/python-lsp --no-download --no-setuptools
+RUN virtualenv --python=python${python_version} --system-site-packages /databricks/python-lsp --no-download --no-setuptools --pip=${pip_version} --extra-search-dir=/usr/local/lib/python${python_version}/dist-packages/virtualenv_support
 
 COPY python-lsp-requirements.txt /databricks/.
 
 RUN /databricks/python-lsp/bin/pip install --index-url $package_index_url --no-deps -r /databricks/python-lsp-requirements.txt
+
+ENV GRPC_DEFAULT_SSL_ROOTS_FILE_PATH=/databricks/python3/lib/python${python_version}/site-packages/certifi/cacert.pem

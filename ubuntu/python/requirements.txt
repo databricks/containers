@@ -1,7 +1,7 @@
 asttokens==2.0.5
 backcall==0.2.0
 blinker==1.4
-certifi==2022.12.7
+certifi==2026.10.19
 cffi==1.15.1
 charset-normalizer==2.0.4
 comm==0.1.2
@@ -48,7 +48,7 @@ parso==0.8.3
 pexpect==4.8.0
 pickleshare==0.7.5
 pillow==9.4.0
-pip==22.3.1
+pip==26.2.2
 platformdirs==2.5.2
 prompt-toolkit==3.0.36
 protobuf==4.24.0

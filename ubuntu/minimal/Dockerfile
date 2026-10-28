@@ -47,6 +47,14 @@ RUN update-java-alternatives -s zulu17-ca-amd64
 # see https://support.azul.com/hc/en-us/articles/16981081133588-Using-https-TLS-SSL-certificates-provided-by-the-Operating-System
 RUN apt-get install --yes ca-certificates-java
 
+# Block the compromised eMudhra intermediates and remove the roots that chain to them
+# (AAA Certificate Services, emSign ECC Root CA - G3) from the JDK and Ubuntu Java truststores.
+COPY blocked.certs /tmp/blocked.certs
+COPY patch-java-truststores.sh /tmp/patch-java-truststores.sh
+
+RUN /bin/sh /tmp/patch-java-truststores.sh /tmp/blocked.certs \
+  && rm -f /tmp/blocked.certs /tmp/patch-java-truststores.sh
+
 # Add new user for cluster library installation
 RUN useradd libraries \
   && usermod -L libraries

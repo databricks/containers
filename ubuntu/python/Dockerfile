@@ -41,3 +41,7 @@ RUN /databricks/python-lsp/bin/pip install --index-url $package_index_url -r /da
 
 ENV GRPC_DEFAULT_SSL_ROOTS_FILE_PATH=/databricks/python3/lib/python${python_version}/site-packages/certifi/cacert.pem
 
+# Make the virtualenvs that the runtime creates at cluster start (for example notebook environments)
+# seed the patched pip instead of the older pip that virtualenv embeds.
+ENV VIRTUALENV_PIP=${pip_version}
+ENV VIRTUALENV_EXTRA_SEARCH_DIR=/usr/local/lib/python${python_version}/dist-packages/virtualenv_support

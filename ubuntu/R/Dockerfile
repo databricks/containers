@@ -1,5 +1,8 @@
 FROM databricksruntime/minimal:18.3-LTS
 
+ARG package_index_url="https://pypi.org/simple"
+ARG pip_version="26.2.2"
+
 # Suppress interactive configuration prompts
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -8,6 +11,15 @@ RUN apt-get update \
   && apt-get install -y \
     python3.12 \
     virtualenv
+
+# Make virtualenv seed the patched pip instead of the older pip from Ubuntu's python3-pip-whl package,
+# both for /databricks/python3 and for the virtualenvs that the runtime creates at cluster start.
+RUN pip_wheel=$(ls /usr/share/python-wheels/pip-*.whl) \
+  && python3.12 "$pip_wheel/pip" download --index-url $package_index_url --no-cache-dir --no-deps \
+    --dest /usr/local/share/virtualenv_support pip==${pip_version}
+
+ENV VIRTUALENV_PIP=${pip_version}
+ENV VIRTUALENV_EXTRA_SEARCH_DIR=/usr/local/share/virtualenv_support
 
 # We add CRAN's debian source to install the latest r-base version
 # We are using the more secure long form of pgp key ID of marutter@gmail.com

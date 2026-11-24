@@ -21,10 +21,11 @@ RUN pip_wheel=$(ls /usr/share/python-wheels/pip-*.whl) \
 ENV VIRTUALENV_PIP=${pip_version}
 ENV VIRTUALENV_EXTRA_SEARCH_DIR=/usr/local/share/virtualenv_support
 
-# We add RStudio's debian source to install the latest r-base version (4.1)
+# Install the R interpreter and recommended packages shipped with this DBR release.
 # We are using the more secure long form of pgp key ID of marutter@gmail.com
 # based on these instructions (avoiding firewall issue for some users):
 # https://cran.rstudio.com/bin/linux/ubuntu/#secure-apt
+ARG r_version="4.3.2-1.2204.0"
 RUN apt-get update \
   && apt-get install --yes software-properties-common apt-transport-https \
   && gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9 \
@@ -33,8 +34,27 @@ RUN apt-get update \
   && apt-get update \
   && apt-get install --yes \
     libssl-dev \
-    r-base \
-    r-base-dev \
+    r-base=${r_version} \
+    r-base-core=${r_version} \
+    r-base-dev=${r_version} \
+    r-base-html=${r_version} \
+    r-doc-html=${r_version} \
+    r-recommended=${r_version} \
+    r-cran-boot=1.3-28-2.2204.0 \
+    r-cran-class=7.3-22-2.2204.0 \
+    r-cran-cluster=2.1.4-1.2204.0 \
+    r-cran-codetools=0.2-19-1.2204.0 \
+    r-cran-foreign=0.8.85-1.2204.0 \
+    r-cran-kernsmooth=2.23-21-2.2204.0 \
+    r-cran-lattice=0.21-8-1.2204.0 \
+    r-cran-mass=7.3-60-2.2204.0 \
+    r-cran-matrix=1.5-4.1-2.2204.0 \
+    r-cran-mgcv=1.8-42-1.2204.0 \
+    r-cran-nlme=3.1.163-1.2204.0 \
+    r-cran-nnet=7.3-19-2.2204.0 \
+    r-cran-rpart=4.1.21-1.2204.0 \
+    r-cran-spatial=7.3-15-1.2204.0 \
+    r-cran-survival=3.5-5-2.2204.0 \
   && add-apt-repository -r "deb [arch=amd64,i386] https://cran.rstudio.com/bin/linux/ubuntu $(lsb_release -cs)-cran40/" \
   && apt-key del E298A3A825C0D65DFD57CBB651716619E084DAB9 \
   && apt-get clean \

@@ -35,6 +35,7 @@ RUN apt-get update \
   && apt-get install --yes \
     libssl-dev \
     r-base=${r_version} \
+    r-base-core=${r_version} \
     r-base-dev=${r_version} \
     r-recommended=${r_version} \
   && add-apt-repository -r "deb https://cloud.r-project.org/bin/linux/ubuntu $(lsb_release -cs)-cran40/" \

@@ -30,6 +30,10 @@ COPY requirements.txt /databricks/.
 
 RUN /databricks/python3/bin/pip install --index-url $package_index_url --no-deps -r /databricks/requirements.txt
 
+# Match DBR's automatic mitigation for CVE-2023-47248.
+RUN printf '\nimport pyarrow_hotfix\n' >> /databricks/python3/lib/python${python_version}/site-packages/pyarrow/__init__.py \
+  && /databricks/python3/bin/python -c "import pyarrow; assert pyarrow._hotfix_installed"
+
 # Specifies where Spark will look for the python process
 ENV PYSPARK_PYTHON=/databricks/python3/bin/python3
 

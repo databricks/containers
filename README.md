@@ -26,6 +26,10 @@ The Dockerfiles on the master branch are currently not maintained to be backward
 ## DockerHub
 The Databricks provided sample images have been published to [DockerHub](https://hub.docker.com/u/databricksruntime)
 
+Use an image tag that matches a [supported Databricks Runtime LTS version](https://docs.databricks.com/aws/en/release-notes/runtime/). Docker Hub images with the `-LTS` suffix receive patches. Other example images are patched irregularly. See the [image maintenance policy](https://docs.databricks.com/aws/en/compute/custom-containers).
+
+Pull the updated base image and rebuild your custom image to pick up patches.
+
 ## How To Contribute to this Repo
 1. Fork and Clone this Repo, locally.
 1. Follow the example dockerfiles and ensure your docker file has liberal comments, explaining each step of your image.  

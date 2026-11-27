@@ -5,6 +5,7 @@ ipython-genutils==0.2.0
 numpy==1.23.5
 pandas==1.5.3
 pyarrow==8.0.0
+pyarrow-hotfix==0.5
 matplotlib==3.7.0
 Jinja2==3.1.2
 ipykernel==6.25.0

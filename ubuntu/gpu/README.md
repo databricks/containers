@@ -14,20 +14,23 @@ There are three variations of GPU containers that can be used depending upon the
 
  
 Example base layers to build your own container:
-* [`gpu-base`](cuda-11.0/base) extends the official [NVIDIA CUDA container](https://hub.docker.com/r/nvidia/cuda) with Databricks Container Service minimal requirements.
-* [`gpu-venv`](cuda-11.8/venv) extends `gpu-base` by installing cuda dependencies and commmon Databricks python dependencies in venv.
+* [`gpu-base`](cuda-11.8/base) extends the official [NVIDIA CUDA container](https://hub.docker.com/r/nvidia/cuda) with the system requirements for Databricks Container Services.
+* [`gpu-venv`](cuda-11.8/venv) extends `gpu-base` with the Python environment required for notebooks and Python jobs. Use this image as the base for custom Python workloads.
 
 Example containers for common GPU use cases:
-* [`gpu-tensorflow`](cuda-11.8/tensorflow) extends `gpu-venv` by creating a conda environment that contains [TensorFlow](https://www.tensorflow.org/).
-* [`gpu-pytorch`](cuda-11.8/pytorch) extends `gpu-venv` by creating a conda environment that contains [PyTorch](https://pytorch.org/).
+* [`gpu-tensorflow`](cuda-11.8/tensorflow) extends `gpu-venv` by installing [TensorFlow](https://www.tensorflow.org/) with pip into `/databricks/python3`.
+* [`gpu-pytorch`](cuda-11.8/pytorch) extends `gpu-venv` by installing [PyTorch](https://pytorch.org/) with pip into `/databricks/python3`.
 
 ## Launching GPU Clusters
+
+Use Dedicated compute with a regular Databricks Runtime version. The compute UI's GPU metric charts require Databricks Runtime ML 13.3 or above. See the [GPU container requirements](https://docs.databricks.com/aws/en/compute/gpu#databricks-container-services-on-gpu) and [GPU metrics requirements](https://docs.databricks.com/aws/en/compute/cluster-metrics#gpu-metric-charts).
+
 * After the cluster is ready, you can run `%sh nvidia-smi` to view GPU devices and confirm that they are available.
 
 ## Creating Custom Dockerfiles:
 
 * You can modify the `gpu-base` Dockerfile and add additional system packages and NVIDIA libraries, for example, TensorRT (libnvinfer).
 
-* You cannot change the NVIDIA driver version, because it must match the driver version on the host machine, which is 450.80.
+* The NVIDIA driver version in the container must match the driver version on the Databricks host.
 
-* The `gpu-tensorflow` and `gpu-pytorch` Dockerfiles provide examples to create the root conda environment from an environment.yml file. These packages are required for Python notebooks and PySpark to work: python, ipython, numpy, pandas, pyarrow, six, and ipykernel.
+* Add Python packages with `/databricks/python3/bin/python -m pip install`. The `gpu-tensorflow` and `gpu-pytorch` Dockerfiles show how to install framework packages. Match the Python dependencies to the Databricks Runtime version used by the compute.

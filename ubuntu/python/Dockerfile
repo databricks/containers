@@ -1,4 +1,5 @@
-FROM databricksruntime/minimal:18.3-LTS
+ARG base_image=databricksruntime/minimal:18.3-LTS
+FROM ${base_image}
 
 ARG package_index_url="https://pypi.org/simple"
 ARG python_version="3.12"

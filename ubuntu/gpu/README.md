@@ -1,33 +1,55 @@
-# GPU Containers
+# GPU containers for Databricks Runtime 18.3
 
-**WARNING**: Using conda in DCS images is no longer supported starting Databricks Runtime 9.0. We highly recommend users to extend [`cuda-11.8`](cuda-11.8) examples.
- We no longer support [`cuda-10.1`](cuda-10.1) and [`cuda-11.0`](cuda-11.0) compatibility with latest databricks runtime.
+These examples target Dedicated compute with Databricks Runtime 18.3 LTS. Select the regular runtime when you create the compute. See the [GPU container requirements](https://docs.databricks.com/aws/en/compute/gpu#databricks-container-services-on-gpu).
 
-**WARNING**: DCS images which extends [`venv`](cuda-11.8/venv/) need to be paired with DBR 14.x when creating a
-cluster. In order for REPL to launch successfully, the python packages used in the image HAVE to match with python packges used in the paried DBR version. [`venv`](cuda-11.8/venv/) uses version set from DBR 14.0
+| Component | Version |
+| --- | --- |
+| Ubuntu | 24.04 |
+| Python | 3.12 |
+| Default Java | 21 |
+| PyArrow | 21.0.0 |
+| CUDA base | 12.9.1 |
+| cuDNN | 9.28.1.4-1 |
+| PyTorch | 2.9.0+cu129 |
+| torchvision | 0.24.0+cu129 |
+| TensorFlow | 2.20.0 |
 
+The GPU build uses this branch's `ubuntu/minimal` recipe for Java and system setup. It uses `ubuntu/python` for the Python and notebook environments. Framework installs use the Python requirements as constraints.
 
-There are three variations of GPU containers that can be used depending upon the CUDA version you wish to use:
-- [`cuda-11.8`](cuda-11.8) contains the layers which install CUDA 11.8
-- [`cuda-11.0`](cuda-11.0)(*Deprecated*) contains the layers which install CUDA 11.0
-- [`cuda-10.1`](cuda-10.1)(*Deprecated*) contains the layers which install CUDA 10.1
+The CUDA base and PyTorch wheel can use different CUDA versions. These pins follow the target DBR's GPU package audit. TensorFlow's CUDA extra installs the libraries required by its wheel. See the [runtime release notes](https://docs.databricks.com/aws/en/release-notes/runtime/18ml).
 
- 
-Example base layers to build your own container:
-* [`gpu-base`](cuda-11.0/base) extends the official [NVIDIA CUDA container](https://hub.docker.com/r/nvidia/cuda) with Databricks Container Service minimal requirements.
-* [`gpu-venv`](cuda-11.8/venv) extends `gpu-base` by installing cuda dependencies and commmon Databricks python dependencies in venv.
+## Build
 
-Example containers for common GPU use cases:
-* [`gpu-tensorflow`](cuda-11.8/tensorflow) extends `gpu-venv` by creating a conda environment that contains [TensorFlow](https://www.tensorflow.org/).
-* [`gpu-pytorch`](cuda-11.8/pytorch) extends `gpu-venv` by creating a conda environment that contains [PyTorch](https://pytorch.org/).
+Run from the repository root.
 
-## Launching GPU Clusters
-* After the cluster is ready, you can run `%sh nvidia-smi` to view GPU devices and confirm that they are available.
+```bash
+bash ubuntu/gpu/build.sh --check-only
+bash ubuntu/gpu/build.sh
+```
 
-## Creating Custom Dockerfiles:
+The script builds `gpu-cuda`, `gpu-base`, `gpu-venv`, `gpu-pytorch`, and `gpu-tensorflow` in dependency order. The default tag is `18.3-LTS-cuda12.9`. It then checks Python, NumPy, pandas, PyArrow, and framework imports in the resulting workload images.
 
-* You can modify the `gpu-base` Dockerfile and add additional system packages and NVIDIA libraries, for example, TensorRT (libnvinfer).
+Use `gpu-venv` for Python notebooks and jobs. Use `gpu-pytorch` or `gpu-tensorflow` for the corresponding framework. Install additional Python packages into `/databricks/python3`.
 
-* You cannot change the NVIDIA driver version, because it must match the driver version on the host machine, which is 450.80.
+For a test registry or approved package mirrors, set `DCS_IMAGE_REPOSITORY`, `DCS_IMAGE_TAG`, `DCS_CUDA_IMAGE`, `DCS_PACKAGE_INDEX_URL`, or `DCS_TORCH_INDEX_URL`. A CUDA image override must include a digest. Use `--dry-run` to inspect all commands before building.
 
-* The `gpu-tensorflow` and `gpu-pytorch` Dockerfiles provide examples to create the root conda environment from an environment.yml file. These packages are required for Python notebooks and PySpark to work: python, ipython, numpy, pandas, pyarrow, six, and ipykernel.
+## Validate on Databricks
+
+Test a unique image tag on Dedicated compute with DBR 18.3 LTS and a supported GPU instance. Run a Python notebook cell and a Python worker task. Check `%sh nvidia-smi`. Run a GPU operation with the framework image. Check that the driver and workers report the versions in `runtime.json`.
+
+The compute UI's GPU metric charts require Databricks Runtime ML 13.3 or above. See [GPU metrics requirements](https://docs.databricks.com/aws/en/compute/cluster-metrics#gpu-metric-charts).
+
+Rebuild custom images to pick up changes in these examples. The image tags include both the runtime and CUDA version so builds for different release branches use separate tags.
+
+## Update for a release
+
+Update `runtime.json` from the target DBR's maintenance package audits. Update the matching support-package pins in `framework-constraints.txt`. Update the CUDA image and digest in `base/Dockerfile`. Check the framework wheel versions and CUDA variants in their package indexes.
+
+Run the profile check and regression checks.
+
+```bash
+python3 ubuntu/gpu/build.py --check-only
+python3 -m unittest discover -s ubuntu/gpu -p 'test_*.py'
+```
+
+The profile check runs before every GPU build. It rejects a profile copied to a different release branch, a Python or Java mismatch, and drift in the NumPy, pandas, PyArrow, or framework pins. Complete the image and GPU compute checks before publishing.

@@ -1,4 +1,5 @@
-FROM ubuntu:24.04
+ARG base_image=ubuntu:24.04
+FROM ${base_image}
 
 ENV LANG=C.UTF-8
 ENV LC_ALL=C.UTF-8

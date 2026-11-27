@@ -1,0 +1,43 @@
+{
+  "runtime_version": "17.3",
+  "runtime_tag": "17.3-LTS",
+  "ubuntu_version": "24.04",
+  "python_version": "3.12",
+  "java_version": "17",
+  "python_packages": {
+    "numpy": "2.1.3",
+    "pandas": "2.2.3",
+    "pyarrow": "19.0.1"
+  },
+  "cuda_version": "12.6.3",
+  "cuda_runtime_package": "cuda-cudart-12-6",
+  "cuda_runtime_version": "12.6.77-1",
+  "cudnn_version": "9.5.1.17-1",
+  "torch_version": "2.7.0+cu126",
+  "torchvision_version": "0.22.0+cu126",
+  "torch_cuda": "cu126",
+  "tensorflow_version": "2.19.0",
+  "release_notes": "https://docs.databricks.com/aws/en/release-notes/runtime/17.3lts-ml",
+  "framework_packages": {
+    "absl-py": "1.0.0",
+    "flatbuffers": "25.2.10",
+    "gast": "0.4.0",
+    "google-pasta": "0.2.0",
+    "h5py": "3.12.1",
+    "keras": "3.5.0",
+    "libclang": "15.0.6.1",
+    "markdown": "3.4.1",
+    "ml-dtypes": "0.5.3",
+    "mpmath": "1.3.0",
+    "namex": "0.1.0",
+    "networkx": "3.4.2",
+    "opt-einsum": "3.4.0",
+    "optree": "0.17.0",
+    "sympy": "1.13.3",
+    "tensorboard": "2.19.0",
+    "tensorboard-data-server": "0.7.2",
+    "termcolor": "3.1.0",
+    "triton": "3.3.0",
+    "werkzeug": "3.1.3"
+  }
+}
